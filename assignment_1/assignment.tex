@@ -1,13 +1,14 @@
-\documentclass[a4paper,11pt]{article}
-
+\documentclass[a4paper,10pt]{article}
+ 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{xcolor}
 \usepackage{caption}
 \usepackage{listings}
+\usepackage{wrapfig} 
 
-\renewcommand\familydefault{\sfdefault}
+\renewcommand\familydefault{\sfdefault} 
 \usepackage{tgheros}
 \usepackage[defaultmono]{droidmono}
 
@@ -97,6 +98,7 @@ Indian Institute of Technology, Roorkee
 \DeclareCaptionFormat{listing}{\colorbox{greatblue}{\parbox{\textwidth}{\hspace{1cm}#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
 
+\def\backtick{\char18} 
 \lstdefinestyle{verilog-style}
 {
     columns=fullflexible,
@@ -105,17 +107,16 @@ Indian Institute of Technology, Roorkee
     keywordstyle=\color{vblue},
     identifierstyle=\color{black},
     commentstyle=\color{vgreen},
-    numbers=left,
+    numbers=left, 
     numberstyle=\color{gray},  
     numbersep=10pt,
-%    tabsize=8,
     moredelim=*[s][\colorIndex]{[}{]},
-    literate=*{:}{:}1,
+    literate=*{:}{:}1, 
     backgroundcolor=\color{codebg},
     framexrightmargin=0.09cm, 
     framexleftmargin=-0.09cm,
     frame=trbl,
-%    framesep=10pt, 
+    upquote=true, 
     framerule=0pt
 }
 
@@ -123,13 +124,28 @@ Indian Institute of Technology, Roorkee
   \insertverilog}[3]{
   \lstinputlisting[label=#2, caption=#3, style={verilog-style}]{#1}
 }
+
+
 %%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating a resource box
+\newcommand{\resourcebox}[2]{
+  \fbox{%
+    \parbox{0.5\textwidth}{%
+      \text{#1}
+    }%
+  } 
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
 
 \begin{document}
 
 \title{Assignment \ano \\ Introduction to Verilog}
 
 \maketitle
+
 \section*{Hardware Description Languages}
 Hardware description language (HDL) is a convienient, device independent way of representing digital logic. HDLs are helpful describing, simulating and verifying digital circuits.
 
@@ -145,7 +161,7 @@ As a begininer we are going to describe and simulate simple combinational circui
 \section*{Design Flow}  
 
 \begin{figure}[!t] \centering 
-\includegraphics[width=\linewidth]{./resources/hdl_design_flow.pdf}
+  \includegraphics[width=\linewidth]{./resources/hdl_design_flow.pdf}
   \caption{Example binary search tree constructed using names from Table \ref{Table:ndn_name_table} with insertion order and output port information.}
   \label{Fig:bst_sample_names}
 \end{figure} 
@@ -164,46 +180,55 @@ The process of creating objects of modules is called instatiation in Verilog. Mo
   
 \insertverilog{./verilog_files/AndGate3.v}{sample-module}{\text{Illustrative AND gate module}} 
 \subsection*{Comments}
+Comments in verilog are of two kinds:
+\subsubsection*{Single Line Comment}
+Two forward slashes represents begining of a single line comment in verilog, any charater after the two forward slashes will be ignored by verilog compiler until the end of line.
+\insertverilog{./verilog_files/singleLineComment.v}{single-line-comment}{\text{Single line comment}} 
+
+\subsubsection*{Block Comment}
+Block comments in verilog are used to comment more than one line, the start with `/*' and ends with `*/'. Anything between these two character sequence is ignored by the compiler.
+\insertverilog{./verilog_files/blockComment.v}{block-comment}{\text{Block
+    comment}}
+
 \subsection*{Numerical Literals}
-\subsection*{Constants}
-\subsection*{Wires}
-\subsection*{Registers}
-\subsection*{Always Block}
-\subsection*{If and Case Statement}
-% code from http://rosettacode.org/wiki/Fibonacci_sequence#Python
-\begin{lstlisting}[label={list:first},caption=Sample Python code -- Fibonacci sequence calculated analytically.]
-from math import *
+\subsubsection*{Sized Numbers}
+To represent digital circuits accurately Verilog allows defining
+numbers of fixed size. These numbers have following format:
+\begin{center}
+  <size>'<character for base><number>
+\end{center}
 
-# define function 
-def analytic_fibonacci(n):
-  sqrt_5 = sqrt(5);
-  p = (1 + sqrt_5) / 2;
-  q = 1/p;
-  return int( (p**n + q**n) / sqrt_5 + 0.5 )
+For example:
+\insertverilog{./verilog_files/sizedNumbers.v}{sized-numbers}{\text{Example of sized numbers}}
  
-# define range
-for i in range(1,31):
-  print analytic_fibonacci(i)
-\end{lstlisting}
+\subsubsection*{Unisized Numbers}
+Verilog also includes support for unsized numbers. These numbers are
+assumed to be of a particular size depending upon the
+compiler/machine.
 
-Following Listing~\ref{list:first}\ldots{} 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\subsection*{Constants}
+Global constants can be decalered in Verilog. When Verilog code is processed all these constants will be replaced by their respective values. NOTE: Verilog constants always starts with backtick ` ${}^{\backprime}$ '. 
+\insertverilog{./verilog_files/constants.v}{constants}{\text{Declaration and use of constants}}
 
-\section*{Problem 2}
+\subsection*{Wires}
 
-\begin{lstlisting}[label={list:second},caption=Sample Bash code.]
-#! /bin/bash
-python stage1.py
-echo "Stage I done!"
-python stage2.py
-echo "Stage II done!"
-python stage3.py
-echo "Stage III done!"
-\end{lstlisting}
+\begin{figure}[!h] \centering  
+  \includegraphics[width=\linewidth]{./resources/andGate4_representation.pdf}
+  \caption{Gate level representation of code in Listing \ref{andGate4-wire}.} 
+  \label{Fig:andGate4-representation}
+\end{figure}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+Wires are something very important in verilog, use of wires in Verilog is for what wires are used in real life ... to connect two things electrically! Wires will be used extensively in future assignments to connect two modules, registers and even wires together. This concept is explained using Listing \ref{constants} where wires are used to connect output of two 2-input AND gates to inputs of single 2-input AND gates. Gate level diagram of which is shown in Fig. \ref{Fig:andGate4-representation}.
+
+\insertverilog{./verilog_files/andGate4.v}{andGate4-wire}{\text{Use of wires to connect output of one module to input of another}}
+
+
+\subsection*{Registers}
+\subsection*{Always Block} 
+\subsection*{If and Case Statement}
 
 \end{document}
 
-%http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607%20labs/ee108a_nham_intro_to_verilog.pdf
-%Verilog HDL - Samir Palnitkar
+% References:
+% http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607%20labs/ee108a_nham_intro_to_verilog.pdf
+% Verilog HDL - Samir Palnitkar
