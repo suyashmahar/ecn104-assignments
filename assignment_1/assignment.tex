@@ -3,10 +3,11 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage{xcolor}
+\usepackage{xcolor, colortbl}
 \usepackage{caption}
 \usepackage{listings}
 \usepackage{wrapfig} 
+\usepackage{tabu} % For coloring single row of table
 
 \renewcommand\familydefault{\sfdefault} 
 \usepackage{tgheros}
@@ -20,12 +21,18 @@
 \usepackage{geometry}
 \usepackage{trace}
 \usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{accsupp}% http://ctan.org/pkg/accsupp
 \tcbuselibrary{listings,skins} % For lstlisting
 
 \geometry{total={210mm,297mm},
 left=25mm,right=25mm,%
 bindingoffset=0mm, top=20mm,bottom=20mm}
 
+
+% For coloring single row in table
+\def\zapcolorreset{\let\reset@color\relax\ignorespaces}
+\def\colorrows#1{\noalign{\aftergroup\zapcolorreset#1}\ignorespaces}
 
 %\linespread{1.3}
 
@@ -48,7 +55,7 @@ bindingoffset=0mm, top=20mm,bottom=20mm}
 {\huge \textsc{\@title}}
 \vspace{1ex}
 \\
-ECN 102 - Digital Logic Design \\
+ECN 104  - Digital Logic Design \\
 Department of Electronics and Communication Engineering \\
 Indian Institute of Technology, Roorkee
 \linia\\
@@ -98,10 +105,14 @@ Indian Institute of Technology, Roorkee
 \DeclareCaptionFormat{listing}{\colorbox{greatblue}{\parbox{\textwidth}{\hspace{1cm}#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
 
+\renewcommand{\thelstnumber}{% Line number printing mechanism
+  \protect\BeginAccSupp{ActualText={}}\arabic{lstnumber}\protect\EndAccSupp{}%
+}
+
 \def\backtick{\char18} 
 \lstdefinestyle{verilog-style}
 {
-    columns=fullflexible,
+    %columns=fullflexible, 
     language=Verilog,
     basicstyle=\small\ttfamily,
     keywordstyle=\color{vblue},
@@ -117,7 +128,8 @@ Indian Institute of Technology, Roorkee
     framexleftmargin=-0.09cm,
     frame=trbl,
     upquote=true, 
-    framerule=0pt
+    framerule=0pt,
+    keepspaces=true
 }
 
 \newcommand{
@@ -139,7 +151,12 @@ Indian Institute of Technology, Roorkee
 
 %%%----------%%%----------%%%----------%%%----------%%%
 
+\makeatletter
+\def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
+\makeatother
 
+
+%%%----------%%%----------%%%----------%%%----------%%%
 \begin{document}
 
 \title{Assignment \ano \\ Introduction to Verilog}
@@ -223,12 +240,91 @@ Wires are something very important in verilog, use of wires in Verilog is for wh
 \insertverilog{./verilog_files/andGate4.v}{andGate4-wire}{\text{Use of wires to connect output of one module to input of another}}
 
 
-\subsection*{Registers}
-\subsection*{Always Block} 
-\subsection*{If and Case Statement}
+\subsection*{Operators}
+Verilog supports wide range of operators to represent mathematical operations, these are high level representation of what would be converted to gate level implementation later by and HDL compiler.
 
+\begin{table}[h]
+  \begin{center}
+    \label{Table:operators-table}
+    \caption{List of common operators used in Verilog}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabularx}{.8\textwidth}{|X|X|X|} 
+      \hline
+      \rowcolor{greatblue}
+      \color{white}  Operator & \color{white}Description & \color{white}Functional Group \\
+      %  \colorrows{\color{black}} 
+      \hline
+      \text{[]} & bit select or part select &  \\
+      
+      \hline
+      \text{()} & parenthesis &  \\
+      
+      \hline
+      \text{!} & negation &  logical\\
+      \text{\textasciitilde} & negation &  bit\-wise\\
+      \text{\&} & reduction AND & reduction \\
+      \text{\textbar} & reduction OR & reduction \\
+      \text{\textasciitilde\&} & reduction NAND & reduction \\
+      \text{\textasciitilde\textbar} & reduction NOR & reduction \\
+      $^\wedge$ & reduction XOR & reduction \\
+      \textasciitilde$^\wedge$ or $^\wedge$\textasciitilde & reduction XNOR & reduction \\
+      \hline
+      $+$ & Unary Plus (plus sign) & airthmetic \\
+      $-$ & Unary minus (minus sign) & \\
+      \hline
+      $*$ & multiply & airthmetic \\
+      $/$ & divide &  \\
+      \% & modulus &  \\
+      \hline
+      $+$ & Binary Plus & airthmetic \\
+      $-$ & Binary minus &  \\
+      \hline
+      $<<$ & shift left & shift \\
+      $>>$ & shift right &  \\
+      \hline
+      $>$ & greater than & relational \\
+      $>=$  & greater than or equal to & \\
+      $<$ & less than  & \\
+      $<=$ & less than or equal to & \\
+      \hline  
+      $==$ & case equality & equality \\
+      $!=$  & case inequality & \\
+      \hline
+      \text{\&} & bitwise AND & bitwise \\
+      \text{\textbar} & bitwise OR & \\
+      \text{\textasciitilde} & bitwise XOR & \\
+      \hline
+    \end{tabularx}
+  \end{center}
+\end{table}
+
+\subsubsection*{Airthmetic Operators}
+Veriog allows use of various airthmetic operators to perform
+calculations on vectors (wires \& reg). Following example shows its
+usage:
+\insertverilog{./verilog_files/airthmeticOperators.v}{airthmetic-operators}{\text{Functioning of airthmetic operator}}
+
+\subsubsection*{Reduction Operators}
+Reduction operators in Verilog reduces a multibit number into a single
+bit by repeatedly performing a specified operation. Following example 
+explains its usage: 
+\insertverilog{./verilog_files/reductionOperators.v}{reduction-operators}{\text{Functioning of reduction operator}}
+ 
+\subsubsection*{Relational Operators}
+Relational operators in verilog are used to compare two values, usage
+of all four type of relational operators supported by Verilog are
+given in Listing \ref{relational-operators}.
+\insertverilog{./verilog_files/relationalOperators.v}{relational-operators}{\text{Functioning of relational operator}}
+  
+\subsubsection*{Logical Operators}
+Logical operators are used in conjuction with relational and equality
+to perform multiple comparisions within a single expression.
+Example usage of logical operators are provided in \ref{logical-operators}.
+\insertverilog{./verilog_files/logicalOperators.v}{logical-operators}{\text{Functioning of logical operator}}
+  
 \end{document}
 
 % References:
 % http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607%20labs/ee108a_nham_intro_to_verilog.pdf
 % Verilog HDL - Samir Palnitkar
+% https://www.utdallas.edu/~akshay.sridharan/index_files/Page5212.htm
