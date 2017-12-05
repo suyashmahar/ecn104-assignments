@@ -23,6 +23,8 @@
 \usepackage{tcolorbox}
 \usepackage{tabularx}
 \usepackage{accsupp}% http://ctan.org/pkg/accsupp
+
+
 \tcbuselibrary{listings,skins} % For lstlisting
 
 \geometry{total={210mm,297mm},
@@ -239,7 +241,18 @@ Wires are something very important in verilog, use of wires in Verilog is for wh
 
 \insertverilog{./verilog_files/andGate4.v}{andGate4-wire}{\text{Use of wires to connect output of one module to input of another}}
 
+\subsubsection*{Vectors}
+Verilog support declaration of wire to represent group of wires (or registers which will be explained later). Vectors are declared by specifying their type, range and then their name:
+\begin{center}
+  <type> <range> <name>;
+\end{center}
 
+Example declaration of 6 bit wide vector of type wire:
+\begin{center}
+  {\color{blue} wire} [{\color{orange}5}:{\color{orange}0}] new\_wire; {\color{vgreen}// Both the range specifier digits are inclusive}
+\end{center}
+
+Here new\_wire[{\color{orange}5}] is MSB while new\_wire[{\color{orange}0}] is LSB.
 \subsection*{Operators}
 Verilog supports wide range of operators to represent mathematical operations, these are high level representation of what would be converted to gate level implementation later by and HDL compiler.
 
@@ -321,10 +334,28 @@ Logical operators are used in conjuction with relational and equality
 to perform multiple comparisions within a single expression.
 Example usage of logical operators are provided in \ref{logical-operators}.
 \insertverilog{./verilog_files/logicalOperators.v}{logical-operators}{\text{Functioning of logical operator}}
-  
-\end{document}
 
-% References:
-% http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607%20labs/ee108a_nham_intro_to_verilog.pdf
-% Verilog HDL - Samir Palnitkar
-% https://www.utdallas.edu/~akshay.sridharan/index_files/Page5212.htm
+\subsubsection*{Bitwise and Shift Operators}
+Verilog Bitwise and Shift operators works in the same way as they work
+in Java, except that in Verilog only left shift ($<<$) and right shift
+($>>$) are supported.
+
+\section*{Problems}
+\subsection*{Problem 1:}
+Design a 16 input AND gate using Verilog reduction operator where input to the module will be a vector of length 16 and will have a single output.
+\subsection*{Problem 2:}
+Design a 4 input AND gate using Verilog reduction operator where input to the module will be a vector of length 4 and will have a single output.
+\subsection*{Problem 3:}
+Design a 4 input AND gate using Verilog reduction operator where input to the module will be a vector of length 4 and will have a single output.
+\subsection*{Problem 4:}
+Design a 4 input AND gate using Verilog reduction operator where input to the module will be a vector of length 4 and will have a single output.
+
+\section*{References}
+\begin{itemize}
+  \item http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607\%20labs/ee108a\_nham\_intro\_to\_verilog.pdf
+  \item Verilog HDL \- Samir Palnitkar
+  \item https://www.utdallas.edu/\~akshay.sridharan/index\_files/Page5212.htm
+\end{itemize}
+
+
+\end{document}
