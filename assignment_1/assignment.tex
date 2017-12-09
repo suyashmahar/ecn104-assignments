@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{xcolor, colortbl}
 \usepackage{caption}
+\usepackage{hyperref}
 \usepackage{listings}
 \usepackage{wrapfig} 
 \usepackage{tabu} % For coloring single row of table
@@ -254,7 +255,7 @@ Example declaration of 6 bit wide vector of type wire:
 
 Here new\_wire[{\color{orange}5}] is MSB while new\_wire[{\color{orange}0}] is LSB.
 \subsection*{Operators}
-Verilog supports wide range of operators to represent mathematical operations, these are high level representation of what would be converted to gate level implementation later by and HDL compiler.
+Verilog supports wide range of operators to represent mathematical operations, these are high level representation of what would be converted to gate level implementation later by the HDL compiler.
 
 \begin{table}[h]
   \begin{center}
@@ -332,7 +333,7 @@ given in Listing \ref{relational-operators}.
 \subsubsection*{Logical Operators}
 Logical operators are used in conjuction with relational and equality
 to perform multiple comparisions within a single expression.
-Example usage of logical operators are provided in \ref{logical-operators}.
+Example usage of logical operators are provided in listing  \ref{logical-operators}.
 \insertverilog{./verilog_files/logicalOperators.v}{logical-operators}{\text{Functioning of logical operator}}
 
 \subsubsection*{Bitwise and Shift Operators}
@@ -358,9 +359,9 @@ Make a module for 2 input NAND gate. Now, make a 2 input And gate by connecting 
 
 \section*{References}
 \begin{itemize}
-  \item http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607\%20labs/ee108a\_nham\_intro\_to\_verilog.pdf
+  \item \url{http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607\%20labs/ee108a\_nham\_intro\_to\_verilog.pdf}
   \item Verilog HDL \- Samir Palnitkar
-  \item https://www.utdallas.edu/\~akshay.sridharan/index\_files/Page5212.htm
+  \item \url{https://www.utdallas.edu/\~akshay.sridharan/index\_files/Page5212.htm}
 \end{itemize}
 
 
