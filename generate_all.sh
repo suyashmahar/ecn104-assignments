@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 for f in $(find . -name '*.tex'); do
     a=$("pwd");
     DEST_DIR=$(dirname "${f}")
