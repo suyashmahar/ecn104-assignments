@@ -8,6 +8,7 @@
 \usepackage{listings}
 \usepackage{wrapfig} 
 \usepackage{tabu} % For coloring single row of table
+\usepackage{scrextend}
 
 \renewcommand\familydefault{\sfdefault} 
 \usepackage{tgheros}
@@ -36,8 +37,6 @@ bindingoffset=0mm, top=20mm,bottom=20mm}
 \def\zapcolorreset{\let\reset@color\relax\ignorespaces}
 \def\colorrows#1{\noalign{\aftergroup\zapcolorreset#1}\ignorespaces}
 
-%\linespread{1.3}
-
 \newcommand{\linia}{\rule{\linewidth}{0.5pt}}
 \newcommand{\ano}{\text{1}}
 
@@ -57,11 +56,10 @@ bindingoffset=0mm, top=20mm,bottom=20mm}
 {\huge \textsc{\@title}}
 \vspace{1ex}
 \\
-ECN 104  - Digital Logic Design \\
 Department of Electronics and Communication Engineering \\
 Indian Institute of Technology, Roorkee
 \linia\\
-\@author \hfill \@date
+ECN 104 \hfill Digital Logic Design
 \vspace{4ex}
 \end{center}
 }
@@ -137,6 +135,24 @@ Indian Institute of Technology, Roorkee
 \newcommand{
   \insertverilog}[3]{
   \lstinputlisting[label=#2, caption=#3, style={verilog-style}]{#1}
+}
+
+% Command for problem
+\newcounter{problemNumber}
+\setcounter{problemNumber}{1}
+\newcommand {
+  \insertProblem}[1]{
+  \vspace{0.5cm}
+  \hrule
+  \vspace{0.3cm}
+
+  {\color{greatblue}\textbf{\large{Problem \theproblemNumber}}}
+  \vspace{2pt}\\#1
+
+  \addtocounter{problemNumber}{1}
+  \vspace{0.2cm}
+  \hrule  
+  \vspace{0.5cm}
 }
 
 
@@ -317,12 +333,21 @@ calculations on vectors (wires \& reg). Following example shows its
 usage:
 \insertverilog{./verilog_files/airthmeticOperators.v}{airthmetic-operators}{\text{Functioning of airthmetic operator}}
 
+\insertProblem{Hirerarichal design is often helpful in verifying large project easily by verifying each individual module seperately. Make a module for 2 input NAND gate. Now, make a 2 input And gate by connecting both the input of NAND gate to another NAND gate. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output.}
+
+
 \subsubsection*{Reduction Operators}
 Reduction operators in Verilog reduces a multibit number into a single
 bit by repeatedly performing a specified operation. Following example 
 explains its usage: 
 \insertverilog{./verilog_files/reductionOperators.v}{reduction-operators}{\text{Functioning of reduction operator}}
- 
+
+\insertProblem {
+  Reduction operators are often used when some computation has to be performed on complete signal, particular example of which is calculating XOR of a signal to get its parity. Even parity bit of a signal is 1 if signal has odd number of 1 and 0 if number of 1s is even, similarily odd parity bit of number is 1 if signal has even number of 1 and 0 if number of 1s is odd.
+
+  Write a Verilog module which uses reduction operator, takes a 32bit vector as input named \textsc{signal}, two single bit output named \textsc{parityEven} and \textsc{parityOdd}. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. (\textit{Hint: Calculating XOR of all bits of a signal gives even parity bit of a signal.})
+}
+
 \subsubsection*{Relational Operators}
 Relational operators in verilog are used to compare two values, usage
 of all four type of relational operators supported by Verilog are
@@ -340,26 +365,17 @@ Verilog Bitwise and Shift operators works in the same way as they work
 in Java, except that in Verilog only left shift ($<<$) and right shift
 ($>>$) are supported.
 
-\section*{Problems}
-\subsection*{Problem 1:}
-Design a 16 input AND gate using Verilog reduction operator where input to the module will be a vector of length 16 and will have a single output.
-Use the code in Listing \ref{question1}. 
-\insertverilog{./verilog_files/question1.v}{question1}{\text{Question 1}}
-
-\subsection*{Problem 2:}
-Design a 4 input AND gate using Verilog reduction operator where input to the module will be a vector of length 4 and will have a single output.
-\subsection*{Problem 3:}
-Design a 4 input AND gate using Verilog reduction operator where input to the module will be a vector of length 4 and will have a single output.
-\subsection*{Problem 4:}
-Design a 4 input AND gate using Verilog reduction operator where input to the module will be a vector of length 4 and will have a single output.
-\subsection*{Problem 5:}
-Make a module for 2 input NAND gate. Now, make a 2 input And gate by connecting both the input of NAND gate to another NAND gate.
+\insertProblem {
+  Write a module that multiplies a number by 3 using cascaded shift operations.
+  
+  Write a Verilog module which does something. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. (\textit{Hint: Assume the input is such that output doesn't overflows.})
+}
 
 
 \section*{References}
 \begin{itemize}
   \item http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607\%20labs/ee108a\_nham\_intro\_to\_verilog.pdf
-  \item Verilog HDL \- Samir Palnitkar
+  \item Verilog HDL by Samir Palnitkar
   \item https://www.utdallas.edu/\~akshay.sridharan/index\_files/Page5212.htm
 \end{itemize}
 
