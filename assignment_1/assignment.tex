@@ -195,23 +195,23 @@ As a begininer we are going to describe and simulate simple combinational circui
 
 \section*{Design Flow}  
 
-\begin{figure}[!t] \centering 
+\begin{figure}[h] \centering 
   \includegraphics[width=\linewidth]{./resources/hdl_design_flow.pdf}
-  \caption{Example binary search tree constructed using names from Table \ref{Table:ndn_name_table} with insertion order and output port information.}
+  \caption{Basic design flow of a design from its inception to implemenation.}
   \label{Fig:bst_sample_names}
 \end{figure} 
 
 \section*{Verilog Syntax}
 \subsection*{Modules}
-Module is the basic building block in Verilog, modules helps in organizing and structuring designs in logical and human readable form. Module can be considered as analogus to functions in programming languages.
+Module is the basic building block in Verilog, modules helps in organizing and structuring designs in logical and human readable form. Module can be considered as analogus to functions in programming languages. Basic structure of Verilog module is given in Listing \ref{sample-module-bare} 
 
-\insertverilog{./verilog_files/module.v}{sample-module}{\text{Sample module indicating its structure}}
+\insertverilog{./verilog_files/module.v}{sample-module-bare}{\text{Sample module indicating its structure}}
 
-An example of AND gate would be
-\insertverilog{./verilog_files/andGate.v}{sample-module}{\text{Illustrative AND gate module}}
+An example of AND gate is given in Listing \ref{and-gate-module-sample}
+\insertverilog{./verilog_files/andGate.v}{and-gate-module-sample}{\text{Illustrative AND gate module}}
 
 \subsection*{Instantiating modules}
-The process of creating objects of modules is called instatiation in Verilog. Modules are a
+The process of creating objects of modules is called instatiation in Verilog. Modules are like blueprints and instatiating them are constructing a building using blueprints.
   
 \insertverilog{./verilog_files/AndGate3.v}{sample-module}{\text{Illustrative AND gate module}} 
 \subsection*{Comments}
@@ -269,6 +269,23 @@ Example declaration of 6 bit wide vector of type wire:
 \end{center}
 
 Here new\_wire[{\color{orange}5}] is MSB while new\_wire[{\color{orange}0}] is LSB.
+
+\subsubsection*{Part Select}
+What if you wanted to access $2^{nd}$, $3^{rd}$ and $4^{th}$ elements of a vector, here is when part select of verilog will help. Part select in Verilog allows to extraction of a smaller vector from an exiting vector.\\ 
+\vspace{0.2cm}\\
+Example:
+\insertverilog{./verilog_files/bitExtract.v}{bit-extract}{\text{Using bit extract to extract lower, higher and middle 16 bits from a 32 bit input}}
+
+\begin{figure}[!h] \centering  
+  \includegraphics[width=0.45\linewidth]{./resources/shiftUsingWires_representation.pdf}
+  \caption{A shift right by 3 element design for bus width of 6.} 
+  \label{Fig:shiftUsingWires-representation}
+\end{figure}
+\insertProblem{ Shift operation is one of the important operation in a digital system, various different designs exists for performing shift of arbitrary amount within a range, but a fixed amount shifter (e.g. a shift by 5 element) are extremely easy to implement. This is done by moving connections from input to output along the desired direction by the desired amount. An example of which is given in Fig. \ref{Fig:shiftUsingWires-representation} 
+
+  Write a Verilog module which uses part select, takes a 32bit vector as input named \textsc{inputSignal} and outputs a 32bit vector \textsc{result} which is shifted by 5 towards left. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. (\textit{Hint: Similar to part select Verilog supports part assign which allows assiging values to a part of a vector})}
+%
+
 \subsection*{Operators}
 Verilog supports wide range of operators to represent mathematical operations, these are high level representation of what would be converted to gate level implementation later by and HDL compiler.
 
@@ -362,22 +379,27 @@ Example usage of logical operators are provided in \ref{logical-operators}.
 
 \subsubsection*{Bitwise and Shift Operators}
 Verilog Bitwise and Shift operators works in the same way as they work
-in Java, except that in Verilog only left shift ($<<$) and right shift
-($>>$) are supported.
+in Java, except that in Verilog only left shift (\textbf{$<<$}) and right shift
+(\textbf{$>>$}) are supported.
+
+\begin{figure}[!h] \centering  
+  \includegraphics[width=0.9\linewidth]{./resources/shift_and_add_representation.pdf}
+  \caption{RTL schematic for Problem 4. \textbf{Note:} This is representative RTL schematic, solution to the problem will have fixed number of shift and add blocks.} 
+  \label{Fig:problem-4-RTL} 
+\end{figure}    
 
 \insertProblem {
-  Write a module that multiplies a number by 3 using cascaded shift operations.
+  Multiplying using digital logic is a challenging task, one very intuitive approach is to use `shift-and-add approach'; in this method two binary numbers are multiplied by shifting one and adding to other. This is repeated till the desired multiplication is obtained. This approach is described here: \begin{center}https://en.wikipedia.org/wiki/Binary\_multiplier\#Multiplication\_basics\end{center} 
   
-  Write a Verilog module which does something. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. (\textit{Hint: Assume the input is such that output doesn't overflows.})
+    Write a module for multiply a 32 bit by 10 without using multiply operator, assume the input is such that output doesn't overflows. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. RTL schematic of your module should resemble Fig. \ref{Fig:problem-4-RTL}.
 }
-
 
 \section*{References}
 \begin{itemize}
+  \small 
   \item http://cva.stanford.edu/people/davidbbs/classes/ee108a/winter0607\%20labs/ee108a\_nham\_intro\_to\_verilog.pdf
-  \item Verilog HDL by Samir Palnitkar
-  \item https://www.utdallas.edu/\~akshay.sridharan/index\_files/Page5212.htm
+  \item Verilog HDL: A Guide to Digital Design and Synthesis, Second Edition. By Samir Palnitkar. Publisher: Prentice Hall PTR. Pub Date: February 21, 2003. ISBN: 0-13-044911-3
+  \item https://www.utdallas.edu/{\textasciitilde}akshay.sridharan/index\_files/Page5212.htm
 \end{itemize}
-
-
 \end{document}
+
