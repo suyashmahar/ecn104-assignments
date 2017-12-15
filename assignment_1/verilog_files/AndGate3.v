@@ -14,6 +14,9 @@
 
   // Define a module AndGate2 which is a 2-input AND gate.
   module AndGate2(input1, input2, result);
+     input input1, input2;
+     output result;
+      
      // Assignment would be explained later
      assign result = input1 & input2;
   endmodule
