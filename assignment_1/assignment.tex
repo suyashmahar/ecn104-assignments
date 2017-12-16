@@ -182,28 +182,30 @@ ECN 104 \hfill Digital Logic Design
 \maketitle
 
 \section*{Hardware Description Languages}
-Hardware description language (HDL) is a convienient, device and technology independent way of representing digital logic. HDLs are helpful describing, simulating and verifying digital circuits.
+A hardware description language (HDL) is a convenient, device and technology independent way of representing digital logic. HDLs are helpful describing, simulating and verifying digital circuits.
 
 \subsection*{Why not use C/C++, Java...?} 
-C/C++, Java are programming languages which are very good at what they were designed for, that is programming. However describing digital circuits in programming language is difficult and often confusing, which led to development of HDLs.
+C/C++, Java etc. are programming languages which are very good at what they were designed for, that is programming. However, describing digital circuits in a programming language is difficult and often confusing as it needs more specifications on 'How To' alongside 'What To'.
+
+For example, let's say you want to add 4 1-bit numbers. Now, if you were programming in C/C++, you would have simply written RESULT=a+b+c+d and left the rest to your compiler. But when implementing this logic on hardware, there are more than one ways to do it. You can either cascade three adders or make an adder-tree using three adders. Now both of these implementations have different delays and thus you must have the freedom to decide which one to use. No doubt you could achieve whichever implementation you want by writing some extra lines of C++ to specify exactly what you want, but, as the problem complexity grows, this extra effort to exactly specify what we want grows drastically. This led to development of HDLs where WYWIWYG(What You Write Is What You Get). NOTE: Although this may not be the case if you are lazy and leave ambiguity in your HDL code leaving it to the synthesizing software to decide upon. 
 
 \subsection*{Which HDL to use?}
-Today many Hardware description languages are available, each of them are different from each other in terms of functionality, semantic and grammar. In this course however we will be using Verilog  2001.
+Many hardware description languages are available today. Each of them is different from the other in terms of functionality, semantics and grammar. In this course however, we will stick to Verilog  2001.
 
 \section*{Using Verilog 2001}
-As a begininer we are going to describe and simulate simple combinational circuit with Verilog.
+As a beginner, we are going to describe and simulate simple combinational circuits with Verilog.
 
 \section*{Design Flow}  
 
 \begin{figure}[h] \centering 
   \includegraphics[width=\linewidth]{./resources/hdl_design_flow.pdf}
-  \caption{Basic design flow of a design from its inception to implemenation.}
+  \caption{Basic design flow of a design from its inception to implementation.}
   \label{Fig:bst_sample_names}
 \end{figure} 
 
 \section*{Verilog Syntax}
 \subsection*{Modules}
-Module is the basic building block in Verilog, modules helps in organizing and structuring designs in logical and human readable form. Module can be considered as analogus to functions in programming languages. Basic structure of Verilog module is given in Listing \ref{sample-module-bare} 
+Module, the basic building block in Verilog, helps in organizing and structuring designs in logical and human readable form. A module can be considered as analogous to functions in programming languages(NOT EXACTLY though. Functions, by definition, act in BATCH MODE i.e, you give them inputs and get output after sometime. Batch mode here means before getting the output once, you can't send in new inputs. But in HDL, you may write PIPELINED modules. Pipelining can be understood by the working of a car assembly line. The job is divided into smaller sections. Now while a car is being painted, some other cars may be in the welding and testing sections. This naturally leads to faster production of cars if the company has a large order.) Basic structure of a Verilog module is given in Listing \ref{sample-module-bare} 
 
 \insertverilog{./verilog_files/module.v}{sample-module-bare}{\text{Sample module indicating its structure}}
 
@@ -211,24 +213,24 @@ An example of AND gate is given in Listing \ref{and-gate-module-sample}
 \insertverilog{./verilog_files/andGate.v}{and-gate-module-sample}{\text{Illustrative AND gate module}}
 
 \subsection*{Instantiating modules}
-The process of creating objects of modules is called instatiation in Verilog. Modules are like blueprints and instatiating them are constructing a building using blueprints.
+The process of creating objects of modules is called instantiation in Verilog. Modules are like blueprints and instantiating them means constructing hardware using the blueprints.
   
 \insertverilog{./verilog_files/AndGate3.v}{sample-module}{\text{Illustrative AND gate module}} 
 \subsection*{Comments}
-Comments in verilog are of two kinds:
+Comments in Verilog are of two kinds:
 \subsubsection*{Single Line Comment}
-Two forward slashes represents begining of a single line comment in verilog, any charater after the two forward slashes will be ignored by verilog compiler until the end of line.
+Two forward slashes represents begining of a single line comment in Verilog, anything in a line after those two characters will ignored by the compiler
 \insertverilog{./verilog_files/singleLineComment.v}{single-line-comment}{\text{Single line comment}} 
 
 \subsubsection*{Block Comment}
-Block comments in verilog are used to comment more than one line, the start with `/*' and ends with `*/'. Anything between these two character sequence is ignored by the compiler.
+Block comments in verilog are used to comment a block of code, they start with `/*' and ends with `*/'. Anything between these two character sequences will be ignored by the compiler.
 \insertverilog{./verilog_files/blockComment.v}{block-comment}{\text{Block
     comment}}
 
 \subsection*{Numerical Literals}
 \subsubsection*{Sized Numbers}
 To represent digital circuits accurately Verilog allows defining
-numbers of fixed size. These numbers have following format:
+numbers of fixed size. These numbers have the following format:
 \begin{center}
   <size>'<character for base><number>
 \end{center}
@@ -238,11 +240,11 @@ For example:
  
 \subsubsection*{Unisized Numbers}
 Verilog also includes support for unsized numbers. These numbers are
-assumed to be of a particular size depending upon the
+assumed to be of a particular size depending on the
 compiler/machine.
 
 \subsection*{Constants}
-Global constants can be decalered in Verilog. When Verilog code is processed all these constants will be replaced by their respective values. NOTE: Verilog constants always starts with backtick ` ${}^{\backprime}$ '. 
+Global constants can be declared in Verilog. When Verilog code is processed all these constants will be replaced by their respective values. NOTE: Verilog constants always starts with backtick ` ${}^{\backprime}$ '. 
 \insertverilog{./verilog_files/constants.v}{constants}{\text{Declaration and use of constants}}
 
 \subsection*{Wires}
@@ -253,12 +255,12 @@ Global constants can be decalered in Verilog. When Verilog code is processed all
   \label{Fig:andGate4-representation}
 \end{figure}
 
-Wires are something very important in verilog, use of wires in Verilog is for what wires are used in real life ... to connect two things electrically! Wires will be used extensively in future assignments to connect two modules, registers and even wires together. This concept is explained using Listing \ref{constants} where wires are used to connect output of two 2-input AND gates to inputs of single 2-input AND gates. Gate level diagram of which is shown in Fig. \ref{Fig:andGate4-representation}.
+Wires are something very important in verilog. Use of wires in Verilog is for what wires are used in real life ... to connect two things electrically! Wires will be used extensively in future assignments to connect two modules, registers and even wires together. This concept is explained using Listing \ref{constants} where wires are used to connect the output of two 2-input AND gates to inputs of single 2-input AND gates. Gate level diagram of which is shown in Fig. \ref{Fig:andGate4-representation}.
 
 \insertverilog{./verilog_files/andGate4.v}{andGate4-wire}{\text{Use of wires to connect output of one module to input of another}}
 
 \subsubsection*{Vectors}
-Verilog support declaration of wire to represent group of wires (or registers which will be explained later). Vectors are declared by specifying their type, range and then their name:
+Verilog supports declaration of vectors to represent a group of wires (or registers which will be explained later). Vectors are declared by specifying their type, range and then their name:
 \begin{center}
   <type> <range> <name>;
 \end{center}
@@ -271,7 +273,7 @@ Example declaration of 6 bit wide vector of type wire:
 Here new\_wire[{\color{orange}5}] is MSB while new\_wire[{\color{orange}0}] is LSB.
 
 \subsubsection*{Part Select}
-What if you wanted to access $2^{nd}$, $3^{rd}$ and $4^{th}$ elements of a vector, here is when part select of verilog will help. Part select in Verilog allows to extraction of a smaller vector from an exiting vector.\\ 
+What if you wanted to access $2^{nd}$, $3^{rd}$ and $4^{th}$ elements of a vector? This is when part select of verilog will help. Part select in Verilog allows extraction of a smaller vector from an existing vector.\\ 
 \vspace{0.2cm}\\
 Example:
 \insertverilog{./verilog_files/bitExtract.v}{bit-extract}{\text{Using bit extract to extract lower, higher and middle 16 bits from a 32 bit input}}
@@ -281,13 +283,13 @@ Example:
   \caption{A shift right by 3 element design for bus width of 6.} 
   \label{Fig:shiftUsingWires-representation}
 \end{figure}
-\insertProblem{ Shift operation is one of the important operation in a digital system, various different designs exists for performing shift of arbitrary amount within a range, but a fixed amount shifter (e.g. a shift by 5 element) are extremely easy to implement. This is done by moving connections from input to output along the desired direction by the desired amount. An example of which is given in Fig. \ref{Fig:shiftUsingWires-representation} 
+\insertProblem{ Shift operation is one of the important operation in a digital system. Various different designs exist for performing shifts of arbitrary amount within a range(Search the internet for Barrel Shifters for one implementation). But, a fixed amount shifter (e.g. a shift by 5 element) is extremely easy to implement. This is done by moving connections from input to output along the desired direction by the desired amount. An example of which is given in Fig. \ref{Fig:shiftUsingWires-representation} 
 
-  Write a Verilog module which uses part select, takes a 32bit vector as input named \textsc{inputSignal} and outputs a 32bit vector \textsc{result} which is shifted by 5 towards left. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. (\textit{Hint: Similar to part select Verilog supports part assign which allows assiging values to a part of a vector})}
+  Write a Verilog module which uses part select, takes a 32bit vector as input named \textsc{inputSignal} and outputs a 32bit vector \textsc{result} which is simply inputSignal shifted by 5 towards left. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify the output. (\textit{Hint: Similar to part select, Verilog supports part assign which allows assigning values to a part of a vector})}
 %
 
 \subsection*{Operators}
-Verilog supports wide range of operators to represent mathematical operations, these are high level representation of what would be converted to gate level implementation later by and HDL compiler.
+Verilog supports a wide range of operators to represent mathematical operations. These are high level representation of what later would be converted to a gate level implementation by your HDL compiler.
 
 \begin{table}[h]
   \begin{center}
@@ -350,19 +352,19 @@ calculations on vectors (wires \& reg). Following example shows its
 usage:
 \insertverilog{./verilog_files/airthmeticOperators.v}{airthmetic-operators}{\text{Functioning of airthmetic operator}}
 
-\insertProblem{Hirerarichal design is often helpful in verifying large project easily by verifying each individual module seperately. Make a module for 2 input NAND gate. Now, make a 2 input And gate by connecting both the input of NAND gate to another NAND gate. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output.}
+\insertProblem{Hirerarichal design is often helpful in verifying large project easily by verifying each individual module seperately. Make a module for 2 input NAND gate. Now, make a 2 input And gate by connecting both the input of NAND gate to another NAND gate. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify the output.}
 
 
 \subsubsection*{Reduction Operators}
-Reduction operators in Verilog reduces a multibit number into a single
+Reduction operators in Verilog reduces a vector into a single
 bit by repeatedly performing a specified operation. Following example 
 explains its usage: 
 \insertverilog{./verilog_files/reductionOperators.v}{reduction-operators}{\text{Functioning of reduction operator}}
 
 \insertProblem {
-  Reduction operators are often used when some computation has to be performed on complete signal, particular example of which is calculating XOR of a signal to get its parity. Even parity bit of a signal is 1 if signal has odd number of 1 and 0 if number of 1s is even, similarily odd parity bit of number is 1 if signal has even number of 1 and 0 if number of 1s is odd.
+  Reduction operators are often used when some computation has to be performed on complete signal, particular example of which is calculating XOR of a signal to get its parity bit. Even parity bit of a signal is 1 if signal has odd number of 1 and 0 if number of 1s is even, similarily odd parity bit of number is 1 if signal has even number of 1 and 0 if number of 1s is odd.
 
-  Write a Verilog module which uses reduction operator, takes a 32bit vector as input named \textsc{signal}, two single bit output named \textsc{parityEven} and \textsc{parityOdd}. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. (\textit{Hint: Calculating XOR of all bits of a signal gives even parity bit of a signal.})
+  Write a Verilog module which uses reduction operator, takes a 32bit vector as input named \textsc{signal}, two single bit output named \textsc{parityEven} and \textsc{parityOdd}. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. (\textit{Hint: Calculating XOR of all bits of a signal gives even parity of the signal.})
 }
 
 \subsubsection*{Relational Operators}
@@ -380,7 +382,7 @@ Example usage of logical operators are provided in \ref{logical-operators}.
 \subsubsection*{Bitwise and Shift Operators}
 Verilog Bitwise and Shift operators works in the same way as they work
 in Java, except that in Verilog only left shift (\textbf{$<<$}) and right shift
-(\textbf{$>>$}) are supported.
+(\textbf{$>>$}) are supported.(There is an arithmetic right shift operator too which can be searched on the internet for details!)
 
 \begin{figure}[!h] \centering  
   \includegraphics[width=0.9\linewidth]{./resources/shift_and_add_representation.pdf}
@@ -389,9 +391,9 @@ in Java, except that in Verilog only left shift (\textbf{$<<$}) and right shift
 \end{figure}    
 
 \insertProblem {
-  Multiplying using digital logic is a challenging task, one very intuitive approach is to use `shift-and-add approach'; in this method two binary numbers are multiplied by shifting one and adding to other. This is repeated till the desired multiplication is obtained. This approach is described here: \begin{center}https://en.wikipedia.org/wiki/Binary\_multiplier\#Multiplication\_basics\end{center} 
+  Multiplying using digital logic is a challenging task, one very intuitive approach is to use `shift-and-add approach'; in this method, two binary numbers are multiplied by shifting one and adding to other. This is repeated till the desired multiplication is obtained. This approach is described here: \begin{center}https://en.wikipedia.org/wiki/Binary\_multiplier\#Multiplication\_basics\end{center} 
   
-    Write a module for multiply a 32 bit by 10 without using multiply operator, assume the input is such that output doesn't overflows. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. RTL schematic of your module should resemble Fig. \ref{Fig:problem-4-RTL}.
+    Write a module for multiplying a 32-bit binary number by 10(4'b1010 in binary) without using the multiply operator. Assume the input is such that output doesn't overflow. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. RTL schematic of your module should resemble Fig. \ref{Fig:problem-4-RTL}.
 }
 
 \section*{References}
