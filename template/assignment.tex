@@ -1,16 +1,16 @@
-% ECN102 - Digital Logic Design Assignment template
-% Last modified: 28 November 2017
-
-\documentclass[a4paper,11pt]{article}
-
+\documentclass[a4paper,10pt]{article}
+ 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
-\usepackage{xcolor}
+\usepackage{xcolor, colortbl}
 \usepackage{caption}
 \usepackage{listings}
+\usepackage{wrapfig} 
+\usepackage{tabu} % For coloring single row of table
+\usepackage{scrextend}
 
-\renewcommand\familydefault{\sfdefault}
+\renewcommand\familydefault{\sfdefault} 
 \usepackage{tgheros}
 \usepackage[defaultmono]{droidmono}
 
@@ -22,19 +22,31 @@
 \usepackage{geometry}
 \usepackage{trace}
 \usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{accsupp}% http://ctan.org/pkg/accsupp
+
+
 \tcbuselibrary{listings,skins} % For lstlisting
 
 \geometry{total={210mm,297mm},
 left=25mm,right=25mm,%
 bindingoffset=0mm, top=20mm,bottom=20mm}
 
-%%%--------%%%--------%%%--------%%%--------%%%
 
-% Declare new commands
+% For coloring single row in table
+\def\zapcolorreset{\let\reset@color\relax\ignorespaces}
+\def\colorrows#1{\noalign{\aftergroup\zapcolorreset#1}\ignorespaces}
+
 \newcommand{\linia}{\rule{\linewidth}{0.5pt}}
-\newcommand{\ano}{\text{1}} % <---- Set assignment number here 
+\newcommand{\ano}{\text{0}}
 
-%%%--------%%%--------%%%--------%%%--------%%%
+% custom theorems if needed
+\newtheoremstyle{mytheor}
+    {1ex}{1ex}{\normalfont}{0pt}{\scshape}{.}{1ex}
+    {{\thmname{#1 }}{\thmnumber{#2}}{\thmnote{ (#3)}}}
+
+\theoremstyle{mytheor}
+\newtheorem{defi}{Definition}
 
 % my own titles
 \makeatletter
@@ -44,39 +56,33 @@ bindingoffset=0mm, top=20mm,bottom=20mm}
 {\huge \textsc{\@title}}
 \vspace{1ex}
 \\
-ECN 102 - Digital Logic Design \\
 Department of Electronics and Communication Engineering \\
 Indian Institute of Technology, Roorkee
 \linia\\
-\@author \hfill \@date
+ECN 104 \hfill Digital Logic Design
 \vspace{4ex}
 \end{center}
 }
 \makeatother
+%%%
 
-%%%--------%%%--------%%%--------%%%--------%%%
 % custom footers and headers
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 \lhead{}
 \chead{}
 \rhead{}
-\lfoot{Assignment \ano - Introduction to Verilog}
+\lfoot{Assignment \ano\ - Template}
 \cfoot{}
 \rfoot{Page \thepage}
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
+%
 
-%%%--------%%%--------%%%--------%%%--------%%%
-% Define colors for theming
 \definecolor{vgreen}{RGB}{104,180,104}
 \definecolor{vblue}{RGB}{49,49,255}
 \definecolor{vorange}{RGB}{255,143,102}
-\definecolor{codebg}{RGB}{250,250,240} 
-\definecolor{greatblue}{RGB}{91,155,215} 
 
-%%%--------%%%--------%%%--------%%%--------%%%
-% Setup Verilog code highlighting
 \makeatletter
 \newcommand*\@lbracket{[}
 \newcommand*\@rbracket{]}
@@ -91,76 +97,164 @@ Indian Institute of Technology, Roorkee
 }
 \makeatother
 
+\definecolor{codebg}{RGB}{250,250,240} 
+\definecolor{greatblue}{RGB}{91,155,215} 
+
 % Set up caption and labels for lstlistings
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{\colorbox{greatblue}{\parbox{\textwidth}{\hspace{1cm}#1#2#3}}}
 \captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
 
+\renewcommand{\thelstnumber}{% Line number printing mechanism
+  \protect\BeginAccSupp{ActualText={}}\arabic{lstnumber}\protect\EndAccSupp{}%
+}
+
+\def\backtick{\char18} 
 \lstdefinestyle{verilog-style}
 {
-    columns=fullflexible,
+    %columns=fullflexible, 
     language=Verilog,
     basicstyle=\small\ttfamily,
     keywordstyle=\color{vblue},
     identifierstyle=\color{black},
     commentstyle=\color{vgreen},
-    numbers=left,
+    numbers=left, 
     numberstyle=\color{gray},  
     numbersep=10pt,
-%    tabsize=8,
     moredelim=*[s][\colorIndex]{[}{]},
-    literate=*{:}{:}1,
+    literate=*{:}{:}1, 
     backgroundcolor=\color{codebg},
     framexrightmargin=0.09cm, 
     framexleftmargin=-0.09cm,
     frame=trbl,
-%    framesep=10pt, 
-    framerule=0pt
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
 }
 
-% Command for inserting verilog code files
 \newcommand{
   \insertverilog}[3]{
   \lstinputlisting[label=#2, caption=#3, style={verilog-style}]{#1}
 }
+
+% Command for problem
+\newcounter{problemNumber}
+\setcounter{problemNumber}{1}
+\newcommand {
+  \insertProblem}[1]{
+  \vspace{0.5cm}
+  \hrule
+  \vspace{0.3cm}
+
+  {\color{greatblue}\textbf{\large{Problem \theproblemNumber}}}
+  \vspace{2pt}\\#1
+
+  \addtocounter{problemNumber}{1}
+  \vspace{0.2cm}
+  \hrule  
+  \vspace{0.5cm}
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating a resource box
+\newcommand{\resourcebox}[2]{
+  \fbox{%
+    \parbox{0.5\textwidth}{%
+      \text{#1}
+    }%
+  } 
+}
+
+
 %%%----------%%%----------%%%----------%%%----------%%%
 
+\makeatletter
+\def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
+\makeatother
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
 \begin{document}
-\title{Assignment \ano \\ Introduction to Verilog}
+
+\title{Assignment \ano \\ Template}
 
 \maketitle
 
-\section*{Section Title}
+\section*{Section}
 Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.
 
+Nullam eu ante vel est convallis dignissim.  Fusce suscipit, wisi nec facilisis facilisis, est dui fermentum leo, quis tempor ligula erat quis odio.  Nunc porta vulputate tellus.  Nunc rutrum turpis sed pede.  Sed bibendum.  Aliquam posuere.  Nunc aliquet, augue nec adipiscing interdum, lacus tellus malesuada massa, quis varius mi purus non odio.  Pellentesque condimentum, magna ut suscipit hendrerit, ipsum augue ornare nulla, non luctus diam neque sit amet urna.  Curabitur vulputate vestibulum lorem.  Fusce sagittis, libero non molestie mollis, magna orci ultrices dolor, at vulputate neque nulla lacinia eros.  Sed id ligula quis est convallis tempor.  Curabitur lacinia pulvinar nibh.  Nam a sapien.
+
+\subsection*{Sub Section} 
 Pellentesque dapibus suscipit ligula.  Donec posuere augue in quam.  Etiam vel tortor sodales tellus ultricies commodo.  Suspendisse potenti.  Aenean in sem ac leo mollis blandit.  Donec neque quam, dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.  Etiam laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.  Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.  Vestibulum convallis, lorem a tempus semper, dui dui euismod elit, vitae placerat urna tortor vitae lacus.  Nullam libero mauris, consequat quis, varius et, dictum id, arcu.  Mauris mollis tincidunt felis.  Aliquam feugiat tellus ut neque.  Nulla facilisis, risus a rhoncus fermentum, tellus tellus lacinia purus, et dictum nunc justo sit amet elit.
 
+\subsection*{Sub Section } 
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.
 
-%%%----------%%%----------%%%----------%%%----------%%%
-% Inserting verilog files  
-\insertverilog{./verilog_files/sampleVerilog.v}{sample-module}{\text{Illustrative AND gate module}} 
-
-\subsection*{Sub Section Title}
-Aliquam erat volutpat.  Nunc eleifend leo vitae magna.  In id erat non orci commodo lobortis.  Proin neque massa, cursus ut, gravida ut, lobortis eget, lacus.  Sed diam.  Praesent fermentum tempor tellus.  Nullam tempus.  Mauris ac felis vel velit tristique imperdiet.  Donec at pede.  Etiam vel neque nec dui dignissim bibendum.  Vivamus id enim.  Phasellus neque orci, porta a, aliquet quis, semper a, massa.  Phasellus purus.  Pellentesque tristique imperdiet tortor.  Nam euismod tellus id erat.
-
-
-\subsubsection*{Sub Sub Section Title}
-Pellentesque dapibus suscipit ligula.  Donec posuere augue in quam.  Etiam vel tortor sodales tellus ultricies commodo.  Suspendisse potenti.  Aenean in sem ac leo mollis blandit.  Donec neque quam, dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.  Etiam laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.  Integer placerat tristique nisl.  Praesent augue.  Fusce commodo.  Vestibulum convallis, lorem a tempus semper, dui dui euismod elit, vitae placerat urna tortor vitae lacus.  Nullam libero mauris, consequat quis, varius et, dictum id, arcu.  Mauris mollis tincidunt felis.  Aliquam feugiat tellus ut neque.  Nulla facilisis, risus a rhoncus fermentum, tellus tellus lacinia purus, et dictum nunc justo sit amet elit.
-
-
- 
-%%%----------%%%----------%%%----------%%%----------%%%
-% Inserting images and pdf
-\begin{figure}[!t] \centering 
-\includegraphics[width=\linewidth]{./resources/hdl_design_flow.pdf}
-  \caption{Example binary search tree constructed using names from Table \ref{Table:ndn_name_table} with insertion order and output port information.}
+\begin{figure}[h] \centering 
+  \includegraphics[width=\linewidth]{./resources/hdl_design_flow.pdf}
+  \caption{Basic design flow of a design from its inception to implementation.}
   \label{Fig:bst_sample_names}
 \end{figure}
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.
+\subsubsection*{Sub Sub Section}
+Nullam eu ante vel est convallis dignissim.  Fusce suscipit, wisi nec facilisis facilisis, est dui fermentum leo, quis tempor ligula erat quis odio.  Nunc porta vulputate tellus.  Nunc rutrum turpis sed pede.  Sed bibendum.  Aliquam posuere.  Nunc aliquet, augue nec adipiscing interdum, lacus tellus malesuada massa, quis varius mi purus non odio. 
+\subsubsection*{Sub Sub Section}
+Pellentesque dapibus suscipit ligula.  Donec posuere augue in quam.  Etiam vel tortor sodales tellus ultricies commodo.  Suspendisse potenti.  Aenean in sem ac leo mollis blandit.  Donec neque quam, dignissim in, mollis nec, sagittis eu, wisi.  Phasellus lacus.  Etiam laoreet quam sed arcu.  Phasellus at dui in ligula mollis ultricies.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.  Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.  Nulla posuere.  Donec vitae dolor.  Nullam tristique diam non turpis.  Cras placerat accumsan nulla.  Nullam rutrum.  Nam vestibulum accumsan nisl.
+\pagebreak
+\insertProblem{
+  Lorem ipsum dolor sit amet, consectetuer adipiscing elit.  Donec hendrerit tempor tellus.  Donec pretium posuere tellus.  Proin quam nisl, tincidunt et, mattis eget, convallis nec, purus.
+}
 
+\begin{table}[h]
+  \begin{center}
+    \label{Table:operators-table}
+    \caption{List of common operators used in Verilog}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabularx}{.8\textwidth}{|X|X|X|} 
+      \hline
+      \rowcolor{greatblue}
+      \color{white}  Operator & \color{white}Description & \color{white}Functional Group \\
+      %  \colorrows{\color{black}} 
+      \hline
+      \text{[]} & bit select or part select &  \\
+      
+      \hline
+      \text{()} & parenthesis &  \\
+      
+      \hline
+      \text{!} & negation &  logical\\
+      \text{\textasciitilde} & negation &  bit\-wise\\
+      \text{\&} & reduction AND & reduction \\
+      \text{\textbar} & reduction OR & reduction \\
+      \text{\textasciitilde\&} & reduction NAND & reduction \\
+      \text{\textasciitilde\textbar} & reduction NOR & reduction \\
+      $^\wedge$ & reduction XOR & reduction \\
+      \textasciitilde$^\wedge$ or $^\wedge$\textasciitilde & reduction XNOR & reduction \\
+      \hline
+      $+$ & Unary Plus (plus sign) & airthmetic \\
+      $-$ & Unary minus (minus sign) & \\
+      \hline
+      $*$ & multiply & airthmetic \\
+      $/$ & divide &  \\
+      \% & modulus &  \\
+      \hline
+      \text{\&} & bitwise AND & bitwise \\
+      \text{\textbar} & bitwise OR & \\
+      \text{\textasciitilde} & bitwise XOR & \\
+      \hline
+    \end{tabularx}
+  \end{center}
+\end{table}
 
+\section*{References}
+\begin{itemize}
+  \small 
+\item Nullam eu ante vel est convallis dignissim.  
+\item Aenean in sem ac leo mollis blandit.  
+\end{itemize}
 
 \end{document}
+
