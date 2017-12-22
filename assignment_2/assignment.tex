@@ -268,6 +268,21 @@ Continuous assignment in Verilog are used for data flow modelling, these assignm
 {\color{red}\textbf{Note:}} Verilog is concurrent language unlike programming languages such as C,C++ or Java. All the continuous assignments are evaluated at the same time. 
 \insertverilog{./verilog_files/continuousAssignment.v}{continuous-assignment}{Example usage of continuous assignment.}
 
+Continuous assigment in Verilog can also be done implicitly, which assigning value on declaration of a net (\lstinline[style=verilog-inline-style]{wire}). Implicit delcaration of Verilog is down as follows:
+\begin{lstlisting}[style=verilog-inline-style,xleftmargin=.25\textwidth]
+  wire new_wire = input1 & input2;
+\end{lstlisting}
+
+\subsubsection*{Assignment Delays}
+Similar to gate-level modelling, Verilog allows specifying delays in assignment to model real circuits. Assignment delay specify the delay between the change of LHS and RHS of a continuous assignment. Listing \ref{assignment-delay} shows example usage of assignment delay while Fig. \ref{assignment-delay-sim} shows simulation result of Listing \ref{assignment-delay}.
+
+\insertverilog{./verilog_files/assignmentDelay.v}{assignment-delay}{Using assignment delay in Verilog.}
+
+\begin{figure}[!h] \centering  
+  \includegraphics[width=0.8\linewidth]{./resources/assignmentDelay.png}
+  \caption{Simulation result for Listing \ref{assignment-delay}, output changes 15ns after the change in input.} 
+  \label{assignment-delay-sim}
+\end{figure}
 
 \section*{References}
 \begin{itemize}
