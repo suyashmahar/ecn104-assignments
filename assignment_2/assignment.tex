@@ -1,0 +1,281 @@
+\documentclass[a4paper,10pt]{article}
+ 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{xcolor, colortbl}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{wrapfig} 
+\usepackage{tabu} % For coloring single row of table
+\usepackage{scrextend}
+
+\renewcommand\familydefault{\sfdefault} 
+\usepackage{tgheros}
+\usepackage[defaultmono]{droidmono}
+
+\usepackage{amsmath,amssymb,amsthm,textcomp}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{tikz}
+
+\usepackage{geometry}
+\usepackage{trace}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{accsupp}% http://ctan.org/pkg/accsupp
+
+
+\tcbuselibrary{listings,skins} % For lstlisting
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,%
+bindingoffset=0mm, top=20mm,bottom=20mm}
+
+
+% For coloring single row in table
+\def\zapcolorreset{\let\reset@color\relax\ignorespaces}
+\def\colorrows#1{\noalign{\aftergroup\zapcolorreset#1}\ignorespaces}
+
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+\newcommand{\ano}{\text{2}}
+
+% custom theorems if needed
+\newtheoremstyle{mytheor}
+    {1ex}{1ex}{\normalfont}{0pt}{\scshape}{.}{1ex}
+    {{\thmname{#1 }}{\thmnumber{#2}}{\thmnote{ (#3)}}}
+
+\theoremstyle{mytheor}
+\newtheorem{defi}{Definition}
+
+%%% Declare title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\antitle}{\text{Verilog Modelling Techniques}}
+% my own titles
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{center}
+\vspace{2ex}
+{\huge \textsc{{{\large}Assignment - \ano}\vspace{0.1cm} \break \antitle}}
+\vspace{1ex}
+\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Department of Electronics and Communication Engineering \\
+Indian Institute of Technology, Roorkee
+\linia\\
+ECN 104 \hfill Digital Logic Design
+\vspace{4ex}
+\end{center}
+}
+\makeatother
+%%%
+
+% custom footers and headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{Assignment \ano\ - \antitle}
+\cfoot{}
+\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+%
+
+\definecolor{vgreen}{RGB}{104,180,104}
+\definecolor{vblue}{RGB}{49,49,255}
+\definecolor{vorange}{RGB}{255,143,102}
+
+\makeatletter
+\newcommand*\@lbracket{[}
+\newcommand*\@rbracket{]}
+\newcommand*\@colon{:}
+\newcommand*\colorIndex{%
+    \edef\@temp{\the\lst@token}%
+    \ifx\@temp\@lbracket \color{black}%
+    \else\ifx\@temp\@rbracket \color{black}%
+    \else\ifx\@temp\@colon \color{black}%
+    \else \color{vorange}%
+    \fi\fi\fi
+}
+\makeatother
+
+\definecolor{codebg}{RGB}{250,250,240} 
+\definecolor{greatblue}{RGB}{91,155,215} 
+
+% Set up caption and labels for lstlistings
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{greatblue}{\parbox{\textwidth}{\hspace{1cm}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\renewcommand{\thelstnumber}{% Line number printing mechanism
+  \protect\BeginAccSupp{ActualText={}}\arabic{lstnumber}\protect\EndAccSupp{}%
+}
+
+\def\backtick{\char18} 
+\lstdefinestyle{verilog-style}
+{
+    %columns=fullflexible, 
+    language=Verilog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    numbers=left, 
+    numberstyle=\color{gray},  
+    numbersep=10pt,
+    moredelim=*[s][\colorIndex]{[}{]},
+    literate=*{:}{:}1, 
+    backgroundcolor=\color{codebg},
+    framexrightmargin=0.09cm, 
+    framexleftmargin=-0.09cm,
+    frame=trbl,
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
+}
+
+\lstdefinestyle{verilog-inline-style}
+{
+    language=Verilog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    moredelim=*[s][\colorIndex]{[}{]},
+    literate=*{:}{:}1, 
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
+}
+
+\newcommand{
+  \insertverilog}[3]{
+  \lstinputlisting[label=#2, caption=#3, style={verilog-style}]{#1}
+}
+
+
+% Command for problem
+\newcounter{problemNumber}
+\setcounter{problemNumber}{1}
+\newcommand {
+  \insertProblem}[1]{
+  \vspace{0.5cm}
+  \hrule
+  \vspace{0.3cm}
+
+  {\color{greatblue}\textbf{\large{Problem \theproblemNumber}}}
+  \vspace{2pt}\\#1
+
+  \addtocounter{problemNumber}{1}
+  \vspace{0.2cm}
+  \hrule  
+  \vspace{0.5cm}
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating a resource box
+\newcommand{\resourcebox}[2]{
+  \fbox{%
+    \parbox{0.5\textwidth}{%
+      \text{#1}
+    }%
+  } 
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+\makeatletter
+\def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
+\makeatother
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+\begin{document}
+
+\title{Assignment \ano \\ Modelling Sequential Logic Using Verilog}
+
+\maketitle
+
+\section*{Introduction}
+Verilog supports wide variety of modelling techniques. Different modelling techniques allows hardware description at different level of abstraction, starting from switch level modelling (PMOS/NMOS) and all the way up to behavioural modelling (algorithmic description). Each one of them have their own benefits and use cases. In this assignment we will discuss three of them, namely Gate-level modelling, structural modelling and behavioural modelling.
+
+\subsection*{Gate-level modelling}
+Gate-level modelling in Verilog is used to describe a circuit only using logic gates. This approach is used to describe critical parts of a design, like adders and multipliers. Using gate-level implementation allows greater control over the design than other techniques. Gate-level modelling is only used for small scale design, due to its complexity other modelling techniques are commonly used to abstract gate level implementation.
+
+\subsubsection*{Gate Primitives in Verilog}
+Verilog support following gates:
+\begin{multicols}{2}
+  \begin{itemize}
+  \item AND
+  \item NAND
+  \item OR
+  \item NOR
+  \item XOR
+  \item XNOR
+  \item NOT
+  \end{itemize}
+\end{multicols}
+
+
+Gates in Verilog are available as primitives and can be instantiated similar to modules, Listing \ref{gate-level-impl} is an example gate level circuit.
+
+\insertverilog{./verilog_files/gateLevelExample.v}{gate-level-impl}{\text{Example module using Gate-level modelling}}
+
+Verilog also supports instantiating gates without a instance name demonstrated in Listing \ref{gate-instance-without-name}.
+\insertverilog{./verilog_files/unnamedGate.v}{gate-instance-without-name}{\text{Instantiating unnamed gates}}
+
+\subsubsection*{Delay specification}
+All the circuits we have studied so far have no delay associated with them, these are called 0-delay circuits. Real circuits however, always have a delay between their input and output. Verilog allows modelling of delays at various level of abstraction using delay statements.
+
+Syntax for specifying a delay is:
+\begin{lstlisting}[style=verilog-inline-style, xleftmargin=0.2\textwidth]
+  <gate_primitive> #(<delay>) <inst_name>(...ports...) 
+\end{lstlisting}
+
+For example:
+\begin{lstlisting}[style=verilog-inline-style, xleftmargin=0.25\textwidth]
+  /* 2-input AND gate with 1 time unit delay */
+  and #(1) a1(result, input1, input2);
+\end{lstlisting}
+
+\vspace{0.1cm}
+To specify unit of delay we'll write a compiler directive, this is typically written at the begining of the description.
+\begin{center}
+  \begin{lstlisting}[style=verilog-inline-style,xleftmargin=.35\textwidth]
+    `timescale 1ns/1ps
+  \end{lstlisting}
+\end{center}
+
+
+Here \lstinline[upquote=true]{1ns} is the time unit while \lstinline[upquote=true]{1ps} is the time resolution. Which will be explained in later assignment. A complete example using delay statements is given in Listing \ref{delay-example}.
+
+\insertverilog{./verilog_files/delayExample.v}{delay-example}{\text{Example usage of delays statement to specify propagation delay of logic gates.}}
+
+
+\subsection*{Data-flow Modelling}
+%https://stackoverflow.com/questions/28751979/difference-between-behavioral-and-dataflow-in-verilog#28759581
+Data flow modelling is a higher level of abstraction. Describing a circuit using data-flow modelling does not require knowledge of gates level circuit, thus it is easier than gate-level modelling when description of large scale circuits are written.  All the examples from Assignment 1 used data flow modelling.
+
+\subsubsection*{Continuous Assignment}
+Continuous assignment in Verilog are used for data flow modelling, these assignment starts with \lstinline[style=verilog-inline-style]{assign} keyword. Continuous assignment drives value into a net (\lstinline[style=verilog-inline-style]{wire}). Following example describes use of continuous assignment:
+
+{\color{red}\textbf{Note:}} Verilog is concurrent language unlike programming languages such as C,C++ or Java. All the continuous assignments are evaluated at the same time. 
+\insertverilog{./verilog_files/continuousAssignment.v}{continuous-assignment}{Example usage of continuous assignment.}
+
+
+\section*{References}
+\begin{itemize}
+  \small 
+% https://electronics.stackexchange.com/questions/29553/how-are-verilog-always-statements-implemented-in-hardware
+\item http://inst.eecs.berkeley.edu/{\textasciitilde}cs150/fa08/Documents/Always.pdf
+\item Aenean in sem ac leo mollis blandit.  
+\end{itemize}
+
+\end{document}
+
