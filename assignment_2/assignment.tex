@@ -202,13 +202,25 @@ ECN 104 \hfill Digital Logic Design
 
 \maketitle
 
-\section*{Introduction}
-Verilog supports wide variety of modelling techniques. Different modelling techniques allows hardware description at different level of abstraction, starting from switch level modelling (PMOS/NMOS) and all the way up to behavioural modelling (algorithmic description). Each one of them have their own benefits and use cases. In this assignment we will discuss three of them, namely Gate-level modelling, structural modelling and behavioural modelling.
+\section{Introduction}
+Verilog supports wide variety of modelling techniques. Different
+modelling techniques allows hardware description at different level of
+abstraction, starting from switch level modelling (PMOS/NMOS) and all
+the way up to behavioural modelling (algorithmic description). Each
+one of them have their own benefits and use cases. In this assignment
+we will discuss three of them, namely Gate-level modelling, structural
+modelling and behavioural modelling.
 
-\subsection*{Gate-level modelling}
-Gate-level modelling in Verilog is used to describe a circuit only using logic gates. This approach is used to describe critical parts of a design, like adders and multipliers. Using gate-level implementation allows greater control over the design than other techniques. Gate-level modelling is only used for small scale design, due to its complexity other modelling techniques are commonly used to abstract gate level implementation.
+\subsection{Gate-level modelling}
+Gate-level modelling in Verilog is used to describe a circuit only
+using logic gates. This approach is used to describe critical parts of
+a design, like adders and multipliers. Using gate-level implementation
+allows greater control over the design than other
+techniques. Gate-level modelling is only used for small scale design,
+due to its complexity other modelling techniques are commonly used to
+abstract gate level implementation.
 
-\subsubsection*{Gate Primitives in Verilog}
+\subsubsection{Gate Primitives in Verilog}
 Verilog support following gates:
 \begin{multicols}{2}
   \begin{itemize}
@@ -223,15 +235,20 @@ Verilog support following gates:
 \end{multicols}
 
 
-Gates in Verilog are available as primitives and can be instantiated similar to modules, Listing \ref{gate-level-impl} is an example gate level circuit.
+Gates in Verilog are available as primitives and can be instantiated
+similar to modules, Listing \ref{gate-level-impl} is an example gate
+level circuit.
 
 \insertverilog{./verilog_files/gateLevelExample.v}{gate-level-impl}{\text{Example module using Gate-level modelling}}
 
 Verilog also supports instantiating gates without a instance name demonstrated in Listing \ref{gate-instance-without-name}.
 \insertverilog{./verilog_files/unnamedGate.v}{gate-instance-without-name}{\text{Instantiating unnamed gates}}
 
-\subsubsection*{Delay specification}
-All the circuits we have studied so far have no delay associated with them, these are called 0-delay circuits. Real circuits however, always have a delay between their input and output. Verilog allows modelling of delays at various level of abstraction using delay statements.
+\subsubsection{Delay specification}
+All the circuits we have studied so far have no delay associated with
+them, these are called 0-delay circuits. Real circuits however, always
+have a delay between their input and output. Verilog allows modelling
+of delays at various level of abstraction using delay statements.
 
 Syntax for specifying a delay is:
 \begin{lstlisting}[style=verilog-inline-style, xleftmargin=0.2\textwidth]
@@ -253,28 +270,52 @@ To specify unit of delay we'll write a compiler directive, this is typically wri
 \end{center}
 
 
-Here \lstinline[upquote=true]{1ns} is the time unit while \lstinline[upquote=true]{1ps} is the time resolution. Which will be explained in later assignment. A complete example using delay statements is given in Listing \ref{delay-example}.
+Here \lstinline[upquote=true]{1ns} is the time unit while
+\lstinline[upquote=true]{1ps} is the time resolution. Which will be
+explained in later assignment. A complete example using delay
+statements is given in Listing \ref{delay-example}.
 
 \insertverilog{./verilog_files/delayExample.v}{delay-example}{\text{Example usage of delays statement to specify propagation delay of logic gates.}}
 
 
-\subsection*{Data-flow Modelling}
+\subsection{Data-flow Modelling}
 %https://stackoverflow.com/questions/28751979/difference-between-behavioral-and-dataflow-in-verilog#28759581
-Data flow modelling is a higher level of abstraction. Describing a circuit using data-flow modelling does not require knowledge of gates level circuit, thus it is easier than gate-level modelling when description of large scale circuits are written.  All the examples from Assignment 1 used data flow modelling.
+Data flow modelling is a higher level of abstraction. Describing a
+circuit using data-flow modelling does not require knowledge of gates
+level circuit, thus it is easier than gate-level modelling when
+description of large scale circuits are written.  All the examples
+from Assignment 1 used data flow modelling.
 
-\subsubsection*{Continuous Assignment}
-Continuous assignment in Verilog are used for data flow modelling, these assignment starts with \lstinline[style=verilog-inline-style]{assign} keyword. Continuous assignment drives value into a net (\lstinline[style=verilog-inline-style]{wire}). Following example describes use of continuous assignment:
+\subsubsection{Continuous Assignment}
+\label{continuous-assignment}
+Continuous assignment in Verilog are used for data flow modelling,
+these assignment starts with
+\lstinline[style=verilog-inline-style]{assign} keyword. Continuous
+assignment drives value into a net
+(\lstinline[style=verilog-inline-style]{wire}). Following example
+describes use of continuous assignment:
 
-{\color{red}\textbf{Note:}} Verilog is concurrent language unlike programming languages such as C,C++ or Java. All the continuous assignments are evaluated at the same time. 
+{\color{red}\textbf{Note:}} Verilog is concurrent language unlike
+programming languages such as C,C++ or Java. All the continuous
+assignments are evaluated at the same time.
+
 \insertverilog{./verilog_files/continuousAssignment.v}{continuous-assignment}{Example usage of continuous assignment.}
 
-Continuous assigment in Verilog can also be done implicitly, which assigning value on declaration of a net (\lstinline[style=verilog-inline-style]{wire}). Implicit delcaration of Verilog is down as follows:
+Continuous assigment in Verilog can also be done implicitly, which
+assigning value on declaration of a net
+(\lstinline[style=verilog-inline-style]{wire}). Implicit delcaration
+of Verilog is down as follows:
 \begin{lstlisting}[style=verilog-inline-style,xleftmargin=.25\textwidth]
   wire new_wire = input1 & input2;
 \end{lstlisting}
 
-\subsubsection*{Assignment Delays}
-Similar to gate-level modelling, Verilog allows specifying delays in assignment to model real circuits. Assignment delay specify the delay between the change of LHS and RHS of a continuous assignment. Listing \ref{assignment-delay} shows example usage of assignment delay while Fig. \ref{assignment-delay-sim} shows simulation result of Listing \ref{assignment-delay}.
+\subsubsection{Assignment Delays}
+Similar to gate-level modelling, Verilog allows specifying delays in
+assignment to model real circuits. Assignment delay specify the delay
+between the change of LHS and RHS of a continuous assignment. Listing
+\ref{assignment-delay} shows example usage of assignment delay while
+Fig. \ref{assignment-delay-sim} shows simulation result of Listing
+\ref{assignment-delay}.
 
 \insertverilog{./verilog_files/assignmentDelay.v}{assignment-delay}{Using assignment delay in Verilog.}
 
@@ -283,6 +324,114 @@ Similar to gate-level modelling, Verilog allows specifying delays in assignment 
   \caption{Simulation result for Listing \ref{assignment-delay}, output changes 15ns after the change in input.} 
   \label{assignment-delay-sim}
 \end{figure}
+
+\section{Behavioral Modelling}
+Behavioral modelling is a higher level of modelling where circuit
+description is written as its behaviour, this algorithmic
+representation of a circuit abstracts the details of gate-level and
+data flow modelling. Behavioral modelling resembles more to
+programming languages such as C than circuit description.
+
+
+\subsection{\lstinline[style=verilog-inline-style]{reg} Element}
+\lstinline[style=verilog-inline-style]{reg} element is used to
+represent abstract storage device in
+Verilog. \lstinline[style=verilog-inline-style]{reg}s can be used to
+store information (single bit or of arbitrary length using
+vector). We'll get back to usage of
+\lstinline[style=verilog-inline-style]{reg} and will differentiate it
+with \lstinline[style=verilog-inline-style]{wire} after studying
+procedural blocks.
+
+\subsection{Procedural Blocks}
+Earlier we read about continuous assignment which allows us to drive
+value to a net whenever the driver changes, this kind of assignment
+allows only to describe combinational circuit. To describe sequential
+circuits Verilog provides procedural blocks, these blocks are used to
+drive values to net (\lstinline[style=verilog-inline-style]{reg}) only
+inf the condition is met.
+
+\subsection{\lstinline[style=verilog-inline-style]{initial} Block}
+\lstinline[style=verilog-inline-style]{Initial} blocks in Verilog are
+used to specify initial values of all the storage elements. When
+simulation starts simulator doesn't know what values are to be
+assigned to storage elements. Initial block begins with
+\lstinline[style=verilog-inline-style]{initial begin} and ends with
+\lstinline[style=verilog-inline-style]{end}. Initial blocks gets
+executed only once when the simulation is started.
+
+{\color{red}\textbf{Note:}} Only a
+\lstinline[style=verilog-inline-style]{reg} can be assigned values
+inside an \lstinline[style=verilog-inline-style]{initial} block, this
+is because unlike \lstinline[style=verilog-inline-style]{wire} which
+are used for connection \lstinline[style=verilog-inline-style]{reg}
+stores information and this information is unknown to the simulator at
+t=0. Structure of an initial block is given in Listing \ref{initial-structure}.
+
+\insertverilog{./verilog_files/initialStructure.v}{initial-structure}{Structure of an initial block.} 
+
+\subsection{\lstinline[style=verilog-inline-style]{always@} block}
+\lstinline[style=verilog-inline-style]{always@} block in Verilog are
+used for describing a event which should happen only under certain
+conditions, such as change in value of one of the elements.
+ 
+Basic structure of an \lstinline[style=verilog-inline-style]{always@}
+block is given in Listing \ref{always-structure}.
+
+\insertverilog{./verilog_files/alwaysStructure.v}{always-structure}{Structure of an always@ block.} 
+
+Listing \ref{always-example} shows a module which changes output only
+one the positive edge of input
+\lstinline[style=verilog-inline-style]{clk}. 
+
+\insertverilog{./verilog_files/alwaysExample.v}{always-example}{Synchronous logic which changes value of result only at the positive edge of clk.} 
+ 
+\subsection{Blocking and Non-Blocking Assignment}
+\subsubsection{Blocking Assignments}
+Blocking assingments are assignments which block the simulation while
+their value is being calculated. This means that theexecution flow
+will stop at this statement until it is executed. Blocking assignment in Verilog is done using \lstinline[style=verilog-inline-style]{=}. Listing \ref{non-working-blocking-assignment} demonstrates the functioning of blocking assignment.
+
+\insertverilog{./verilog_files/nonWorkingSwap.v}{non-working-blocking-assignment}{Swapping bytes using blocking assignment.}  
+
+In the above example (Listing \ref{non-working-blocking-assignment})
+statement 18 doesn't gets executed until statement 17 is executed,
+this is due to the use of blocking assignment.
+
+\subsubsection{Non-blocking Assignments} 
+In Listing \ref{non-working-blocking-assignment} we saw that blocking
+assignments cannot be used to swap bytes, this is where non-blocking
+assignments will come to use. Non-blocking assignments are evaluated
+in two steps first all the RHS values are calculated at the begining
+of the procedural block, and then the value is assigned to LHS when
+the execution reaches particular statement.
+
+Listing \ref{working-swap} shows how non-blocking assignments can be
+used for swapping bytes.
+
+\insertverilog{./verilog_files/workingSwap.v}{working-swap}{Swapping bytes using non-blocking assignment\, it works!}   
+
+\section{Differences between \lstinline[style=verilog-inline-style]{wire} and \lstinline[style=verilog-inline-style]{reg} and where to use what}
+\subsection{Legal use of \lstinline[style=verilog-inline-style]{wire}}
+Wires in Verilog are used to connect two elements, they can be assigned a value or a value can be read from them. However they cannot store it, you'll have to drive them with values (constant, other wires or regs).
+
+\begin{itemize}
+\item \lstinline[style=verilog-inline-style]{wire}s are allowed only in continuous assignments (page \pageref{continuous-assignment}).
+\item A \lstinline[style=verilog-inline-style]{wire} cannot be assigned a value inside a procedural block.
+\item \lstinline[style=verilog-inline-style]{wire} can be used to assign a value to a \lstinline[style=verilog-inline-style]{reg} or a \lstinline[style=verilog-inline-style]{wire}.
+\end{itemize}
+
+\subsection{Legal use of \lstinline[style=verilog-inline-style]{reg}}
+\lstinline[style=verilog-inline-style]{reg}s in Verilog are storage elements, they however do not represent physical registers. Once synthesized they can be represented by a physical register, RAM or ROM.
+
+ \begin{itemize}
+ \item \lstinline[style=verilog-inline-style]{reg}s cannot be assigned a value using continuous assigment.
+ \item A \lstinline[style=verilog-inline-style]{wire} can only be assigned a value in a procedural block.
+ \item \lstinline[style=verilog-inline-style]{wire} can be used to assign a value to a \lstinline[style=verilog-inline-style]{reg} or a \lstinline[style=verilog-inline-style]{wire}.
+\end{itemize}
+
+\subsection{Places where both \lstinline[style=verilog-inline-style]{wire} and \lstinline[style=verilog-inline-style]{reg} are allowed}
+
 
 \section*{References}
 \begin{itemize}
