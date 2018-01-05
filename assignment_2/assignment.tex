@@ -11,6 +11,7 @@
 \usepackage{wrapfig} 
 \usepackage{tabu} % For coloring single row of table
 \usepackage{scrextend}
+%\usepackage{hyperref}
 
 \renewcommand\familydefault{\sfdefault} 
 \usepackage{tgheros}
@@ -129,8 +130,8 @@ ECN 104 \hfill Digital Logic Design
     numbersep=10pt,
     moredelim=*[s][\colorIndex]{[}{]},
     literate=*{:}{:}1, 
-    backgroundcolor=\color{codebg},
-    framexrightmargin=0.09cm, 
+%    backgroundcolor=\color{codebg},
+%    framexrightmargin=0.09cm, 
     framexleftmargin=-0.09cm,
     frame=trbl,
     upquote=true, 
@@ -241,7 +242,8 @@ level circuit.
 
 \insertverilog{./verilog_files/gateLevelExample.v}{gate-level-impl}{\text{Example module using Gate-level modelling}}
 
-Verilog also supports instantiating gates without a instance name demonstrated in Listing \ref{gate-instance-without-name}.
+Verilog also supports instantiating gates without a instance name
+demonstrated in Listing \ref{gate-instance-without-name}.
 \insertverilog{./verilog_files/unnamedGate.v}{gate-instance-without-name}{\text{Instantiating unnamed gates}}
 
 \subsubsection{Delay specification}
@@ -262,7 +264,10 @@ For example:
 \end{lstlisting}
 
 \vspace{0.1cm}
-To specify unit of delay we'll write a compiler directive, this is typically written at the begining of the description.
+To specify unit of delay we'll write a compiler
+directive, this is typically written at the begining of the
+description.
+
 \begin{center}
   \begin{lstlisting}[style=verilog-inline-style,xleftmargin=.35\textwidth]
     `timescale 1ns/1ps
@@ -276,6 +281,66 @@ explained in later assignment. A complete example using delay
 statements is given in Listing \ref{delay-example}.
 
 \insertverilog{./verilog_files/delayExample.v}{delay-example}{\text{Example usage of delays statement to specify propagation delay of logic gates.}}
+\pagebreak
+\insertProblem { NOT gate is one of the primitives available with
+  Verilog, NOT gate is a type of buffer and is also known as inverting
+  buffer. Buffers in digital circuit is often used to isolate two
+  parts of a circuit, but this isolation can also be added with a
+  certain behaviour like inversion of signal or delaying signal to
+  synchronize with other parts.
+  
+  \begin {enumerate}
+  \item Write a Verilog module which acts as an inverting buffer (NOT
+    gate), you have to use verilog primitive
+    \lstinline[style=verilog_inline_style]{not} for the
+    implementation, use the testbench
+    \textsc{testbench{\ano}.{\theproblemNumber}.1.v} for testing your
+    design.
+  \item Another kind of buffer often used in digital circuit is the
+    `non-inverting buffer'. As the name suggests, the non-inverting
+    buffer doesn't invert the input. This buffer seems to be of no use
+    since it cannot do any processing. This leads us to its one of the
+    common use case, using buffer to level translation. Level
+    translation is used whenever two parts of a circuit are powered
+    with different Vdd. Now that you know what a buffer is, write a
+    Verilog module to implement a buffer using the inverting buffers
+    you designed in Problem {\theproblemNumber}.1.
+  \item NOT gates are also used in ring oscillators, which is a kind
+    of an oscillator often used to generate clock signals. Ring
+    oscillator is an oscillator which looks like a ring, and contains
+    a chain of odd number of NOT gates. Ring oscillator's frequency
+    depends on the delay of the NOT gate and number of gates used. A
+    simple 3 NOT gate ring oscillator is shown in
+    Fig. \ref{ring-oscillator}. Let the propagation delay of each of
+    the gate in \Fig. \ref{ring-oscillator} be $t_d$, intuitively one
+    can say that the delay between change of values at point is
+    $3t_d$. Use this information and calculate the time period of an n
+    NOT gate ring oscillator, where n is an odd number.
+
+    \begin{figure}[!h] \centering  
+      \includegraphics[width=0.5\linewidth]{./resources/ringOscillator.pdf}
+      \caption{Simulation result for Listing \ref{ring-oscillator}, output changes 15ns after the change in input.} 
+      \label{ring-oscillator}
+    \end{figure}
+
+  \item Using the expression from the Problem {\theproblemNumber}.3,
+    write the description of a module for a 5 NOT gate ring
+    oscillator. You have to design the ring oscillator such that the
+    time period of the generated wave should be 30ns, assume that each
+    of the NOT gate has a propagation delay of 5ns. Use
+    \textsc{testbench{\ano}.{\theproblemNumber}.4.v} to test your
+    design.
+
+  \item Using the expression from the Problem {\theproblemNumber}.3,
+    write the description of a module for a 5 NOT gate ring
+    oscillator. You have to design the ring oscillator such that the
+    time period of the generated wave should be 30ns, assume that each
+    of the NOT gate has a propagation delay of 5ns. Use
+    \textsc{testbench{\ano}.{\theproblemNumber}.4.v} to test your
+    design.
+  \item Will a single not gate ring oscillator work? Why?
+  \end{enumerate}
+} 
 
 
 \subsection{Data-flow Modelling}
@@ -325,6 +390,31 @@ Fig. \ref{assignment-delay-sim} shows simulation result of Listing
   \label{assignment-delay-sim}
 \end{figure}
 
+\pagebreak
+\insertProblem {
+  Multiplexer is a digital element which is used to select a single signal from a group of signals. Block diagram of a multiplexer is shown in Fig. \ref{multiplexer}, the input $\text{in}_1$ and $\text{in}_2$ are multiplexed and the output is decided using the input $\text{c}$. If the input c is 0 then $\text{output}=\text{in}_1$ else $\text{output}=\text{in}_2$.
+  
+  \begin{figure}[!h] \centering  
+    \includegraphics[width=0.3\linewidth]{./resources/multiplexer.pdf} 
+    \caption{Simulation result for Listing \ref{assignment-delay}, output changes 15ns after the change in input.} 
+    \label{multiplexer} 
+  \end{figure}
+
+  \begin{enumerate}
+    
+  \item Write the hardware description of a 2-to-1 multiplexer using
+    Verilog, you have to implement this using only behaviourial
+    modelling. (\textit{Hint: Verilog supports the Ternary operator,
+      which has same behaviour as in programming languages.})
+  \item To verify the behaviour of multiplexer you just described,
+    write a testbench to test its behaviour. The testbench should
+    generate all different permutations of the inputs. To keep things
+    simple, you can for now verify the behaviour using waveform
+    viewer.
+  \item Now suppose you want to model a multiplexer you just purchased
+    from the market, which has a prpogation delay of 2ns. Modify the
+    module from part 1 such that the behaviour of your description
+    matches the one you bought.  }
 \section{Behavioral Modelling}
 Behavioral modelling is a higher level of modelling where circuit
 description is written as its behaviour, this algorithmic
@@ -440,6 +530,21 @@ Wires in Verilog are used to connect two elements, they can be assigned a value 
 \item http://inst.eecs.berkeley.edu/{\textasciitilde}cs150/fa08/Documents/Always.pdf
 \item Aenean in sem ac leo mollis blandit.  
 \end{itemize}
+
+\section*{Additional resources}
+\begin{itemize}
+  \small 
+\item Stack Exchange: How are Verilog “always” statements implemented in hardware? \\\textit{http://bit.ly/verilogAlwaysStatement}
+\item Stack Overflow: Difference between behavioral and dataflow in verilog \\\textit{http://bit.ly/modellingDiff}
+\item Stack Overflow: How can I know if my code is synthesizable? [Verilog] \\\textit{http://bit.ly/synthCode}
+\end{itemize} 
+
+\centerline{\textit{These resources are great for expanding your understanding, but...}}
+\begin{centering}
+  \begin{figure}[!h] \centering  
+    \includegraphics[width=0.5\linewidth]{./resources/meme.jpeg} 
+  \end{figure}  
+\end{centering}
 
 \end{document}
 
