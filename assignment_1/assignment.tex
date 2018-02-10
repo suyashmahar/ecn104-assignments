@@ -207,6 +207,7 @@ As a beginner, we are going to describe and simulate simple combinational circui
 \subsection*{Modules}
 Module, the basic building block in Verilog, helps in organizing and structuring designs in logical and human readable form. A module can be considered as analogous to functions in programming languages(NOT EXACTLY though. Functions, by definition, act in BATCH MODE i.e, you give them inputs and get output after sometime. Batch mode here means before getting the output once, you can't send in new inputs. But in HDL, you may write PIPELINED modules. Pipelining can be understood by the working of a car assembly line. The job is divided into smaller sections. Now while a car is being painted, some other cars may be in the welding and testing sections. This naturally leads to faster production of cars if the company has a large order.) Basic structure of a Verilog module is given in Listing \ref{sample-module-bare} 
 
+\break
 \insertverilog{./verilog_files/module.v}{sample-module-bare}{\text{Sample module indicating its structure}}
 
 An example of AND gate is given in Listing \ref{and-gate-module-sample}
@@ -214,7 +215,8 @@ An example of AND gate is given in Listing \ref{and-gate-module-sample}
 
 \subsection*{Instantiating modules}
 The process of creating objects of modules is called instantiation in Verilog. Modules are like blueprints and instantiating them means constructing hardware using the blueprints.
-  
+
+\break
 \insertverilog{./verilog_files/AndGate3.v}{sample-module}{\text{Illustrative AND gate module}} 
 \subsection*{Comments}
 Comments in Verilog are of two kinds:
@@ -257,6 +259,7 @@ Global constants can be declared in Verilog. When Verilog code is processed all 
 
 Wires are something very important in verilog. Use of wires in Verilog is for what wires are used in real life ... to connect two things electrically! Wires will be used extensively in future assignments to connect two modules, registers and even wires together. This concept is explained using Listing \ref{constants} where wires are used to connect the output of two 2-input AND gates to inputs of single 2-input AND gates. Gate level diagram of which is shown in Fig. \ref{Fig:andGate4-representation}.
 
+\break
 \insertverilog{./verilog_files/andGate4.v}{andGate4-wire}{\text{Use of wires to connect output of one module to input of another}}
 
 \subsubsection*{Vectors}
@@ -340,7 +343,7 @@ Verilog supports a wide range of operators to represent mathematical operations.
       \hline
       \text{\&} & bitwise AND & bitwise \\
       \text{\textbar} & bitwise OR & \\
-      \text{\textasciitilde} & bitwise XOR & \\
+      \text{$^\wedge$} & bitwise XOR & \\
       \hline
     \end{tabularx}
   \end{center}
@@ -361,6 +364,7 @@ bit by repeatedly performing a specified operation. Following example
 explains its usage: 
 \insertverilog{./verilog_files/reductionOperators.v}{reduction-operators}{\text{Functioning of reduction operator}}
 
+\break
 \insertProblem {
   Reduction operators are often used when some computation has to be performed on complete signal, particular example of which is calculating XOR of a signal to get its parity bit. Even parity bit of a signal is 1 if signal has odd number of 1 and 0 if number of 1s is even, similarily odd parity bit of number is 1 if signal has even number of 1 and 0 if number of 1s is odd.
 
