@@ -288,7 +288,7 @@ Example:
 \end{figure}
 \insertProblem{ Shift operation is one of the important operation in a digital system. Various different designs exist for performing shifts of arbitrary amount within a range(Search the internet for Barrel Shifters for one implementation). But, a fixed amount shifter (e.g. a shift by 5 element) is extremely easy to implement. This is done by moving connections from input to output along the desired direction by the desired amount. An example of which is given in Fig. \ref{Fig:shiftUsingWires-representation} 
 
-  Write a Verilog module which uses part select, takes a 32bit vector as input named \textsc{inputSignal} and outputs a 32bit vector \textsc{result} which is simply inputSignal shifted by 5 towards left. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify the output. (\textit{Hint: Similar to part select, Verilog supports part assign which allows assigning values to a part of a vector})}
+  Write a Verilog module which uses part select, takes a 32bit vector as input named \textsc{inputSignal} and outputs a 32bit vector \textsc{result} which is simply inputSignal shifted by 5 towards left. Use {testbench\_{\ano}\_{\theproblemNumber}.v} to verify the output. (\textit{Hint: Similar to part select, Verilog supports part assign which allows assigning values to a part of a vector})}
 %
 
 \subsection*{Operators}
@@ -355,7 +355,7 @@ calculations on vectors (wires \& reg). Following example shows its
 usage:
 \insertverilog{./verilog_files/airthmeticOperators.v}{airthmetic-operators}{\text{Functioning of airthmetic operator}}
 
-\insertProblem{Hirerarichal design is often helpful in verifying large project easily by verifying each individual module seperately. Make a module for 2 input NAND gate. Now, make a 2 input And gate by connecting both the input of NAND gate to another NAND gate. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify the output.}
+\insertProblem{Hirerarichal design is often helpful in verifying large project easily by verifying each individual module seperately. Make a module for 2 input NAND gate. Now, make a 2 input AND gate using multiple of these NAND gates. Use {testbench\_{\ano}\_{\theproblemNumber}\_1.v} for verifying the output of NAND gate and {testbench\_{\ano}\_{\theproblemNumber}\_2.v} for verifying the output of the AND gate.}
 
 
 \subsubsection*{Reduction Operators}
@@ -368,7 +368,7 @@ explains its usage:
 \insertProblem {
   Reduction operators are often used when some computation has to be performed on complete signal, particular example of which is calculating XOR of a signal to get its parity bit. Even parity bit of a signal is 1 if signal has odd number of 1 and 0 if number of 1s is even, similarily odd parity bit of number is 1 if signal has even number of 1 and 0 if number of 1s is odd.
 
-  Write a Verilog module which uses reduction operator, takes a 32bit vector as input named \textsc{signal}, two single bit output named \textsc{parityEven} and \textsc{parityOdd}. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. (\textit{Hint: Calculating XOR of all bits of a signal gives even parity of the signal.})
+  Write a Verilog module which uses reduction operator, takes a 32bit vector as input named \textsc{signal}, two single bit output named \textsc{parityEven} and \textsc{parityOdd}. Use {testbench\_{\ano}\_{\theproblemNumber}.v} to verify output. (\textit{Hint: Calculating XOR of all bits of a signal gives even parity of the signal.})
 }
 
 \subsubsection*{Relational Operators}
@@ -397,7 +397,7 @@ in Java, except that in Verilog only left shift (\textbf{$<<$}) and right shift
 \insertProblem {
   Multiplying using digital logic is a challenging task, one very intuitive approach is to use `shift-and-add approach'; in this method, two binary numbers are multiplied by shifting one and adding to other. This is repeated till the desired multiplication is obtained. This approach is described here: \begin{center}https://en.wikipedia.org/wiki/Binary\_multiplier\#Multiplication\_basics\end{center} 
   
-    Write a module for multiplying a 32-bit binary number by 10(4'b1010 in binary) without using the multiply operator. Assume the input is such that output doesn't overflow. Use \textsc{testbench{\ano}.{\theproblemNumber}.v} to verify output. RTL schematic of your module should resemble Fig. \ref{Fig:problem-4-RTL}.
+    Write a module for multiplying a 32-bit binary number by 10(4'b1010 in binary) without using the multiply operator. Assume the input is such that output doesn't overflow. Use {testbench\_{\ano}\_{\theproblemNumber}.v} to verify output. RTL schematic of your module should resemble Fig. \ref{Fig:problem-4-RTL}.
 }
 
 \section*{References}
