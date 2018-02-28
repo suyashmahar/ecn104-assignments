@@ -1,5 +1,7 @@
 *.aux
 *.log
+*.toc
 *~
 *.out
 \#*\#
+*.zip

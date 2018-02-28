@@ -1,0 +1,323 @@
+\documentclass[a4paper,10pt]{article}
+ 
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{xcolor, colortbl}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{wrapfig} 
+\usepackage{tabu} % For coloring single row of table
+\usepackage{scrextend}
+%\usepackage{hyperref}
+
+\renewcommand\familydefault{\sfdefault} 
+\usepackage{tgheros}
+\usepackage[defaultmono]{droidmono}
+
+\usepackage{amsmath,amssymb,amsthm,textcomp}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{tikz}
+
+\usepackage{geometry}
+\usepackage{trace}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{accsupp}% http://ctan.org/pkg/accsupp
+
+
+\tcbuselibrary{listings,skins} % For lstlisting
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,%
+bindingoffset=0mm, top=20mm,bottom=20mm}
+
+
+% For coloring single row in table
+\def\zapcolorreset{\let\reset@color\relax\ignorespaces}
+\def\colorrows#1{\noalign{\aftergroup\zapcolorreset#1}\ignorespaces}
+
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+\newcommand{\ano}{\text{2}}
+
+% custom theorems if needed
+\newtheoremstyle{mytheor}
+    {1ex}{1ex}{\normalfont}{0pt}{\scshape}{.}{1ex}
+    {{\thmname{#1 }}{\thmnumber{#2}}{\thmnote{ (#3)}}}
+
+\theoremstyle{mytheor}
+\newtheorem{defi}{Definition}
+
+%%% Declare title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\antitle}{\text{The Art of Writing Testbenches}}
+% my own titles
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{center}
+\vspace{2ex}
+{\huge \textsc{\antitle}}
+\vspace{1ex}
+\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Department of Electronics and Communication Engineering \\
+Indian Institute of Technology, Roorkee
+\linia\\
+ECN 104 \hfill Digital Logic Design
+\vspace{4ex}
+\end{center}
+}
+\makeatother
+%%%
+
+% custom footers and headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{\antitle}
+\cfoot{}
+\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+%
+
+\definecolor{vgreen}{RGB}{104,180,104}
+\definecolor{vblue}{RGB}{49,49,255}
+\definecolor{vorange}{RGB}{255,143,102}
+
+\makeatletter
+\newcommand*\@lbracket{[}
+\newcommand*\@rbracket{]}
+\newcommand*\@colon{:}
+\newcommand*\colorIndex{%
+    \edef\@temp{\the\lst@token}%
+    \ifx\@temp\@lbracket \color{black}%
+    \else\ifx\@temp\@rbracket \color{black}%
+    \else\ifx\@temp\@colon \color{black}%
+    \else \color{vorange}%
+    \fi\fi\fi
+}
+\makeatother
+
+\definecolor{codebg}{RGB}{250,250,240} 
+\definecolor{greatblue}{RGB}{91,155,215} 
+
+% Set up caption and labels for lstlistings
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{greatblue}{\parbox{\textwidth}{\hspace{1cm}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\renewcommand{\thelstnumber}{% Line number printing mechanism
+  \protect\BeginAccSupp{ActualText={}}\arabic{lstnumber}\protect\EndAccSupp{}%
+}
+
+\def\backtick{\char18} 
+\lstdefinestyle{verilog-style}
+{
+    %columns=fullflexible, 
+    language=Verilog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    numbers=left, 
+    numberstyle=\color{gray},  
+    numbersep=10pt,
+    moredelim=*[s][\colorIndex]{[}{]},
+    literate=*{:}{:}1, 
+    %    backgroundcolor=\color{codebg},
+    %    framexrightmargin=0.09cm,
+    showstringspaces=false,
+    framexleftmargin=-0.09cm,
+    frame=trbl,
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
+}
+
+\lstdefinestyle{verilog-inline-style}
+{
+    language=Verilog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    moredelim=*[s][\colorIndex]{[}{]},
+    literate=*{:}{:}1, 
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
+}
+
+\newcommand{
+  \insertverilog}[3]{
+  \lstinputlisting[label=#2, caption=#3, style={verilog-style}]{#1}
+}
+
+
+% Command for problem
+\newcounter{problemNumber}
+\setcounter{problemNumber}{1}
+\newcommand {
+  \insertProblem}[1]{
+  \vspace{0.5cm}
+  \hrule
+  \vspace{0.3cm}
+
+  {\color{greatblue}\textbf{\large{Problem \theproblemNumber}}}
+  \vspace{2pt}\\#1
+
+  \addtocounter{problemNumber}{1}
+  \vspace{0.2cm}
+  \hrule  
+  \vspace{0.5cm}
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating a resource box
+\newcommand{\resourcebox}[2]{
+  \fbox{%
+    \parbox{0.5\textwidth}{%
+      \text{#1}
+    }%
+  } 
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+\makeatletter
+\def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
+\makeatother
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+\begin{document}
+
+\title{The Art of Writing Testbenches}
+
+\maketitle
+\tableofcontents
+
+\section{Introduction}
+In the first assignment we studied the basics of Verilog HDL, which we
+extended in the second assignment and learnt about different modelling
+techniques. But one thing might still bug you, which is you have
+designed a module but how to verify it? This is where Verilog
+testbenches are used, testbenches are verilog module that have sole
+purpose of testing and verifying the design by simulating it, this can
+significantly decrease the errors in the design.
+
+\section{Types of Verilog Constructs}
+\subsection{Synthesizable Verilog}
+Anything written such that it can represent a valid circuit will be
+synthesizable in Verilog, such code is used for designing modules.
+
+\insertverilog
+    {./verilog_files/synthCode.v}
+    {synth-code-example}
+    {\text{Example of synthesizable Verilog code.}}
+
+
+\subsection{Non-synthesizable Verilog}
+Modules written to verify other modules are non-synthesizable, such
+modules cannot represent a valid digital circuit.
+
+\insertverilog
+  {./verilog_files/nonSynthCode.v}
+  {non-synth-code-example}
+  {\text{Example of non-synthesizable Verilog code (testbench\_1\_1.v from Assignment 1).}}
+
+
+\subsection{Common Synthesizable and Non-Synthesizable Verilog constructs}
+\begin{table}[h]
+  \begin{center}
+    \label{Table:operators-table}
+    \caption{List of common operators used in Verilog}
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabularx}{\textwidth}{|X|X|}
+      \hline
+      \rowcolor{greatblue}
+      \color{white}Synthesizable & \color{white}Non-synthesizable \\
+      \hline
+      n-Dimensional vectors & Ports having dimensionality greater\\
+      (e.g. \lstinline[style=verilog-inline-style]{wire [1023:0] newWire [31:0];}) & than 1 \\
+      \hline
+      All operators & Delay statements \\
+      \hline
+      Part select & \\
+      \hline
+      If-else, case, casex and casez statements & \\
+      \hline
+      wires, regs & \\
+      \hline
+    \end{tabularx}
+  \end{center}
+\end{table}
+
+\section{Basics of Writing a Testbench}
+\subsection{The clock}
+Every synchronous design has one or more clocks, these can be
+initialized by declaring a reg which would hold the state of the clock
+and changing it at the desired interval, an example of which is shown
+in Listing \ref{clock-example}.
+
+\insertverilog
+    {./verilog_files/clockExample.v}
+    {clock-example}
+    {\text{Example clock of time period 15 ns.}}
+
+
+Another and the preffered way to initialize a clock in Verilog is
+using the forever block, which is described in Listing
+\ref{clock-forever-example}.
+
+\insertverilog
+    {./verilog_files/clockForeverExample.v}
+    {clock-forever-example}
+    {\text{Example clock of time period 15 ns using forever statement.}}
+
+
+\subsection{The I/O}
+For complete testing of a design you'll have to simulate the inputs to
+the module and verify its output. Inputs to a module are declared as
+\lstinline[style=verilog-inline-style]{reg} while the output are
+declared as \lstinline[style=verilog-inline-style]{wire}.
+
+Inputs to a module are always changed from a procedural block, this is
+why they are declared as \lstinline[style=verilog-inline-style]{reg},
+while the outputs are just a connection from the output port of the
+module under test to your testbench. It is important to note here that
+output of a module can be left unconnected, but it is almost always a
+good idea to verify every output of a module.
+
+Listing \ref{io-in-testbench} shows how to declare I/Os of a module.
+\insertverilog
+    {./verilog_files/iosInTestbench.v}
+    {io-in-testbench}
+    {\text{Example code showing how to initialize and read I/Os of a module.}}
+
+In the last example, all the initialization and stimulation was done
+using \lstinline[style=verilog-inline-style]{initial} block, however
+if stimulating inputs using initial blocks is getting cumbersome, you
+can use \lstinline[style=verilog-inline-style]{always} block too. One
+important point to note here is that
+\lstinline[style=verilog-inline-style]{always} block in a testbench
+starts executing simultaneously with all other
+\lstinline[style=verilog-inline-style]{initial} and
+\lstinline[style=verilog-inline-style]{always} blocks while
+simulating. Example of using \lstinline[style=verilog-inline-style]{always} block for simulating a design is provided in Listing \ref{io-using-always}.
+
+\insertverilog
+    {./verilog_files/ioUsingAlways.v}
+    {io-using-always}
+    {\text{This listing shows how to use always block for simulating inputs to a module.}}
+
+\end{document}
+
