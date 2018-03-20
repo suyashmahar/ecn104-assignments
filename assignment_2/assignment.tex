@@ -1,5 +1,5 @@
 \documentclass[a4paper,10pt]{article}
- 
+   
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{textcomp}
@@ -27,7 +27,11 @@
 \usepackage{tcolorbox}
 \usepackage{tabularx}
 \usepackage{accsupp}% http://ctan.org/pkg/accsupp
+\usepackage{enumitem}
 
+%% For using numbers at every level of enumerated list
+\newlist{legal}{enumerate}{10}
+\setlist[legal]{label*=\arabic*.}
 
 \tcbuselibrary{listings,skins} % For lstlisting
 
@@ -391,8 +395,12 @@ Fig. \ref{assignment-delay-sim} shows simulation result of Listing
 \end{figure}
 
 \pagebreak
-\insertProblem {
-  Multiplexer is a digital element which is used to select a single signal from a group of signals. Block diagram of a multiplexer is shown in Fig. \ref{multiplexer}, the input $\text{in}_1$ and $\text{in}_2$ are multiplexed and the output is decided using the input $\text{c}$. If the input c is 0 then $\text{output}=\text{in}_1$ else $\text{output}=\text{in}_2$.
+\insertProblem { Multiplexer is a digital element which is used to
+  select a single signal from a group of signals. Block diagram of a
+  multiplexer is shown in Fig. \ref{multiplexer}, the input
+  $\text{in}_1$ and $\text{in}_2$ are multiplexed and the output is
+  decided using the input $\text{c}$. If the input c is 0 then
+  $\text{output}=\text{in}_1$ else $\text{output}=\text{in}_2$.
   
   \begin{figure}[!h] \centering  
     \includegraphics[width=0.3\linewidth]{./resources/multiplexer.pdf} 
@@ -414,7 +422,8 @@ Fig. \ref{assignment-delay-sim} shows simulation result of Listing
   \item Now suppose you want to model a multiplexer you just purchased
     from the market, which has a prpogation delay of 2ns. Modify the
     module from part 1 such that the behaviour of your description
-    matches the one you bought.  }
+    matches the one you bought.
+}
 \section{Behavioral Modelling}
 Behavioral modelling is a higher level of modelling where circuit
 description is written as its behaviour, this algorithmic
@@ -480,7 +489,11 @@ one the positive edge of input
 \subsubsection{Blocking Assignments}
 Blocking assingments are assignments which block the simulation while
 their value is being calculated. This means that theexecution flow
-will stop at this statement until it is executed. Blocking assignment in Verilog is done using \lstinline[style=verilog-inline-style]{=}. Listing \ref{non-working-blocking-assignment} demonstrates the functioning of blocking assignment.
+will stop at this statement until it is executed. Blocking assignment
+in Verilog is done using
+\lstinline[style=verilog-inline-style]{=}. Listing
+\ref{non-working-blocking-assignment} demonstrates the functioning of
+blocking assignment.
 
 \insertverilog{./verilog_files/nonWorkingSwap.v}{non-working-blocking-assignment}{Swapping bytes using blocking assignment.}  
 
@@ -503,43 +516,159 @@ used for swapping bytes.
 
 \section{Differences between \lstinline[style=verilog-inline-style]{wire} and \lstinline[style=verilog-inline-style]{reg} and where to use what}
 \subsection{Legal use of \lstinline[style=verilog-inline-style]{wire}}
-Wires in Verilog are used to connect two elements, they can be assigned a value or a value can be read from them. However they cannot store it, you'll have to drive them with values (constant, other wires or regs).
+Wires in Verilog are used to connect two elements, they can be
+assigned a value or a value can be read from them. However they cannot
+store it, you'll have to drive them with values (constant, other wires
+or regs).
 
 \begin{itemize}
-\item \lstinline[style=verilog-inline-style]{wire}s are allowed only in continuous assignments (page \pageref{continuous-assignment}).
-\item A \lstinline[style=verilog-inline-style]{wire} cannot be assigned a value inside a procedural block.
-\item \lstinline[style=verilog-inline-style]{wire} can be used to assign a value to a \lstinline[style=verilog-inline-style]{reg} or a \lstinline[style=verilog-inline-style]{wire}.
+\item \lstinline[style=verilog-inline-style]{wire}s are allowed only
+  in continuous assignments (page \pageref{continuous-assignment}).
+\item A \lstinline[style=verilog-inline-style]{wire} cannot be
+  assigned a value inside a procedural block.
+\item \lstinline[style=verilog-inline-style]{wire} can be used to
+  assign a value to a \lstinline[style=verilog-inline-style]{reg} or a
+  \lstinline[style=verilog-inline-style]{wire}.
 \end{itemize}
 
 \subsection{Legal use of \lstinline[style=verilog-inline-style]{reg}}
-\lstinline[style=verilog-inline-style]{reg}s in Verilog are storage elements, they however do not represent physical registers. Once synthesized they can be represented by a physical register, RAM or ROM.
+\lstinline[style=verilog-inline-style]{reg}s in Verilog are storage
+elements, they however do not represent physical registers. Once
+synthesized they can be represented by a physical register, RAM or
+ROM.
 
  \begin{itemize}
- \item \lstinline[style=verilog-inline-style]{reg}s cannot be assigned a value using continuous assigment.
- \item A \lstinline[style=verilog-inline-style]{wire} can only be assigned a value in a procedural block.
- \item \lstinline[style=verilog-inline-style]{wire} can be used to assign a value to a \lstinline[style=verilog-inline-style]{reg} or a \lstinline[style=verilog-inline-style]{wire}.
+ \item \lstinline[style=verilog-inline-style]{reg}s cannot be assigned
+   a value using continuous assigment.
+ \item A \lstinline[style=verilog-inline-style]{wire} can only be
+   assigned a value in a procedural block.
+ \item \lstinline[style=verilog-inline-style]{wire} can be used to
+   assign a value to a \lstinline[style=verilog-inline-style]{reg} or
+   a \lstinline[style=verilog-inline-style]{wire}.
 \end{itemize}
 
-\subsection{Places where both \lstinline[style=verilog-inline-style]{wire} and \lstinline[style=verilog-inline-style]{reg} are allowed}
+ \subsection{Places where both \lstinline[style=verilog-inline-style]{wire} and \lstinline[style=verilog-inline-style]{reg} are allowed}
 
-\pagebreak
+ % Link to java implementation of turing machines: https://introcs.cs.princeton.edu/java/52turing/
+
+ \insertProblem { Turing machines are mathematical abstraction and
+   model of computational machines, Turing machine was proposed by
+   Alan Turing in 1973. The basis of invention of turing machine was
+   Alan's interest in the philosophy of computation, any algorithm
+   which couldn't be implemented on a Turing machine is never been
+   implemented using some other programming language or computational
+   device. Programming languages such as Java, C, C++ etc. are said to
+   be turing complete, this implies that anything that can be computed
+   by a turing machine can be computed by these languages.
+
+   Turing machine consist of a infinitely long tape which has certain
+   shapes on it, this tape is traversed by a head which reads the
+   character directly under it and takes appropriate movement
+   decision. An example of such machine is shown in
+   Fig. \ref{Fig:turing-machine-example}.
+
+  \begin{figure}[!h] \centering  
+    \includegraphics[width=0.3\linewidth]{./resources/multiplexer.pdf} 
+    \caption{Example of a Turing machine.} 
+    \label{Fig:turing-machine-example} 
+  \end{figure}
+
+  Turing machines can be used to implement Fine state machines, to use
+  a Turing machine as a finite state machine we need following
+  assumptions:
+  \begin{enumerate}
+  \item We have a finite length tape (since it would be impossible
+    to write description of an infinite tape).
+  \item Each character on the tape can only be `A', `+' or `\_' where
+    `A' and `+' are used for decisions while `\_' represents a
+    halting condition.
+  \item The input to the machine will be the initial configuration
+    of the tape while the output of the machine will be the state of
+    the tape when the machine halts.
+  \item At every clock cycle the Turing machine can execute only one
+    instruction.
+  \item Each instruction execution changes decides the next position
+    of the head and can write to the tape where the head is.
+  \end{enumerate}
+
+    Now consider the following turing machine rules, for a machines
+    which adds up two numbers. These numbers are represented in base 1
+    ($1111_1$ to represent $4_{10}$):
+    \begin{table}
+      \centering
+      \renewcommand{\arraystretch}{1.1}
+      \begin{tabularx}{0.8\textwidth}{|X|X|X|}
+        \hline
+        \rowcolor{greatblue}
+        \color{white} Value under head & \color{white}Direction of movement & \color{white}Write value \\
+        \hline
+        \vspace{0.2cm}&&\\
+        A & Right & - \\
+        + & Right & A \\
+        \hline
+      \end{tabularx}
+    \end{table}
+
+    Using this rule set addition of two numbers can be performed, say
+    for example you want to add $2_{10}$ ($AA_1$) and $4_{10}$ ($AAAA_1$) the trace of the turing
+    machine to perform such addition would be:
+    \begin{legal}
+    \item \begin{textsc}\_\_[A]A+AAAA\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_A[A]+AAAA\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_AA[+]AAAA\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_AAA[A]AAA\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_AAAA[A]AA\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_AAAAA[A]A\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_AAAAAA[A]\_\_\_\end{textsc}
+      
+    \item \begin{textsc}\_\_AAAAA[A]\_\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_AAAA[A]A\_\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_AAA[A]AA\_\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_AA[A]AAA\_\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_A[A]AAAA\_\_\_\_\end{textsc}
+    \item \begin{textsc}\_\_[A]AAAAA\_\_\_\_\end{textsc}
+    \item \begin{textsc}\_[\_]AAAAAA\_\_\_\_\end{textsc} (\textbf{HALT})
+    \end{legal}
+
+    \textbf{Questions}
+    \begin{legal}
+    \item Briefly describe the algorithm for the addition of which the
+      trace is give above.
+    \item Write Verilog description for the Turing machine described
+      above, use 2 bit registers to represent single location in the
+      tape. The tape of the machine will be finite in length and
+      should be enough to store the above example.
+    \item Simulate the addition of 2 and 4 in the above turing
+      machine.
+    \end{legal}
+  If you want to read more about Turing Machines, you can look up for
+  `The halting problem' on the internet.
+  
+ }
+
+ \pagebreak
 \section*{References}
 \begin{itemize}
-  \small 
+  \small
 % https://electronics.stackexchange.com/questions/29553/how-are-verilog-always-statements-implemented-in-hardware
-\item http://inst.eecs.berkeley.edu/{\textasciitilde}cs150/fa08/Documents/Always.pdf
-\item Aenean in sem ac leo mollis blandit.  
+\item
+  http://inst.eecs.berkeley.edu/{\textasciitilde}cs150/fa08/Documents/Always.pdf
+\item Aenean in sem ac leo mollis blandit.
 \end{itemize}
 
 \section*{Additional resources}
 \begin{itemize}
   \small 
-\item Stack Exchange: How are Verilog “always” statements implemented in hardware? \\\textit{http://bit.ly/verilogAlwaysStatement}
-\item Stack Overflow: Difference between behavioral and dataflow in verilog \\\textit{http://bit.ly/modellingDiff}
-\item Stack Overflow: How can I know if my code is synthesizable? [Verilog] \\\textit{http://bit.ly/synthCode}
+\item Stack Exchange: How are Verilog “always” statements implemented
+  in hardware? \\\textit{http://bit.ly/verilogAlwaysStatement}
+\item Stack Overflow: Difference between behavioral and dataflow in
+  verilog \\\textit{http://bit.ly/modellingDiff}
+\item Stack Overflow: How can I know if my code is synthesizable?
+  [Verilog] \\\textit{http://bit.ly/synthCode}
 \end{itemize} 
 
-\centerline{\textit{These resources are great for expanding your understanding, but...}}
+\centerline{\textit{These resources are great for expanding your
+    understanding, but...}}
 \begin{centering}
   \begin{figure}[!h] \centering  
     \includegraphics[width=0.5\linewidth]{./resources/meme.jpeg} 
