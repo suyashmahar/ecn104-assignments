@@ -572,7 +572,7 @@ ROM.
    will help you understand the Turing machine a bit better.
 
   \begin{figure}[!h] \centering  
-    \includegraphics[width=0.3\linewidth]{./resources/multiplexer.pdf} 
+    \includegraphics[width=\linewidth]{./resources/turingMachine.pdf} 
     \caption{Example of a Turing machine.} 
     \label{Fig:turing-machine-example} 
   \end{figure}
@@ -581,27 +581,23 @@ ROM.
   a Turing machine as a finite state machine we need following
   assumptions:
   \begin{enumerate}
-  \item We have a finite length tape (since it would be impossible
+  \item The tape is finite in length (since it would be impossible
     to write description of an infinite tape).
   \item Each character on the tape can only be `A', `+' or `\_' where
-    `A' and `+' are used for decisions while `\_' represents a
-    halting condition.
+    `A' and `+' are used for decisions while `\_' represents an unused
+    tape slot.
   \item The input to the machine will be the initial configuration
     of the tape while the output of the machine will be the state of
     the tape when the machine halts.
   \item At every clock cycle the Turing machine can execute only one
     instruction.
-  \item Each instruction execution changes decides the next position
-    of the head and can write to the tape where the head is.
   \item Here each possible arrangement of characters on the tape
     represents a single state in the FSM.
-  \item The Turing machine stops or in other words the execution stops
-    whenever the head reaches a certain state.
   \end{enumerate}
 
     Now consider the above mentioned Turing machine rules, for a machines
     which adds up two numbers. These numbers are represented in base 1
-    ($1111_1$ to represent $4_{10}$):
+    (e.g. $1111_1$ to represent $4_{10}$):
     \begin{table}
       \centering
       \renewcommand{\arraystretch}{1.1}
@@ -611,17 +607,19 @@ ROM.
         \color{white} Value under head & \color{white}Direction of movement & \color{white}Write value \\
         \hline
         \vspace{0.2cm}&&\\
-        A & Right & - \\
-        + & Right & A \\
+        A  & Right &   \\
+        +  & Right & A \\
+        \_ & Left &   \\
         \hline
       \end{tabularx}
     \end{table}
 
-    Using this rule set addition of two numbers can be performed, say
-    for example you want to add $2_{10}$ ($AA_1$) and $4_{10}$
-    ($AAAA_1$) the trace of the Turing machine to perform such
-    addition would be (Assuming the halting condition to be a state
-    where head returns to the position one left to the first number):
+    Using this rule set addition of two numbers can be performed on a
+    Turing machine, say for example you want to add $2_{10}$ ($AA_1$)
+    and $4_{10}$ ($AAAA_1$) the trace of the Turing machine to perform
+    such addition would be (Assuming the halting condition to be a
+    state where head returns to the position one left to the first
+    number):
     \begin{legal}
     \item \begin{textsc}\_\_[A]A+AAAA\_\_\_\end{textsc}
     \item \begin{textsc}\_\_A[A]+AAAA\_\_\_\end{textsc}
@@ -644,8 +642,9 @@ ROM.
     
     \textbf{Questions}
     \begin{legal}
-    \item Briefly describe the algorithm for the addition of which the
-      trace is give above.
+    \item Briefly describe the algorithm which would give the above
+      trace (you can use psuedo code for your description of the
+      algorithm).
     \item Write Verilog description for the Turing machine described
       above, use 2 bit registers to represent a single location on the
       tape. The tape of the machine will be finite in length and
@@ -653,9 +652,8 @@ ROM.
     \item Simulate the addition of 2 and 4 in the above turing
       machine.
     \end{legal}
-  If you want to read more about Turing Machines, you can look up for
-  `The halting problem' on the internet.
-  
+  If you want to read more interesting stuff on Turing Machines, you
+  can look up for `The halting problem' on the internet.
  }
 
  \pagebreak
