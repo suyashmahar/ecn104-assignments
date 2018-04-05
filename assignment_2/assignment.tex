@@ -208,11 +208,11 @@ ECN 104 \hfill Digital Logic Design
 \maketitle
 \tableofcontents
 \section{Introduction}
-Verilog supports wide variety of modelling techniques. Different
-modelling techniques allows writing hardware description at different
+Verilog supports a wide variety of modelling techniques. Different
+modelling techniques allow writing hardware description at different
 levels of abstraction, starting from the switch level modelling
 (PMOS/NMOS) and all the way up to behavioural modelling (algorithmic
-description). Each one of them have their own benefits and use
+description). Each one of them has their own benefits and use
 cases. In this assignment we will discuss three of them, namely
 Gate-level modelling, structural modelling and behavioural modelling.
 
@@ -221,9 +221,9 @@ Gate-level modelling in Verilog is used to describe a circuit only
 using logic gates. This approach is used to describe critical parts of
 a design, like adders and multipliers. Using gate-level implementation
 allows greater control over the design than other
-techniques. Gate-level modelling is only used for small scale design,
-due to its complexity other modelling techniques are commonly used to
-abstract gate level implementations.
+techniques. Gate-level modelling is only used for small scale
+design. Due to its complexity other modelling techniques are commonly
+used to abstract gate-level implementations.
 
 \subsection{Gate Primitives in Verilog}
 Verilog support following gates:
@@ -241,7 +241,7 @@ Verilog support following gates:
 
 
 Gates in Verilog are available as primitives and can be instantiated
-similar to modules, Listing \ref{gate-level-impl} is an example gate
+similar to modules. Listing \ref{gate-level-impl} is an example gate
 level circuit.
 
 \insertverilog{./verilog_files/gateLevelExample.v}{gate-level-impl}{\text{Example module using Gate-level modelling}}
@@ -267,9 +267,8 @@ For example:
   and #(1) a1(result, input1, input2);
 \end{lstlisting}
 
-\vspace{0.1cm}
-To specify unit of delay we'll write a compiler
-directive, this is typically written at the begining of the
+\vspace{0.1cm} To specify unit of delay, we'll write a compiler
+directive. This is typically written at the begining of the
 description.
 
 \begin{center}
@@ -279,15 +278,15 @@ description.
 \end{center}
 
 
-Here \lstinline[upquote=true]{1ns} is the time unit while
-\lstinline[upquote=true]{1ps} is the time resolution. Which will be
-explained in later assignment. A complete example using delay
+Here, \lstinline[upquote=true]{1ns} is the unit time while
+\lstinline[upquote=true]{1ps} is the time resolution which will be
+explained in the assignment. A complete example using delay
 statements is given in Listing \ref{delay-example}.
 
 \insertverilog{./verilog_files/delayExample.v}{delay-example}{\text{Example usage of delays statement to specify propagation delay of logic gates.}}
 
 \insertProblem { NOT gate is one of the primitives available with
-  Verilog, NOT gate is a type of buffer and is also known as inverting
+  Verilog. NOT gate is a type of buffer and is also known as inverting
   buffer. Buffers in digital circuit are often used to isolate two
   parts of a circuit, but this isolation can also be added with a
   certain behaviour like inversion of signal or delaying signal to
@@ -297,9 +296,7 @@ statements is given in Listing \ref{delay-example}.
   \item Write a Verilog module which acts as an inverting buffer (that
     is, a NOT gate), you have to use verilog primitive
     \lstinline[style=verilog-inline-style]{not} for the
-    implementation, use the testbench
-    \textsc{testbench{\ano}.{\theproblemNumber}.1.v} for testing your
-    design.
+    implementation.
   \item Another kind of buffer often used in digital circuit is the
     `non-inverting buffer'. As the name suggests, the non-inverting
     buffer doesn't invert the input unlike the inverting buffer. This
@@ -333,12 +330,6 @@ statements is given in Listing \ref{delay-example}.
     oscillator. You have to design the ring oscillator such that the
     time period of the generated wave will be 30ns, assume that each
     of the NOT gate has a propagation delay of 5ns.
-
-  \item Using the expression from the Problem {\theproblemNumber}.3,
-    write the description of a module for a 5 NOT gate ring
-    oscillator. You have to design the ring oscillator such that the
-    time period of the generated wave should be 30ns, assume that each
-    of the NOT gate has a propagation delay of 5ns.
   \item Will a single not gate ring oscillator work? Why or why not?
   \end{enumerate}
 } 
@@ -355,8 +346,8 @@ flow modelling.
 
 \subsection{Continuous Assignment}
 \label{continuous-assignment}
-Continuous assignment in Verilog are used for data flow modelling,
-these assignment starts with
+Continuous assignment in Verilog is used for data flow modelling.
+These assignment starts with
 \lstinline[style=verilog-inline-style]{assign} keyword. Continuous
 assignment drives value into a net
 (\lstinline[style=verilog-inline-style]{wire}). Following example
@@ -402,14 +393,14 @@ Fig. \ref{assignment-delay-sim} shows simulation result of Listing
   
   \begin{figure}[!h] \centering  
     \includegraphics[width=0.3\linewidth]{./resources/multiplexer.pdf} 
-    \caption{Simulation result for Listing \ref{assignment-delay}, output changes 15ns after the change in input.} 
+    \caption{} 
     \label{multiplexer} 
   \end{figure}
 
   \begin{enumerate}
     
   \item Write the hardware description of a 2-to-1 multiplexer using
-    Verilog, you have to implement this using only data-flow
+    Verilog. You have to implement this using only data-flow
     modelling. (\textit{Hint: Verilog supports the ternary operator,
       which has same behaviour as in programming languages.})
   \item Now suppose you want to model a multiplexer you just purchased
@@ -437,11 +428,11 @@ procedural blocks.
 
 \subsection{Procedural Blocks}
 Earlier we read about continuous assignment which allows us to drive
-value to a net whenever the driver changes, this kind of assignment
+value to a net whenever the driver changes. This kind of assignment
 allows only to describe combinational circuit. To describe sequential
-circuits Verilog provides procedural blocks, these blocks are used to
+circuits Verilog provides procedural blocks. These blocks are used to
 drive values to net (\lstinline[style=verilog-inline-style]{reg}) only
-inf the condition is met.
+if the condition is met.
 
 \subsection{\lstinline[style=verilog-inline-style]{initial} Block}
 \lstinline[style=verilog-inline-style]{Initial} blocks in Verilog are
@@ -454,9 +445,9 @@ executed only once when the simulation is started.
 
 {\color{red}\textbf{Note:}} Only a
 \lstinline[style=verilog-inline-style]{reg} can be assigned values
-inside an \lstinline[style=verilog-inline-style]{initial} block, this
+inside an \lstinline[style=verilog-inline-style]{initial} block. This
 is because unlike \lstinline[style=verilog-inline-style]{wire} which
-are used for connection \lstinline[style=verilog-inline-style]{reg}
+are used for connection, \lstinline[style=verilog-inline-style]{reg}
 stores information and this information is unknown to the simulator at
 t=0. Structure of an initial block is given in Listing \ref{initial-structure}.
 
@@ -464,7 +455,7 @@ t=0. Structure of an initial block is given in Listing \ref{initial-structure}.
 
 \subsection{\lstinline[style=verilog-inline-style]{always@} block}
 \lstinline[style=verilog-inline-style]{always@} block in Verilog are
-used for describing a event which should happen only under certain
+used for describing an event which should happen only under certain
 conditions, such as change in value of one of the elements.
  
 Basic structure of an \lstinline[style=verilog-inline-style]{always@}
@@ -509,9 +500,9 @@ used for swapping bytes.
 
 \section{Differences between \lstinline[style=verilog-inline-style]{wire} and \lstinline[style=verilog-inline-style]{reg} and where to use what}
 \subsection{Legal use of \lstinline[style=verilog-inline-style]{wire}}
-Wires in Verilog are used to connect two elements, they can be
+Wires in Verilog are used to connect two elements. They can be
 assigned a value or a value can be read from them. However they cannot
-store it, you'll have to drive them with values (constant, other wires
+store it. You'll have to drive them with values (constant, other wires
 or regs).
 
 \begin{itemize}
@@ -527,7 +518,7 @@ or regs).
 
 \subsection{Legal use of \lstinline[style=verilog-inline-style]{reg}}
 \lstinline[style=verilog-inline-style]{reg}s in Verilog are storage
-elements, they however do not represent physical registers. Once
+elements. They, however, do not represent physical registers. Once
 synthesized they can be represented by a physical register, RAM or
 ROM.
 
@@ -550,14 +541,14 @@ ROM.
 
  % Link to java implementation of turing machines: https://introcs.cs.princeton.edu/java/52turing/
 
- \insertProblem { A Turing machines is a theoretical machine which is
+ \insertProblem { A Turing machine is a theoretical machine which is
    used as an abstraction to real computational machines, Turing
    machine was proposed by Alan Turing in 1936. The basis of invention
    of turing machine was Alan's interest in the philosophy of
    computation. An interesting thing about the Turing machine is that
    any algorithm which is impossible to implement on Turing machine
    has never worked on any other real machine. Programming languages
-   such as Java, C, C++ etc. are said to be turing complete, this
+   such as Java, C, C++ etc. are said to be turing complete This
    implies that anything that can be computed by a turing machine can
    be computed by these languages.
 
@@ -577,7 +568,7 @@ ROM.
     \label{Fig:turing-machine-example} 
   \end{figure}
 
-  Turing machines can be used to implement Fine state machines, to use
+  Turing machines can be used to implement Finite state machines. To use
   a Turing machine as a finite state machine we need following
   assumptions:
   \begin{enumerate}
@@ -595,9 +586,9 @@ ROM.
     represents a single state in the FSM.
   \end{enumerate}
 
-    Now consider the above mentioned Turing machine rules, for a machines
-    which adds up two numbers. These numbers are represented in base 1
-    (e.g. $1111_1$ to represent $4_{10}$):
+    Now consider the above mentioned Turing machine rules for a
+    machine which adds up two numbers. These numbers are represented
+    in base 1 (e.g. $1111_1$ to represent $4_{10}$):
     \begin{table}
       \centering
       \renewcommand{\arraystretch}{1.1}
