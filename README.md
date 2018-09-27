@@ -42,9 +42,9 @@ Assignments for ECN-104 - Digital Logic Design
 <td>-</td>
 </tr></tbody></table>
 
-
 <h2>Template</h2>
 <ul>
-<li> [Source code (./template/assignment.tex)](./template/assignment.tex)
-<li> [pdf (./template/assignment.pdf)](./template/assignment.pdf)
+<li> <a href="./template/assignment.tex">Source code (./template/assignment.tex)</a>
+<li> <a href="./template/assignment.pdf">pdf (./template/assignment.pdf</a>
 </ul>
+ 
