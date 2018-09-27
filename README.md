@@ -1,5 +1,6 @@
 Assignments for ECN-104 - Digital Logic Design
 ==============================================
+
 <table>
 <thead>
 <tr>
@@ -40,8 +41,10 @@ Assignments for ECN-104 - Digital Logic Design
 <td>-</td>
 <td>-</td>
 </tr></tbody></table>
-Template
---------
-* [Source code (./template/assignment.tex)](./template/assignment.tex)
-* [pdf (./template/assignment.pdf)](./template/assignment.pdf)
 
+
+<h2>Template</h2>
+<ul>
+<li> [Source code (./template/assignment.tex)](./template/assignment.tex)
+<li> [pdf (./template/assignment.pdf)](./template/assignment.pdf)
+</ul>
