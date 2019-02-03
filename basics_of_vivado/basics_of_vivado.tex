@@ -1,0 +1,259 @@
+
+\documentclass[a4paper,10pt]{article}
+   
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{xcolor, colortbl}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{wrapfig} 
+\usepackage{tabu} % For coloring single row of table
+\usepackage{scrextend}
+%\usepackage{hyperref}
+
+\renewcommand\familydefault{\sfdefault} 
+\usepackage{tgheros}
+\usepackage[defaultmono]{droidmono}
+
+\usepackage{amsmath,amssymb,amsthm,textcomp}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{tikz}
+
+\usepackage{geometry}
+\usepackage{trace}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{accsupp}% http://ctan.org/pkg/accsupp
+\usepackage{enumitem}
+
+%% For using numbers at every level of enumerated list
+\newlist{legal}{enumerate}{10}
+\setlist[legal]{label*=\arabic*.}
+
+\tcbuselibrary{listings,skins} % For lstlisting
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,%
+bindingoffset=0mm, top=20mm,bottom=20mm}
+
+
+% For coloring single row in table
+\def\zapcolorreset{\let\reset@color\relax\ignorespaces}
+\def\colorrows#1{\noalign{\aftergroup\zapcolorreset#1}\ignorespaces}
+
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+\newcommand{\ano}{\text{3}}
+
+% custom theorems if needed
+\newtheoremstyle{mytheor}
+    {1ex}{1ex}{\normalfont}{0pt}{\scshape}{.}{1ex}
+    {{\thmname{#1 }}{\thmnumber{#2}}{\thmnote{ (#3)}}}
+
+\theoremstyle{mytheor}
+\newtheorem{defi}{Definition}
+
+%%% Declare title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\antitle}{\text{Basics of Xilinx Vivado}}
+% my own titles
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{center}
+  \vspace{2ex} {\textsc{{{\large}Supplementary Material}\vspace{0.1cm}
+      \break \huge \antitle}} \vspace{1ex}
+  \\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Department of Electronics and Communication Engineering \\
+Indian Institute of Technology, Roorkee
+\linia\\
+ECN 104 \hfill Digital Logic Design
+\vspace{4ex}
+\end{center}
+}
+\makeatother
+%%%
+
+% custom footers and headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{Assignment \ano\ - \antitle}
+\cfoot{}
+\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+%
+
+\definecolor{vgreen}{RGB}{104,180,104}
+\definecolor{vblue}{RGB}{49,49,255}
+\definecolor{vorange}{RGB}{255,143,102}
+
+\makeatletter
+\newcommand*\@lbracket{[}
+\newcommand*\@rbracket{]}
+\newcommand*\@colon{:}
+\newcommand*\colorIndex{%
+    \edef\@temp{\the\lst@token}%
+    \ifx\@temp\@lbracket \color{black}%
+    \else\ifx\@temp\@rbracket \color{black}%
+    \else\ifx\@temp\@colon \color{black}%
+    \else \color{vorange}%
+    \fi\fi\fi
+}
+\makeatother
+
+\definecolor{codebg}{RGB}{250,250,240} 
+\definecolor{greatblue}{RGB}{91,155,215} 
+
+% Set up caption and labels for lstlistings
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{greatblue}{\parbox{\textwidth}{\hspace{1cm}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\renewcommand{\thelstnumber}{% Line number printing mechanism
+  \protect\BeginAccSupp{ActualText={}}\arabic{lstnumber}\protect\EndAccSupp{}%
+}
+
+\def\backtick{\char18} 
+\lstdefinestyle{verilog-style}
+{
+    %columns=fullflexible, 
+    language=Verilog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    numbers=left, 
+    numberstyle=\color{gray},  
+    numbersep=10pt,
+    moredelim=*[s][\colorIndex]{[}{]},
+    literate=*{:}{:}1, 
+%    backgroundcolor=\color{codebg},
+%    framexrightmargin=0.09cm, 
+    framexleftmargin=-0.09cm,
+    frame=trbl,
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
+}
+
+\lstdefinestyle{verilog-inline-style}
+{
+    language=Verilog,
+    basicstyle=\small\ttfamily,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    moredelim=*[s][\colorIndex]{[}{]},
+    literate=*{:}{:}1, 
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
+}
+
+\newcommand{
+  \insertverilog}[3]{
+  \lstinputlisting[label=#2, caption=#3, style={verilog-style}]{#1}
+}
+
+
+% Command for problem
+\newcounter{problemNumber}
+\setcounter{problemNumber}{1}
+\newcommand {
+  \insertProblem}[1]{
+  \vspace{0.5cm}
+  \hrule
+  \vspace{0.3cm}
+
+  {\color{greatblue}\textbf{\large{Problem \theproblemNumber}}}
+  \vspace{2pt}\\#1
+
+  \addtocounter{problemNumber}{1}
+  \vspace{0.2cm}
+  \hrule  
+  \vspace{0.5cm}
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating a resource box
+\newcommand{\resourcebox}[2]{
+  \fbox{%
+    \parbox{0.5\textwidth}{%
+      \text{#1}
+    }%
+  } 
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+\makeatletter
+\def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
+\makeatother
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+\begin{document}
+
+\title{Basics of Xilinx Vivado}
+
+\maketitle
+\section*{Designing a factorial calculator}
+This is a short assignment where you will be using the skills you have
+already learned over the semester to design a simple factorial
+calculator. The design specification for the calculator are following.
+
+\begin{enumerate}
+\item The calculator takes a single 32 bit number as input.
+\item The input is unsigned, that is you don't have to take care of
+  the sign (number can only be positive).
+\item Output of the calculator includes a single 32 bit number which
+  will be the result and a single bit output indicating the overflow.
+\item Overflow occurs when more than 32 bits are required to represent
+  the result.
+\end{enumerate}
+
+\subsection*{Hints}
+\begin{enumerate}
+\item You may use barrel shifter (designed in assignment 2) for
+  performing multiplication.
+\item Try not use `For loops' unless you are completely sure of what
+  you are trying to do. `For loops' in Verilog are not for repeated
+  execution of statements.
+\item To change the radix of a signal in simulation window use the
+  first few steps of this guide:\\
+  https://sites.google.com/a/temple.edu/ece2612/home/xilinx-vivado-debugging
+\end{enumerate}
+
+\section*{Important guidlines for submission}
+You should follow the following these guidelines carefully, failing to
+which your assignment might not be properly evaluated.
+\begin{enumerate}
+\item You need to submit only one \textbf{ZIP} file; .RAR, .TAR or any
+  other archive format will \textbf{\color{red}not} be accepted.
+\item The ZIP file will only contain the following:
+  \begin{enumerate}
+  \item Source code of the factorial calculator.
+  \item Testbench for the calculator.
+  \item A \textbf{PDF} containing full screen screen-shots of your
+    simulations, source code and elaborated design. Please note that
+    the screenshots should clearly indicate the functioning of your
+    module.\\ \textbf{\color{red}NOTE}: Word documents (*.docx), open
+    document (*.odf) or any other format will {\color{red}not} be
+    accepted.
+  \item Name of the PDF should be your enrollment number,
+    e.g. 171160XX.pdf.
+  \item Simulation results should clearly show all the typical cases,
+    including normal factorial calculation and overflow.
+  \end{enumerate}
+\end{enumerate}
+
+\end{document}
