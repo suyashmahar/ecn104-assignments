@@ -19,20 +19,24 @@ module testbench_1_4;
 
    always #10 inputSignal = inputSignal + 32'h00000111;
    
-   always @(result) begin
-       if (result != (inputSignal * 10)) begin
+   always @(inputSignal) begin
+       /* Verify input and check for high impedance and unknown values */
+       if (result !== (inputSignal * 10) || (^result === 1'bx)) begin
 	   error = 1'b1;
-	   $display("Testcase for input: %b failed, output: %b, expected: %b.", inputSignal, result, result*10);
+	   $display("Testcase for input: %b failed, output: %b, expected: %b.", inputSignal, result, inputSignal*10);
        end
    end
-
+   
    always @(inputSignal) begin
        if (inputSignal >= 32'h0fff_ffff) begin
+       $display("\n\n**************************************");
 	   if (error == 1'b1) begin
 	       $display("Testcase(s) failed!");
+	       $finish;
 	   end else begin
 	       $display("All testcases passed!");
 	   end
+      $display("**************************************\n\n");
 	   $finish;
        end
    end
