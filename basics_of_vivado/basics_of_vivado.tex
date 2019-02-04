@@ -12,11 +12,13 @@
 \usepackage{wrapfig} 
 \usepackage{tabu} % For coloring single row of table
 \usepackage{scrextend}
-%\usepackage{hyperref}
+\usepackage{hyperref}
+
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 
 \renewcommand\familydefault{\sfdefault} 
 \usepackage{tgheros}
-\usepackage[defaultmono]{droidmono}
+
 
 \usepackage{amsmath,amssymb,amsthm,textcomp}
 \usepackage{enumerate}
@@ -194,66 +196,106 @@ ECN 104 \hfill Digital Logic Design
 
 
 %%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating circled numerals
+\usepackage{tikz}
+\usepackage{xcolor}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,fill,inner sep=2pt] (char) {\textcolor{white}{#1}};}}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Setups hyper
+\hypersetup{
+  colorlinks=true,
+  allcolors=blue
+}
+
+%%%----------%%%----------%%%----------%%%----------%%%
 
 \makeatletter
 \def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
 \makeatother
 
-
 %%%----------%%%----------%%%----------%%%----------%%%
 \begin{document}
 
-\title{Basics of Xilinx Vivado}
-
 \maketitle
-\section*{Designing a factorial calculator}
-This is a short assignment where you will be using the skills you have
-already learned over the semester to design a simple factorial
-calculator. The design specification for the calculator are following.
 
+\section*{Creating a New Project}
+To create a new project follow the instructions from this YouTube
+tutorial:
+
+\begin{enumerate} \item[] \url{https://youtu.be/wqm2dgQsj_A} \end{enumerate}
+
+\section*{Vivado GUI guide}
+This section explains the basic of Xilinx Vivado GUI, this section
+provides only the basic explanation to get you started and is not an
+exhaustive list of all the feature. Please refer to the Vivado
+User Guide for more information.
+
+\begin{figure}[!h] \centering  
+  \includegraphics[width=\linewidth]{./img/vivado_gui.png}
+  \caption{Overview of Xilinx Vivado GUI.} 
+  \label{fig:vivado-gui}
+\end{figure}
+
+Fig. \ref{fig:vivado-gui} shows the overview of Xilinx Vivado 2018.3
+GUI, the important sections of the GUI are explained below:
+\begin{itemize}
+\item[] \circled{1} \textbf{Flow Navigator} Pane contains the options
+  for different operations during a common design flow this includes
+  option to include new source files (\circled{2}), run simulation
+  (\circled{9}) or to open elaborated design (\circled{10}).
+\item[] \circled{2} \textbf{Add Sources} option allows adding creating
+  new source files/adding existing files to the project.
+\item[] \circled{3} \textbf{Sources} pane lists all the modules in the
+  project along with the file they belongs to in a hierarchical
+  fashion.
+\item[] \circled{4} \textbf{Current Top Module}'s name is listed in
+  bold face. Both \textit{Design Sources} and \textit{Simulation
+    Sources} have their corresponding top level modules. Top level
+  module in \textit{Simulation Sources} is used for simulation and top
+  level modules from \textit{Design Sources} is used for generating
+  elaborated design.
+\item[] \circled{5} \textbf{Other modules} which are not top level
+  module are shown in normal face (unlike \circled{4}).
+\item[] \circled{6} \textbf{Workspace} in Vivado contains all the
+  schematic, text editors and simulation windows unless undocked.
+\item[] \circled{7} \textbf{Text editor} currently selected is
+  highlighted with the file's name in bold face. If the file is
+  unsaved an asterisk(\textbf{*}) will appear next to the name.
+\item[] \circled{8} \textbf{Green square} next to the scroll bar
+  indicates that the code is free from common syntax errors. This
+  square turns red if the source code has syntax errors. Please note
+  that this feature is just for indication of possible syntax errors,
+  even though if the square is green your code might be logically
+  incorrect or might be syntactically incorrect.
+\item[] \circled{9} \textbf{Run Simulation} allows you to run
+  simulation using the currently selected top level module in
+  simulation sources. A new window is opened in the Workspace
+  (\circled{6}) to view the waveforms.
+\item[] \circled{10} \textbf{Open Elaborated Design} generates the
+  schematic representation of your design.
+\item[] \circled{11} \textbf{Tcl Console} contains log of all the
+  errors and warnings generated during past operations (you might have
+  to scroll through several lines before finding the relevant
+  warning/error).
+\item[] {\small\circled{12}} Vivado reads the Tcl console output to list
+  common errors and warnings as a user friendly format in
+  \textbf{Message} Pane. Please note that you might still have to
+  access the \textit{Tcl Console} pane for finding information on
+  errors.
+\end{itemize}
+
+\section*{Adding an Existing Testbench To Your Project}
+To add an existing testbench to your code follow the instructions from
+this YouTube tutorial:
+
+\begin{enumerate} \item[] \url{https://youtu.be/wqm2dgQsj_A} (Using
+  existing testbench with Vivado) \end{enumerate}
+
+\section*{Document History}
 \begin{enumerate}
-\item The calculator takes a single 32 bit number as input.
-\item The input is unsigned, that is you don't have to take care of
-  the sign (number can only be positive).
-\item Output of the calculator includes a single 32 bit number which
-  will be the result and a single bit output indicating the overflow.
-\item Overflow occurs when more than 32 bits are required to represent
-  the result.
-\end{enumerate}
+\item \textbf{Mon Feb  4 10:25:06 IST 2019}: First edition
 
-\subsection*{Hints}
-\begin{enumerate}
-\item You may use barrel shifter (designed in assignment 2) for
-  performing multiplication.
-\item Try not use `For loops' unless you are completely sure of what
-  you are trying to do. `For loops' in Verilog are not for repeated
-  execution of statements.
-\item To change the radix of a signal in simulation window use the
-  first few steps of this guide:\\
-  https://sites.google.com/a/temple.edu/ece2612/home/xilinx-vivado-debugging
 \end{enumerate}
-
-\section*{Important guidlines for submission}
-You should follow the following these guidelines carefully, failing to
-which your assignment might not be properly evaluated.
-\begin{enumerate}
-\item You need to submit only one \textbf{ZIP} file; .RAR, .TAR or any
-  other archive format will \textbf{\color{red}not} be accepted.
-\item The ZIP file will only contain the following:
-  \begin{enumerate}
-  \item Source code of the factorial calculator.
-  \item Testbench for the calculator.
-  \item A \textbf{PDF} containing full screen screen-shots of your
-    simulations, source code and elaborated design. Please note that
-    the screenshots should clearly indicate the functioning of your
-    module.\\ \textbf{\color{red}NOTE}: Word documents (*.docx), open
-    document (*.odf) or any other format will {\color{red}not} be
-    accepted.
-  \item Name of the PDF should be your enrollment number,
-    e.g. 171160XX.pdf.
-  \item Simulation results should clearly show all the typical cases,
-    including normal factorial calculation and overflow.
-  \end{enumerate}
-\end{enumerate}
-
 \end{document}
