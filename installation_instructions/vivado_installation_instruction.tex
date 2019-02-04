@@ -27,6 +27,14 @@ BoldItalicFont= *-BoldItalic
 ]
 % -----------------------------------------------------------
 
+%%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating document history items
+\newcommand{\histitem}[2]{
+  \footnotesize
+  \item \textbf{#1}: #2
+  \normalsize
+}
+
 \begin{document}
 \maketitle
 
@@ -89,5 +97,21 @@ details so that we can help you out.
 \item The configuration used in this course requires {$\sim$}16.3 GiB of
   disk space, please ensure you have atleast that much space vacant on
   your installation drive.
+\end{enumerate}
+
+\section*{Document History}
+\begin{enumerate}
+  \histitem{Mon Feb  4 12:33:20 IST 2019}{
+    Changes are:
+    \begin{enumerate}
+    \item Added section \textit{Common Sources of Errors}
+    \item Added section \textit{Note}
+    \item Add section \textit{Document History}
+    \item Updated the tutorial for Vivado 2018.3
+    \end{enumerate}
+  }
+  \histitem{Fri Feb  2 22:52:10 IST 2018}{
+    First Edition
+  }
 \end{enumerate}
 \end{document}
