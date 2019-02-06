@@ -224,13 +224,13 @@ ECN 104 \hfill Digital Logic Design
 To create a new project follow the instructions from this YouTube
 tutorial:
 
-\begin{enumerate} \item[] \url{https://youtu.be/wqm2dgQsj_A} \end{enumerate}
+\begin{enumerate} \item[] \url{https://youtu.be/5c3g6V9pMto} \end{enumerate}
 
 \section*{Vivado GUI guide}
-This section explains the basic of Xilinx Vivado GUI, this section
+This section explains the basic of Xilinx Vivado GUI, the section
 provides only the basic explanation to get you started and is not an
-exhaustive list of all the feature. Please refer to the Vivado
-User Guide for more information.
+exhaustive list of all the feature. Please refer to the Vivado User
+Guide\footnote{\url{https://www.xilinx.com/support/documentation/sw_manuals/xilinx2017_3/ug893-vivado-ide.pdf}} for more information.
 
 \begin{figure}[!h] \centering  
   \includegraphics[width=\linewidth]{./img/vivado_gui.png}
@@ -242,11 +242,11 @@ Fig. \ref{fig:vivado-gui} shows the overview of Xilinx Vivado 2018.3
 GUI, the important sections of the GUI are explained below:
 \begin{itemize}
 \item[] \circled{1} \textbf{Flow Navigator} Pane contains the options
-  for different operations during a common design flow this includes
+  for different operations during a common design flow, this includes
   option to include new source files (\circled{2}), run simulation
   (\circled{9}) or to open elaborated design (\circled{10}).
-\item[] \circled{2} \textbf{Add Sources} option allows adding creating
-  new source files/adding existing files to the project.
+\item[] \circled{2} \textbf{Add Sources} option allows creating new
+  source files/adding existing files to the project.
 \item[] \circled{3} \textbf{Sources} pane lists all the modules in the
   project along with the file they belongs to in a hierarchical
   fashion.
@@ -266,12 +266,11 @@ GUI, the important sections of the GUI are explained below:
 \item[] \circled{8} \textbf{Green square} next to the scroll bar
   indicates that the code is free from common syntax errors. This
   square turns red if the source code has syntax errors. Please note
-  that this feature is just for indication of possible syntax errors,
-  even though if the square is green your code might be logically
-  incorrect or might be syntactically incorrect.
+  that this feature is just for indication of possible syntax errors
+  and often results in false negatives.
 \item[] \circled{9} \textbf{Run Simulation} allows you to run
   simulation using the currently selected top level module in
-  simulation sources. A new window is opened in the Workspace
+  the \textit{Simulation Sources}. A new window is opened in the Workspace
   (\circled{6}) to view the waveforms.
 \item[] \circled{10} \textbf{Open Elaborated Design} generates the
   schematic representation of your design.
@@ -283,7 +282,7 @@ GUI, the important sections of the GUI are explained below:
   common errors and warnings as a user friendly format in
   \textbf{Message} Pane. Please note that you might still have to
   access the \textit{Tcl Console} pane for finding information on
-  errors.
+  certain errors.
 \end{itemize}
 
 \section*{Adding an Existing Testbench To Your Project}
