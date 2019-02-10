@@ -20,35 +20,34 @@ module testbench_1_1;
    reg [31:0]  failureCount;
    
    initial begin
-       failureCount = 0;
-       inputSignal = 32'h00000000;
+      failureCount = 0;
+      inputSignal = 32'h00000000;
    end
-
-   always #10 inputSignal = inputSignal + 32'h00000111;
-
-
+   
    // Initialize module
    module_1_1 uut(.inputSignal(inputSignal), .result(result));
    
 
-   always @(inputSignal) begin
-       if ((result != inputSignal<<5) || (^result === 1'bx)) begin
+   always begin
+      inputSignal = inputSignal + 32'h00000111;
+
+      #10 
+
+	if ((result != inputSignal<<5) || (^result === 1'bx)) begin
 	   $display("Testcase for input: %d failed, output: %d, expected: %d.", inputSignal, result, inputSignal<<5);
 	   failureCount = failureCount + 1;
-       end 
-   end
+	end
 
-   always @(inputSignal) begin
-       if (inputSignal >= 32'h0fffffff) begin
-	   $display("\n\n**************************************");
-	   if (failureCount != 0) begin
-	       $display("Testcase(s) failed!");
-	       $finish;
-	   end else begin
-	       $display("All testcases passed!");
-	   end
-	   $display("**************************************\n\n");
-	   $finish;
-       end
-   end   
+      if (inputSignal >= 32'h0fffffff) begin
+	 $display("\n\n**************************************");
+	 if (failureCount != 0) begin
+	    $display("Testcase(s) failed!");
+	    $finish;
+	 end else begin
+	    $display("All testcases passed!");
+	 end
+	 $display("**************************************\n\n");
+	 $finish;
+      end
+   end
 endmodule // testbench1

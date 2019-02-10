@@ -28,33 +28,33 @@ module testbench_1_3_1;
    
    reg 	      error;
    initial begin
-       inputSignal = 32'h0000_0000;
-       error = 1'b0;
+      inputSignal = 32'h0000_0000;
+      error = 1'b0;
    end
-
-   always #10 inputSignal = inputSignal + 32'h00000111;
    
-   always @(inputSignal) begin
-       if ((evenParity != ^inputSignal) 
-       || (oddParity != ~^inputSignal) 
-	   || (^evenParity === 1'bx) 
-	   || (^oddParity === 1'bx)) begin
+   always begin
+      inputSignal = inputSignal + 32'h00000111;
+      
+      #10 
+	 
+	if ((evenParity != ^inputSignal) 
+	    || (oddParity != ~^inputSignal) 
+	    || (^evenParity === 1'bx) 
+	    || (^oddParity === 1'bx)) begin
 	   error = 1'b1;
 	   $display("Testcase for input: %b failed, output -> evenParity: %b, oddParity: %b, expected-> evenParity: %b, oddParity: %b.", inputSignal, evenParity, oddParity, ^inputSignal, ~^inputSignal);
 	   $finish;
-       end
-   end
-
-   always @(inputSignal) begin
-       if (inputSignal >= 32'h0fff_ffff) begin
-	   $display("\n\n**************************************");
-	   if (error == 1'b1) begin
-	       $display("Testcase(s) failed!");
-	   end else begin
-	       $display("All testcases passed!");
-	   end
-	   $display("**************************************\n\n");
-	   $finish;
-       end
+	end
+      
+      if (inputSignal >= 32'h0fff_ffff) begin
+	 $display("\n\n**************************************");
+	 if (error == 1'b1) begin
+	    $display("Testcase(s) failed!");
+	 end else begin
+	    $display("All testcases passed!");
+	 end
+	 $display("**************************************\n\n");
+	 $finish;
+      end
    end
 endmodule // testbench_1_2
