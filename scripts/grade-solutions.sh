@@ -38,7 +38,7 @@ for testbench in ${TESTBENCHES[*]}; do
     modules=($(ls -d !(testbench*|*.vvp)))
 
     echo "  Executing: iverilog -otest.vvp $testbench ${modules[*]}"
-    iverilog -otest.vvp $testbench ${modules[*]} 2>&1 | sed -e 's/^/  iverilog: /' \
+    iverilog -otest.vvp "$testbench" !(testbench*|*.vvp) 2>&1 | sed -e 's/^/  iverilog: /' \
         || { echo "  ERROR: Compilation for $testbench failed."; fail=1; }
 
     echo "  Executing: vvp test.vvp"
