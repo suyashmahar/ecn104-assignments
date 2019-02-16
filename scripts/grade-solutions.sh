@@ -32,33 +32,33 @@ echo "  INFO: Found vvp"
 
 result=""
 for testbench in ${TESTBENCHES[*]}; do
+    fail=0
 
     # Compile one of the testbench and pass all other modules
     modules=($(ls -d !(testbench*|*.vvp)))
 
     echo "  Executing: iverilog -otest.vvp $testbench ${modules[*]}"
     iverilog -otest.vvp $testbench ${modules[*]} 2>&1 | sed -e 's/^/  iverilog: /' \
-        || { echo "  ERROR: Compilation for $testbench failed, exiting..."; exit 1; }
+        || { echo "  ERROR: Compilation for $testbench failed."; fail=1; }
 
     echo "  Executing: vvp test.vvp"
-    out=$(vvp test.vvp | grep -o 'passed')
+    out=$(vvp test.vvp 2>&1 | grep -o 'passed')
 
-#    if [ $? -ne  0 ]; then
-#        echo "  ERROR: Evaluation of $testbench failed, exiting..." 
-#        exit 1
-#    fi
+    if [ $? -ne  0 ]; then
+        echo "  ERROR: Evaluation of $testbench failed." 
+        fail=1
+    fi
 
-    if [[ "$out" == "passed" ]]; then
+    if [[ "$out" == "passed" || "$fail" != "1" ]]; then
         result=$result,0
     else
         result=$result,.
     fi
 
-    rm test.vvp
+    rm -f test.vvp
 
     echo "  INFO: Done with $testbench."
 done
 
-echo "${TESTBENCHES[*]}"
-echo "$result"
+echo "RESULT: $result"
 
