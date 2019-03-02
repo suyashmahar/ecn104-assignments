@@ -11,8 +11,7 @@ module swapBytes;
    reg [15:0] temp;
    ...
 
-   // Can you guess the reason why this block won't swap
-   // bytes?
+   // This one works!     
    always @(...some_condition...) begin
        temp[15:8] <= temp[7:0];
        temp[7:0] <= temp[15:8];

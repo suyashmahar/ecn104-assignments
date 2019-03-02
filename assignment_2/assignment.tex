@@ -1,9 +1,9 @@
 \documentclass[a4paper,10pt]{article}
-   
+
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{textcomp}
-\usepackage[T1]{fontenc}
+\usepackage{fontspec}
 \usepackage{graphicx}
 \usepackage{xcolor, colortbl}
 \usepackage{caption}
@@ -11,11 +11,8 @@
 \usepackage{wrapfig} 
 \usepackage{tabu} % For coloring single row of table
 \usepackage{scrextend}
-%\usepackage{hyperref}
 
-\renewcommand\familydefault{\sfdefault} 
 \usepackage{tgheros}
-\usepackage[defaultmono]{droidmono}
 
 \usepackage{amsmath,amssymb,amsthm,textcomp}
 \usepackage{enumerate}
@@ -55,7 +52,7 @@ bindingoffset=0mm, top=20mm,bottom=20mm}
 \theoremstyle{mytheor}
 \newtheorem{defi}{Definition}
 
-%%% Declare title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Declare title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
 \newcommand{\antitle}{\text{Verilog Modelling Techniques}}
 % my own titles
 \makeatletter
@@ -120,12 +117,23 @@ ECN 104 \hfill Digital Logic Design
   \protect\BeginAccSupp{ActualText={}}\arabic{lstnumber}\protect\EndAccSupp{}%
 }
 
+\renewcommand\familydefault{\sfdefault} 
+\usepackage[T1]{fontenc}
+
+% -----------------------------------------------------------
+% Comment the following lines if Source Code Pro font is
+% not available
+
+\newfontfamily\listingsfont[Scale=0.8]{Source Code Pro} 
+\newfontfamily\listingsfontinline[Scale=0.8]{Source Code Pro}
+% -----------------------------------------------------------
+
 \def\backtick{\char18} 
 \lstdefinestyle{verilog-style}
 {
     %columns=fullflexible, 
     language=Verilog,
-    basicstyle=\small\ttfamily,
+    basicstyle=\listingsfont,
     keywordstyle=\color{vblue},
     identifierstyle=\color{black},
     commentstyle=\color{vgreen},
@@ -146,7 +154,7 @@ ECN 104 \hfill Digital Logic Design
 \lstdefinestyle{verilog-inline-style}
 {
     language=Verilog,
-    basicstyle=\small\ttfamily,
+    basicstyle=\listingsfontinline,
     keywordstyle=\color{vblue},
     identifierstyle=\color{black},
     commentstyle=\color{vgreen},
@@ -167,20 +175,51 @@ ECN 104 \hfill Digital Logic Design
 \newcounter{problemNumber}
 \setcounter{problemNumber}{1}
 \newcommand {
-  \insertProblem}[1]{
+  \insertProblem}[2]{
   \vspace{0.5cm}
-  \hrule
+  \hrule \hrule \hrule
   \vspace{0.3cm}
+  
+  {
+    %% Disable the paragraph indent
+    \setlength{\parindent}{0}
 
-  {\color{greatblue}\textbf{\large{Problem \theproblemNumber}}}
-  \vspace{2pt}\\#1
+    {
+      \color{greatblue}
+      \textbf{\Large{Problem \theproblemNumber}}
+      \hfill
+      \textit{[#1]}
+    }
+
+  }
+
+  \vspace{6pt}\\#2
 
   \addtocounter{problemNumber}{1}
+
   \vspace{0.2cm}
-  \hrule  
+  \hrule \hrule \hrule
   \vspace{0.5cm}
 }
 
+\newcommand{\problemheading}[1] {
+  \vspace{0.3cm}
+
+  {
+    \setlength{\parindent}{0}
+    \textbf{#1}
+  }
+
+  \vspace{0.05cm}
+}
+
+
+\newcommand{\noparaindent}[1] {
+  {
+    \setlength{\parindent}{0}
+    #1
+  }
+}
 
 %%%----------%%%----------%%%----------%%%----------%%%
 % Command for creating a resource box
@@ -195,14 +234,103 @@ ECN 104 \hfill Digital Logic Design
 
 %%%----------%%%----------%%%----------%%%----------%%%
 
-\makeatletter
-\def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
-\makeatother
+%%%----------%%%----------%%%----------%%%----------%%%
+% Boxes for various purpose
+%  Pitfalls
+
+\newcounter{pitfallCount} % Declare a new counter
+\newcommand{\pitfallcounter}[1]{%
+  \refstepcounter{pitfallCount}% Step counter
+  \thepitfallCount% Print counter
+  \label{#1}}% Mark with label
+
+\newcommand{\pitfall}[2] {
+  \begin{tcolorbox}[arc=0pt,colback=yellow!10!white,colframe=orange!75!black,title=\textbf{Common Pitfall - \pitfallcounter{#1}}]
+    #2
+  \end{tcolorbox}
+  %% \refstepcounter{pitfallcnt}{1}
+  %% \label{#1}
+}
+
+%  Important information
+
+\newcounter{infoCount} % Declare a new counter
+\newcommand{\infocounter}[1]{%
+  \refstepcounter{infoCount}% Step counter
+  \theinfoCount% Print counter
+  \label{#1}}% Mark with label
+
+\newcommand{\info}[3] {
+  \begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,title=\textbf{#1 - \infocounter{#2}}] 
+    #3
+  \end{tcolorbox}
+  \addtocounter{infocnt}{1}
+}
+
+%  Hint
+
+\newcounter{hintCount} % Declare a new counter
+\newcommand{\hintcounter}[1]{%
+  \refstepcounter{hintCount}% Step counter
+  \thehintCount% Print counter
+  \label{#1}}% Mark with label
+
+\newcounter{hintcnt}
+\setcounter{hintcnt}{1}
+\newcommand{\hint}[2] {
+  \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,title=\textbf{Hint - \hintcounter{#1}}]  
+    #2
+  \end{tcolorbox}
+  \addtocounter{hintcnt}{1}
+}
+%%%----------%%%----------%%%----------%%%----------%%%
 
 
 %%%----------%%%----------%%%----------%%%----------%%%
-\begin{document}
+% Inline verilog syntax
+\newcommand{\inlinev}[1]{\lstinline[style=verilog-inline-style]{#1}}
+%%%----------%%%----------%%%----------%%%----------%%%
 
+  
+%%%----------%%%----------%%%----------%%%----------%%%
+\makeatletter
+\def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
+\makeatother
+%%%----------%%%----------%%%----------%%%----------%%%
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating document history items
+\newcommand{\histitem}[2]{
+  \footnotesize
+  \item \textbf{#1}: #2
+  \normalsize
+}
+%%%----------%%%----------%%%----------%%%----------%%%
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Using an alternative to hypperef, since it breaks lstlistings
+\usepackage[hyphens]{url}
+\newcommand{\amurl}[1]{%
+  {\color{blue}\url{#1}}
+}
+% Break url at every character
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks%  save the current one
+  \do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j%
+  \do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t%
+  \do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D%
+  \do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N%
+  \do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X%
+  \do\Y\do\Z}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+
+\begin{document}
+\renewcommand\familydefault{\sfdefault}
+\renewcommand*\familydefault{\sfdefault} 
+
+\changefont
 \title{Assignment \ano \\ Modelling Sequential Logic Using Verilog}
 
 \maketitle
@@ -241,14 +369,16 @@ Verilog support following gates:
 
 
 Gates in Verilog are available as primitives and can be instantiated
-similar to modules. Listing \ref{gate-level-impl} is an example gate
+similar to modules. Listing \ref{gatelevelimpl} is an example gate
 level circuit.
 
-\insertverilog{./verilog_files/gateLevelExample.v}{gate-level-impl}{\text{Example module using Gate-level modelling}}
+\insertverilog{./verilog_files/gateLevelExample.v}{gatelevelimpl}{\text{Example
+    module using Gate-level modelling}}
 
 Verilog also supports instantiating gates without a instance name
 demonstrated in Listing \ref{gate-instance-without-name}.
-\insertverilog{./verilog_files/unnamedGate.v}{gate-instance-without-name}{\text{Instantiating unnamed gates}}
+\insertverilog{./verilog_files/unnamedGate.v}{gate-instance-without-name}{\text{Instantiating
+    unnamed gates}}
 
 \subsection{Delay specification}
 All the circuits we have studied so far have no delay associated with
@@ -278,14 +408,23 @@ description.
 \end{center}
 
 
-Here, \lstinline[upquote=true]{1ns} is the unit time while
-\lstinline[upquote=true]{1ps} is the time resolution which will be
+Here, \inlinev{1ns} is the unit time while
+\inlinev{1ps} is the time resolution which will be
 explained in the assignment. A complete example using delay
 statements is given in Listing \ref{delay-example}.
 
-\insertverilog{./verilog_files/delayExample.v}{delay-example}{\text{Example usage of delays statement to specify propagation delay of logic gates.}}
+\insertverilog{./verilog_files/delayExample.v}{delay-example}{\text{Example
+    usage of delays statement to specify propagation delay of logic
+    gates.}}
 
-\insertProblem { NOT gate is one of the primitives available with
+\info{Why do gates have delay?}{ Each gate has some stray capacitance
+  and the interconnect is resistive, these work together as an RC
+  circuit. When the value on the interconnect changes, the capacitor
+  has to either charge or discharge, and since the circuit is an RC
+  circuit - it will take some finite amount of time for this change to
+  happen and hence the delay.}
+
+\insertProblem {30\%} { NOT gate is one of the primitives available with
   Verilog. NOT gate is a type of buffer and is also known as inverting
   buffer. Buffers in digital circuit are often used to isolate two
   parts of a circuit, but this isolation can also be added with a
@@ -294,21 +433,19 @@ statements is given in Listing \ref{delay-example}.
   
   \begin {enumerate}
   \item Write a Verilog module which acts as an inverting buffer (that
-    is, a NOT gate), you have to use verilog primitive
-    \lstinline[style=verilog-inline-style]{not} for the
-    implementation.
+    is, a NOT gate), you have to use verilog primitive \inlinev{not}
+    for the implementation.
   \item Another kind of buffer often used in digital circuit is the
     `non-inverting buffer'. As the name suggests, the non-inverting
-    buffer doesn't invert the input unlike the inverting buffer. This
-    buffer seems to be of no use since it cannot do any
-    processing. This leads us to its one of the common use case, using
-    buffer to level translation. Level translation is used whenever
-    two parts of a circuit are powered with different Vdd (different
-    supply voltages). Now that you know what a buffer is, write a
-    Verilog module to implement a buffer using the inverting buffers
-    you designed in Problem {\theproblemNumber}.1.
+    buffer doesn't invert the input unlike the inverting buffer. One
+    of the common use case of this buffer is to translate logic levels
+    between two circuits. Level translation is used whenever two parts
+    of a circuit are powered with different Vdd (different supply
+    voltages). Now that you know what a buffer is, write a Verilog
+    module to implement it using the inverting buffers you designed in
+    Problem {\theproblemNumber}.1.
   \item NOT gates are also used in ring oscillators, which is a kind
-    of an oscillator often used to generate clock signals. Ring
+    of an oscillator, often used to generate clock signals. Ring
     oscillator is an oscillator which looks like a ring, and contains
     a chain of odd number of NOT gates. Ring oscillator's frequency
     depends on the delay of the NOT gate and number of gates used. A
@@ -321,7 +458,8 @@ statements is given in Listing \ref{delay-example}.
 
     \begin{figure}[!h] \centering  
       \includegraphics[width=0.5\linewidth]{./resources/ringOscillator.pdf}
-      \caption{Simulation result for Listing \ref{ring-oscillator}, output changes 15ns after the change in input.} 
+      \caption{Simulation result for Listing \ref{ring-oscillator},
+        output changes 15ns after the change in input.}
       \label{ring-oscillator}
     \end{figure}
 
@@ -332,7 +470,10 @@ statements is given in Listing \ref{delay-example}.
     of the NOT gate has a propagation delay of 5ns.
   \item Will a single not gate ring oscillator work? Why or why not?
   \end{enumerate}
-} 
+
+  \hint{hint:problem-1}{Use behavioural modelling for Problem \theproblemNumber.4,
+    this would allow you to assign initial state of the output and
+    thus preventing the gates from entering state 'X'.}  }
 
 
 \section{Data-flow Modelling}
@@ -341,27 +482,28 @@ Data flow modelling is a higher level of abstraction than the gate
 level modelling we just studied. Describing a circuit using data-flow
 modelling does not require knowledge of gates level circuit, thus it
 is easier than gate-level modelling when description of large scale
-circuits are written.  All the examples from Assignment 1 used data
+circuits are written.  All the examples from Assignment 1 uses data
 flow modelling.
 
 \subsection{Continuous Assignment}
 \label{continuous-assignment}
 Continuous assignment in Verilog is used for data flow modelling.
 These assignment starts with
-\lstinline[style=verilog-inline-style]{assign} keyword. Continuous
+\inlinev{assign} keyword. Continuous
 assignment drives value into a net
-(\lstinline[style=verilog-inline-style]{wire}). Following example
+(\inlinev{wire}). Following example
 describes use of continuous assignment:
 
-{\color{red}\textbf{Note:}} Verilog is concurrent language unlike
-programming languages such as C,C++ or Java. All the continuous
-assignments are evaluated at the same time.
+\pitfall{pitfall:verilog-concurrency}{Since Verilog is concurrent language unlike programming
+  languages such as C,C++ or Java, all the continuous assignments are
+  evaluated at the same time.}
 
-\insertverilog{./verilog_files/continuousAssignment.v}{continuous-assignment}{Example usage of continuous assignment.}
+\insertverilog{./verilog_files/continuousAssignment.v}{continuous-assignment}{Example
+  usage of continuous assignment.}
 
 Continuous assigment in Verilog can also be done implicitly, which is
 assigning value on declaration of a net
-(\lstinline[style=verilog-inline-style]{wire}). Implicit delcaration
+(\inlinev{wire}). Implicit delcaration
 of Verilog is:
 \begin{lstlisting}[style=verilog-inline-style,xleftmargin=.25\textwidth]
   wire new_wire = input1 & input2;
@@ -383,8 +525,7 @@ Fig. \ref{assignment-delay-sim} shows simulation result of Listing
   \label{assignment-delay-sim}
 \end{figure}
 
-\pagebreak
-\insertProblem { Multiplexer is a digital element which is used to
+\insertProblem {10\%} { Multiplexer is a digital element which is used to
   select a single signal from a group of signals. Block diagram of a
   multiplexer is shown in Fig. \ref{multiplexer}, the input
   $\text{in}_1$ and $\text{in}_2$ are multiplexed and the output is
@@ -397,16 +538,36 @@ Fig. \ref{assignment-delay-sim} shows simulation result of Listing
     \label{multiplexer} 
   \end{figure}
 
-  \begin{enumerate}
-    
+  \begin{enumerate}    
   \item Write the hardware description of a 2-to-1 multiplexer using
     Verilog. You have to implement this using only data-flow
-    modelling. (\textit{Hint: Verilog supports the ternary operator,
-      which has same behaviour as in programming languages.})
+    modelling.
   \item Now suppose you want to model a multiplexer you just purchased
     from the market, which has a propagation delay of 2ns. Modify the
     module from part 1 such that the behaviour of your description
     matches the one you bought.
+    
+  \end{enumerate}
+    \begin{table}[!ht]
+      \centering
+      \caption{Module attributes for problem \theproblemNumber}
+      \renewcommand{\arraystretch}{1.1}
+      \begin{tabularx}{0.8\textwidth}{|X|X|X|}
+        \hline
+        \rowcolor{greatblue}
+        \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
+        \hline
+        Module Name   & multiplexer     & \_  \\
+        First Input   & in1             &  1  \\
+        Second Input  & in2             &  1  \\
+        Result        & result          &  1  \\
+        Select Signal & select          &  1  \\
+        \hline
+      \end{tabularx}
+    \end{table}
+
+    \hint{hint:problem-2}{Verilog also supports the ternary operator, which has same
+      behaviour as they have in programming languages.}
 }
 \section{Behavioral Modelling}
 Behavioral modelling is an even higher level of modelling where
@@ -416,58 +577,55 @@ data flow modelling. Behavioral modelling resembles more to
 programming languages such as C than it does to circuit description.
 
 
-\subsection{\lstinline[style=verilog-inline-style]{reg} Element}
-\lstinline[style=verilog-inline-style]{reg} element is used to
-represent abstract storage device in
-Verilog. \lstinline[style=verilog-inline-style]{reg}s can be used to
-store information (single bit or of arbitrary length using
-array, arrays are similar to vectors). We'll get back to usage of
-\lstinline[style=verilog-inline-style]{reg} and will differentiate it
-with \lstinline[style=verilog-inline-style]{wire} after studying
-procedural blocks.
+\subsection{\inlinev{reg} Element}
+\inlinev{reg} element is used to represent abstract storage device in
+Verilog. \inlinev{reg}s can be used to store information (single bit
+or of arbitrary length using array, arrays are similar to
+vectors). We'll get back to usage of \inlinev{reg} and will
+differentiate it with \inlinev{wire} after studying procedural blocks.
 
 \subsection{Procedural Blocks}
-Earlier we read about continuous assignment which allows us to drive
-value to a net whenever the driver changes. This kind of assignment
-allows only to describe combinational circuit. To describe sequential
-circuits Verilog provides procedural blocks. These blocks are used to
-drive values to net (\lstinline[style=verilog-inline-style]{reg}) only
-if the condition is met.
+Earlier we have read about continuous assignment which allows us to
+drive value to a net whenever the driver changes. This kind of
+assignment allows description of only combinational circuit. To
+describe sequential circuits Verilog provides procedural blocks. These
+blocks are used to drive values to variables (\inlinev{reg}) only if
+the condition is met.
 
-\subsection{\lstinline[style=verilog-inline-style]{initial} Block}
-\lstinline[style=verilog-inline-style]{Initial} blocks in Verilog are
-used to specify initial values of all the storage elements. When
-simulation starts simulator doesn't know what values are to be
-assigned to storage elements. Initial block begins with
-\lstinline[style=verilog-inline-style]{initial begin} and ends with
-\lstinline[style=verilog-inline-style]{end}. Initial blocks gets
-executed only once when the simulation is started.
+\subsection{\inlinev{initial} Block}
+\inlinev{initial} blocks in Verilog are used to specify initial values
+of all the storage elements. When simulation starts simulator doesn't
+know what values are to be assigned to storage elements. Initial block
+begins with \inlinev{initial begin} and ends with an
+\inlinev{end}. Initial blocks gets executed only once when the
+simulation is started.
 
-{\color{red}\textbf{Note:}} Only a
-\lstinline[style=verilog-inline-style]{reg} can be assigned values
-inside an \lstinline[style=verilog-inline-style]{initial} block. This
-is because unlike \lstinline[style=verilog-inline-style]{wire} which
-are used for connection, \lstinline[style=verilog-inline-style]{reg}
-stores information and this information is unknown to the simulator at
-t=0. Structure of an initial block is given in Listing \ref{initial-structure}.
+\pitfall{pitfall:reg-vs-wire}{Only a \inlinev{reg} can be assigned values inside an
+  \inlinev{initial} block. This is because unlike \inlinev{wire} which
+  are used for connection, \inlinev{reg} stores information and this
+  information is unknown to the simulator at t=0. Structure of an
+  initial block is given in Listing \ref{initial-structure}.}
 
-\insertverilog{./verilog_files/initialStructure.v}{initial-structure}{Structure of an initial block.} 
+\insertverilog{./verilog_files/initialStructure.v}{initial-structure}{Structure
+  of an initial block.}
 
-\subsection{\lstinline[style=verilog-inline-style]{always@} block}
-\lstinline[style=verilog-inline-style]{always@} block in Verilog are
-used for describing an event which should happen only under certain
-conditions, such as change in value of one of the elements.
+\subsection{\inlinev{always@} block}
+\inlinev{always@} block in Verilog are used for describing an event
+which should happen only under certain conditions, such as change in
+value of one of the elements.
  
-Basic structure of an \lstinline[style=verilog-inline-style]{always@}
-block is given in Listing \ref{always-structure}.
+Basic structure of an \inlinev{always@} block is given in Listing
+\ref{always-structure}.
 
-\insertverilog{./verilog_files/alwaysStructure.v}{always-structure}{Structure of an always@ block.} 
+\insertverilog{./verilog_files/alwaysStructure.v}{always-structure}{Structure
+  of an always@ block.}
 
 Listing \ref{always-example} shows a module which changes output only
-one the positive edge of input
-\lstinline[style=verilog-inline-style]{clk}. 
+on the positive edge of input \inlinev{clk}.
 
-\insertverilog{./verilog_files/alwaysExample.v}{always-example}{Synchronous logic which changes value of result only at the positive edge of clk.} 
+\insertverilog{./verilog_files/alwaysExample.v}{always-example}{Synchronous
+  logic which changes value of result only at the positive edge of
+  clk.}
  
 \subsection{Blocking and Non-Blocking Assignment}
 \subsubsection{Blocking Assignments}
@@ -475,7 +633,7 @@ Blocking assingments are assignments which block the simulation while
 their value is being calculated. This means that the execution flow
 will stop at this statement until it is executed. Blocking assignment
 in Verilog is done using
-\lstinline[style=verilog-inline-style]{=}. Listing
+\inlinev{=}. Listing
 \ref{non-working-blocking-assignment} demonstrates the functioning of
 blocking assignment.
 
@@ -496,52 +654,63 @@ the execution reaches particular statement.
 Listing \ref{working-swap} shows how non-blocking assignments can be
 used for swapping bytes.
 
-\insertverilog{./verilog_files/workingSwap.v}{working-swap}{Swapping bytes using non-blocking assignment\, it works!}   
+\insertverilog{./verilog_files/workingSwap.v}{working-swap}{Swapping
+  bytes using non-blocking assignment\, it works!}
 
-\section{Differences between \lstinline[style=verilog-inline-style]{wire} and \lstinline[style=verilog-inline-style]{reg} and where to use what}
-\subsection{Legal use of \lstinline[style=verilog-inline-style]{wire}}
+\pitfall{pitfall:mixing-assignments}{It is a good HDL practice to not mix different assigments in
+  a single procedural block, doing so will make your code difficult to
+  read and a potential source of bugs.}
+
+\section{Differences between \inlinev{wire} and \inlinev{reg} and where to use what}
+\subsection{Legal use of \inlinev{wire}}
 Wires in Verilog are used to connect two elements. They can be
-assigned a value or a value can be read from them. However they cannot
-store it. You'll have to drive them with values (constant, other wires
-or regs).
+assigned a value or a value can be read from them. They, however,
+cannot store this value, to read something off of a wire you'll have
+to drive them either with constant, other wires or regs.
 
 \begin{itemize}
-\item \lstinline[style=verilog-inline-style]{wire}s are allowed only
+\item \inlinev{wire}s are allowed only
   in continuous assignments (page \pageref{continuous-assignment}).
-\item A \lstinline[style=verilog-inline-style]{wire} cannot be
+\item A \inlinev{wire} cannot be
   assigned a value inside a procedural block.
-\item A \lstinline[style=verilog-inline-style]{wire} can be used to
-  assign a value to a \lstinline[style=verilog-inline-style]{reg} or a
-  \lstinline[style=verilog-inline-style]{wire}.
-\item \lstinline[style=verilog-inline-style]{wire}s can be used for I/O connections of a module instance.
+\item A \inlinev{wire} can be used to
+  assign a value to a \inlinev{reg} or a
+  \inlinev{wire}.
+\item \inlinev{wire}s can be used for I/O connections of a module instance.
 \end{itemize}
 
-\subsection{Legal use of \lstinline[style=verilog-inline-style]{reg}}
-\lstinline[style=verilog-inline-style]{reg}s in Verilog are storage
+\subsection{Legal use of \inlinev{reg}}
+\inlinev{reg}s in Verilog are storage
 elements. They, however, do not represent physical registers. Once
 synthesized they can be represented by a physical register, RAM or
 ROM.
 
  \begin{itemize}
- \item \lstinline[style=verilog-inline-style]{reg}s cannot be assigned
+ \item \inlinev{reg}s cannot be assigned
    a value using continuous assigment.
- \item A \lstinline[style=verilog-inline-style]{reg} can only be
+ \item A \inlinev{reg} can only be
    assigned a value in a procedural block.
- \item A \lstinline[style=verilog-inline-style]{reg} can be used to
-   assign a value to a \lstinline[style=verilog-inline-style]{reg} or
-   a \lstinline[style=verilog-inline-style]{wire}.
+ \item A \inlinev{reg} can be used to
+   assign a value to a \inlinev{reg} or
+   a \inlinev{wire}.
 \end{itemize}
 
- \subsection{Places where both \lstinline[style=verilog-inline-style]{wire} and \lstinline[style=verilog-inline-style]{reg} are allowed}
+ \subsection{Places where both \inlinev{wire} and \inlinev{reg} are allowed}
 
  \begin{itemize}
- \item Both can appear on the right hand side of an \lstinline[style=verilog-inline-style]{assign} statement or can be used inside a procedural block (\lstinline[style=verilog-inline-style]{initial}/\lstinline[style=verilog-inline-style]{always}) block to set value of a \lstinline[style=verilog-inline-style]{reg}.
+ \item Both can appear on the right hand side of an
+   \inlinev{assign} statement or can be
+   used inside a procedural block
+   (\inlinev{initial}/\inlinev{always})
+   block to set value of a
+   \inlinev{reg}.
  \item Can be used as inputs to a module.
 \end{itemize}
 
- % Link to java implementation of turing machines: https://introcs.cs.princeton.edu/java/52turing/
+ % Link to java implementation of turing machines:
+ % https://introcs.cs.princeton.edu/java/52turing/
 
- \insertProblem { A Turing machine is a theoretical machine which is
+ \insertProblem {60\%} { A Turing machine is a theoretical machine which is
    used as an abstraction to real computational machines, Turing
    machine was proposed by Alan Turing in 1936. The basis of invention
    of turing machine was Alan's interest in the philosophy of
@@ -552,15 +721,16 @@ ROM.
    implies that anything that can be computed by a turing machine can
    be computed by these languages.
 
-   \textbf{Basics of Turing machine}\\ Turing machine consist of an
-   infinitely long tape which has certain shapes (or characters) on
-   it, this tape is traversed by a head which reads the character
+   \problemheading{Basics of Turing machine}\\ Turing machine consist
+   of an infinitely long tape which has certain shapes (or characters)
+   on it, this tape is traversed by a head which reads the character
    directly under it and takes appropriate movement decision. An
    example of such machine is shown in
    Fig. \ref{Fig:turing-machine-example}.
 
-   The video at \textsc{https://www.youtube.com/watch?v=mPec64RUCsk}
-   will help you understand the Turing machine a bit better.
+   The video at \amurl{https://www.youtube.com/watch?v=mPec64RUCsk} (9
+   mins : Lecture 12 - Turing Machines (Part 1/10)) will help you
+   understand the Turing machine a bit better.
 
   \begin{figure}[!h] \centering  
     \includegraphics[width=\linewidth]{./resources/turingMachine.pdf} 
@@ -631,7 +801,7 @@ ROM.
 
     Here \textsc{[.]} represents the head of the machine.
     
-    \textbf{Questions}
+    \problemheading{Questions}
     \begin{legal}
     \item Briefly describe the algorithm which would give the above
       trace (you can use psuedo code for your description of the
@@ -639,42 +809,178 @@ ROM.
     \item Write Verilog description for the Turing machine described
       above, use 2 bit registers to represent a single location on the
       tape. The tape of the machine will be finite in length and
-      should be enough to store the above example.
-    \item Simulate the addition of 2 and 4 in the above turing
-      machine.
+      should be enough to store the above example. Your machine should
+      be able to calculate this sum and return the result as 32 bit
+      vector. When this result is generated the machine should also
+      set the `done' output high indicating that the computation is
+      completed. Please use names listed in Table
+      \ref{table:problem-4-attr}. To get started you can use Hint
+      \ref{hint:problem-3} and code provided in Listing
+      \ref{problem-4-boiler}.
+    \item Simulate the addition following two numbers using the turing
+      machine you designed:
+      \begin{enumerate}
+      \item Your enrollment number's numerically largest digit.
+      \item Your enrollment number's numerically largest digit + your
+        enrollment number's least significant digit.
+      \end{enumerate}
+      For an example:
+
+      If your enrollment number is $16116069$, your \textbf{Number 1}
+      would be the $9$ since the largest digit would be $9$ and
+      \textbf{Number 2} would be $18$ since
+      $9+9=18$.
+
+      {\color{red}NOTE:} If you fail to follow this convention your
+      question will not evaluated.      
     \end{legal}
   If you want to read more interesting stuff on Turing Machines, you
   can look up for `The halting problem' on the internet.
+
+  \hint{hint:problem-3}{ 
+    \begin{enumerate}
+    \item You can use a 2 bit wide vector to store the characters.
+    \item Sample code to get you started with the problem is provided
+      in Listing \ref{problem-4-boiler}
+    \item The sample code also includes a few lines of code to
+      automatically print your tape's states on every negative edge of
+      the clock. To enable this you'll have to name your tape `tape',
+      head's current position `current\_pos'. This is already done for 
+      you in the sample code.
+    \item Please note that you should use the states already defined
+      in Listing \ref{problem-4-boiler} to allow the already included
+      helper code to run.
+    \item To calculate the `result' you can count how many `A's the 
+      machine's traverses when it moves back from left to right
+      beforing halting.
+    \end{enumerate}
+  }
+
+  \insertverilog{./verilog_files/problem4Boiler.v}{problem-4-boiler}{Code
+    to get you started with problem 4.}
+     
+  \begin{table}[!ht]
+    \centering
+    \caption{Module attributes for problem \theproblemNumber}
+    \label{table:problem-4-attr}
+    \renewcommand{\arraystretch}{1.1} 
+    \begin{tabularx}{0.8\textwidth}{|X|X|X|}
+      \hline
+      \rowcolor{greatblue}
+      \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
+      \hline
+      Module Name  & turing          & \_  \\
+      Clock Input  & clk             &  1  \\
+      Is Halted?   & done            &  1  \\
+      Final count  & result          & 32  \\
+      \hline
+    \end{tabularx}
+  \end{table}
+
  }
 
- \pagebreak
-\section*{References}
+ \section*{Submission Instructions}
+The submissions of solutions to the assignment {\ano} should strictly
+follow the following guidelines. Please read them carefully to allow
+proper evaluation of the assignment.
+
 \begin{itemize}
-  \small
-% https://electronics.stackexchange.com/questions/29553/how-are-verilog-always-statements-implemented-in-hardware
-\item
-  http://inst.eecs.berkeley.edu/{\textasciitilde}cs150/fa08/Documents/Always.pdf
-\item Aenean in sem ac leo mollis blandit.
+\item \textbf{Full screen - Screen shots} of Elaborated design, Source
+  code and simulation window. Please note that only full screen
+  screenshots will be considered for the evaluation. You are required
+  to provide these screen shots in a PDF file with file's name being
+  your enrollment
+  number. \inlinev{.doc},
+  \inlinev{.docx},
+  \inlinev{.odt} or any other document
+  format will {\color{red}not} be accepted as a substitute for the PDF
+  file.
+
+\item \textbf{Source code of each problem}: You are also required to submit
+the source code file for each of the problem, if your solution to a
+single problem has more than one source code files, then submit each
+one of them.
+
+\item \textbf{Single zip file submission}: Please note that the
+  submission should have only a single {\color{blue}zip} file. This
+  zip file would contain all the other files that you want to submit.
+
+  \inlinev{.rar},
+  \inlinev{7z},
+  \inlinev{tar.gz} or any other
+  archiving format will {\color{red}not} be accepted and can lead to
+  disqualification of your submission.
+  
+\end{itemize} 
+
+{\color{blue}For example}: If your enrollment number is 1234 and you
+have created two files for solving Problem 1, while rest of the
+problems have single file each:
+
+\begin{itemize}
+\item \inlinev{module_1_1.v} - Which
+  contains your main module, namely
+  \inlinev{module_1_1}.
+\item \inlinev{andGate.v} - Which
+  contains description of module andGate and is used by module
+  \inlinev{module_1_1.v}
+\item \inlinev{module_1_2.v}
+\item \inlinev{module_1_3.v}
+\item \inlinev{module_1_4.v}
 \end{itemize}
+
+Then your submission should be a \textbf{\color{blue}zip} having the
+following structure:
+
+\begin{enumerate}
+\item \inlinev{1234.zip}
+  \begin{enumerate}
+  \item \inlinev{1234.pdf} - containing
+    all the screen shots.
+  \item \inlinev{module_1_1.v}
+  \item \inlinev{andGate.v}
+  \item \inlinev{module_1_2.v}
+  \item \inlinev{module_1_3.v}
+  \item \inlinev{module_1_4.v}
+  \end{enumerate}
+\end{enumerate}
+
+Please note that only a single zip file will be accepted for the
+submission. Using any other file format will lead to a
+{\color{red}penalty}. All your files, source codes and the pdf should
+be within the zip file for the submission to be considered complete.
+
+\section*{Document History}
+\begin{enumerate}
+  \histitem{Sat Feb  9 14:25:45 IST 2019}{
+    \begin{enumerate}
+    \item Add expected module names to each problem
+    \item Fix typos
+    \end{enumerate}
+  }
+  \histitem{Mon Nov 29 15:57:13 IST 2017} {
+    First Edition
+  }
+\end{enumerate}
 
 \section*{Additional resources}
 \begin{itemize}
   \small 
 \item Stack Exchange: How are Verilog “always” statements implemented
-  in hardware? \\\textit{http://bit.ly/verilogAlwaysStatement}
+  in hardware? \\$\rhd$ \amurl{http://bit.ly/verilogAlwaysStatement}
 \item Stack Overflow: Difference between behavioral and dataflow in
-  verilog \\\textit{http://bit.ly/modellingDiff}
+  verilog \\$\rhd$ \amurl{http://bit.ly/modellingDiff}
 \item Stack Overflow: How can I know if my code is synthesizable?
-  [Verilog] \\\textit{http://bit.ly/synthCode}
+  [Verilog] \\$\rhd$ \amurl{http://bit.ly/synthCode}
 \end{itemize} 
 
-\centerline{\textit{These resources are great for expanding your
-    understanding, but...}}
-\begin{centering}
-  \begin{figure}[!h] \centering  
-    \includegraphics[width=0.5\linewidth]{./resources/meme.jpeg} 
-  \end{figure}  
-\end{centering}
-
+\section*{References}
+\begin{itemize}
+  \small
+\item Understanding Verilog Blocking and Non-blocking Assignments
+  \\$\rhd$
+  \amurl{http://www.sutherland-hdl.com/papers/1996-CUG-presentation_nonblocking_assigns.pdf}
+\item Verilog: always @ Blocks \\$\rhd$
+  \amurl{http://inst.eecs.berkeley.edu/~cs150/fa08/Documents/Always.pdf}
+\end{itemize}
 \end{document}
-
