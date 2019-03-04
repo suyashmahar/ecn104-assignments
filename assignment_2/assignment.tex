@@ -2,6 +2,7 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage{datetime}
 \usepackage{textcomp}
 \usepackage{fontspec}
 \usepackage{graphicx}
@@ -77,7 +78,7 @@ ECN 104 \hfill Digital Logic Design
 % custom footers and headers
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\lhead{}
+\lhead{{\ttfamily\tiny Last compiled on \currenttime\ \today}} 
 \chead{}
 \rhead{}
 \lfoot{Assignment \ano\ - \antitle}
@@ -191,8 +192,20 @@ ECN 104 \hfill Digital Logic Design
       \hfill
       \textit{[Weightage: #1]}
     }
-
-  }
+    
+    {
+      \centering
+      \begin{center}
+%        \begin{quote}        
+          \lfseries \footnotesize All the solution for this problem
+          must be contained within a single verilog file named
+          `\texttt{solution\_\theproblemNumber.v}' while all the
+          testbenches must be contained within
+          `\texttt{tb\_\theproblemNumber.v}'
+%        \end{quote}
+      \end{center}
+    }
+}
 
   \vspace{6pt}\\#2
 
@@ -869,6 +882,7 @@ ROM.
       Clock Input  & clk             &  1  \\
       Is Halted?   & done            &  1  \\
       Final count  & result          & 32  \\
+      Testbench    & turing\_tb      & 32  \\
       \hline
     \end{tabularx}
   \end{table}
@@ -886,25 +900,23 @@ ROM.
    \end{figure}
    
    A lookup table or LUT in short is a digital structure which
-   resembles a RAM, it takes an address of the location where to
-   lookup an input and produces an output stored at that location. An
-   LUT can be used to mimic any boolean function, an n-bit LUT table
-   is one which can implement any n-bit boolean function. For example,
-   a 2 bit LUT will have 4 inputs and a single bit output. Visual
-   representation of an n-bit LUT is shown in Figure
-   \ref{Fig:n-bit-and-lut}. Using this knowledge answer the following
-   questions:
+   resembles a RAM, it takes an address of a location as an input and
+   produces the data stored at that location as the output. An LUT can
+   be used to mimic any boolean function, an n-bit LUT can thus
+   implement any n-bit boolean function. For example, a 2 bit LUT will
+   have 4 inputs and a single bit output. Visual representation of an
+   n-bit LUT is shown in Figure \ref{Fig:n-bit-and-lut}. Using this
+   knowledge answer the following questions:
 
    \begin{enumerate}
-     \item Design and test a 4 input AND gate using a 2 bit
-       LUT. You should use names from Table
-       \ref{table:problem-4.1-attr}. Take hint from the AND gate's
-       truth table.
+     \item Design and test a 2 input AND gate using a 1 bit LUT. You
+       should use names from Table \ref{table:problem-4.1-attr}. Take
+       hint from the AND gate's truth table to implement this LUT.
      \item Use the LUT that you designed in Problem
        \theproblemNumber.1 to implement and test a 4 input AND
        gate. You should use names from Table
        \ref{table:problem-4.2-attr}.
-     \item Design appropriate modules and implement and test the
+     \item Design appropriate modules to implement and test the
        following logic equation:
        \begin{equation}
          \text{result} = [(\text{a} \land \text{b} \land \text{c}
@@ -924,10 +936,10 @@ ROM.
      \begin{tabularx}{0.8\textwidth}{|X|X|X|}
        \hline
        \rowcolor{greatblue}
-       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
+       \color{white} Atrribute & \color{white}Name & \color{white}Size \\
        \hline
        Module Name     & and2\_lut     & \_  \\
-       Address input   & address       &  2  \\
+       Address input   & address       &  1  \\ 
        Lookup Result   & result        &  1  \\
        Testbench Name  & and2\_lut\_tb &  1  \\
        \hline
@@ -942,10 +954,10 @@ ROM.
      \begin{tabularx}{0.8\textwidth}{|X|X|X|}
        \hline
        \rowcolor{greatblue}
-       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
+       \color{white} Atrribute & \color{white}Name & \color{white}Size \\
        \hline
        Module Name     & and4\_lut     & \_  \\
-       Address input   & address       &  4  \\
+       Address input   & address       &  2  \\
        Lookup Result   & result        &  1  \\
        Testbench Name  & and4\_lut\_tb &  1  \\
        \hline
@@ -960,7 +972,7 @@ ROM.
      \begin{tabularx}{0.8\textwidth}{|X|X|X|}
        \hline
        \rowcolor{greatblue}
-       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
+       \color{white} Atrribute & \color{white}Name & \color{white}Size \\
        \hline
        Module Name     & equation\_lut     & \_  \\
        Input a         & a                 &  1  \\
@@ -1012,35 +1024,23 @@ one of them.
   
 \end{itemize} 
 
-{\color{blue}For example}: If your enrollment number is 1234 and you
-have created two files for solving Problem 1, while rest of the
-problems have single file each:
-
-\begin{itemize}
-\item \inlinev{module_1_1.v} - Which
-  contains your main module, namely
-  \inlinev{module_1_1}.
-\item \inlinev{andGate.v} - Which
-  contains description of module andGate and is used by module
-  \inlinev{module_1_1.v}
-\item \inlinev{module_1_2.v}
-\item \inlinev{module_1_3.v}
-\item \inlinev{module_1_4.v}
-\end{itemize}
-
-Then your submission should be a \textbf{\color{blue}zip} having the
-following structure:
+{\color{blue}For example}: If your enrollment number is 1234, then your
+submission should be a \textbf{\color{blue}zip} having the following
+structure:
 
 \begin{enumerate}
 \item \inlinev{1234.zip}
   \begin{enumerate}
   \item \inlinev{1234.pdf} - containing
     all the screen shots.
-  \item \inlinev{module_1_1.v}
-  \item \inlinev{andGate.v}
-  \item \inlinev{module_1_2.v}
-  \item \inlinev{module_1_3.v}
-  \item \inlinev{module_1_4.v}
+  \item \inlinev{solution\_1.v}
+  \item \inlinev{solution\_2.v}
+  \item \inlinev{solution\_3.v}
+  \item \inlinev{solution\_4.v}
+  \item \inlinev{tb\_1.v}
+  \item \inlinev{tb\_2.v}
+  \item \inlinev{tb\_3.v}
+  \item \inlinev{tb\_4.v}
   \end{enumerate}
 \end{enumerate}
 
@@ -1065,7 +1065,7 @@ be within the zip file for the submission to be considered complete.
 \section*{Additional resources}
 \begin{itemize}
   \small 
-\item Stack Exchange: How are Verilog “always” statements implemented
+\item Stack Exchange: How are Verilog ``always'' statements implemented
   in hardware? \\$\rhd$ \amurl{http://bit.ly/verilogAlwaysStatement}
 \item Stack Overflow: Difference between behavioral and dataflow in
   verilog \\$\rhd$ \amurl{http://bit.ly/modellingDiff}
