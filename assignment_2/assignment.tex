@@ -106,7 +106,7 @@ ECN 104 \hfill Digital Logic Design
 \makeatother
 
 \definecolor{codebg}{RGB}{250,250,240} 
-\definecolor{greatblue}{RGB}{91,155,215} 
+\definecolor{greatblue}{RGB}{91,155,215}  
 \definecolor{infocolor}{RGB}{102, 51, 153} 
 
 % Set up caption and labels for lstlistings
@@ -189,7 +189,7 @@ ECN 104 \hfill Digital Logic Design
       \color{greatblue}
       \textbf{\Large{Problem \theproblemNumber}}
       \hfill
-      \textit{[#1]}
+      \textit{[Weightage: #1]}
     }
 
   }
@@ -423,7 +423,7 @@ statements is given in Listing \ref{delay-example}.
   circuit - it will take some finite amount of time for this change to
   happen and hence the delay.}
 
-\insertProblem {30\%} { NOT gate is one of the primitives available with
+\insertProblem {20\%} { NOT gate is one of the primitives available with
   Verilog. NOT gate is a type of buffer and is also known as inverting
   buffer. Buffers in digital circuit are often used to isolate two
   parts of a circuit, but this isolation can also be added with a
@@ -709,7 +709,7 @@ ROM.
  % Link to java implementation of turing machines:
  % https://introcs.cs.princeton.edu/java/52turing/
 
- \insertProblem {60\%} { A Turing machine is a theoretical machine which is
+ \insertProblem {35\%} { A Turing machine is a theoretical machine which is
    used as an abstraction to real computational machines, Turing
    machine was proposed by Alan Turing in 1936. The basis of invention
    of turing machine was Alan's interest in the philosophy of
@@ -813,7 +813,7 @@ ROM.
       vector. When this result is generated the machine should also
       set the `done' output high indicating that the computation is
       completed. Please use names listed in Table
-      \ref{table:problem-4-attr}. To get started you can use Hint
+      \ref{table:problem-3-attr}. To get started you can use Hint
       \ref{hint:problem-3} and code provided in Listing
       \ref{problem-4-boiler}.
     \item Simulate the addition following two numbers using the turing
@@ -855,13 +855,10 @@ ROM.
     \end{enumerate}
   }
 
-  \insertverilog{./verilog_files/problem4Boiler.v}{problem-4-boiler}{Code
-    to get you started with problem 4.}
-     
-  \begin{table}[!ht]
+  \begin{table}[!h]
     \centering
     \caption{Module attributes for problem \theproblemNumber}
-    \label{table:problem-4-attr}
+    \label{table:problem-3-attr}
     \renewcommand{\arraystretch}{1.1} 
     \begin{tabularx}{0.8\textwidth}{|X|X|X|}
       \hline
@@ -876,7 +873,110 @@ ROM.
     \end{tabularx}
   \end{table}
 
+  \insertverilog{./verilog_files/problem4Boiler.v}{problem-4-boiler}{Code
+    to get you started with problem 4.}     
  }
+
+ \insertProblem {35\%} {
+   \begin{figure}[!h] \centering  
+     \includegraphics[width=0.8\linewidth]{./resources/and-LUT.pdf} 
+     \caption{Example of an $n$-bit LUT which represents an equivalent
+       $2^n$ input AND gate.}
+     \label{Fig:n-bit-and-lut} 
+   \end{figure}
+   
+   A lookup table or LUT in short is a digital structure which
+   resembles a RAM, it takes an address of the location where to
+   lookup an input and produces an output stored at that location. An
+   LUT can be used to mimic any boolean function, an n-bit LUT table
+   is one which can implement any n-bit boolean function. For example,
+   a 2 bit LUT will have 4 inputs and a single bit output. Visual
+   representation of an n-bit LUT is shown in Figure
+   \ref{Fig:n-bit-and-lut}. Using this knowledge answer the following
+   questions:
+
+   \begin{enumerate}
+     \item Design and test a 4 input AND gate using a 2 bit
+       LUT. You should use names from Table
+       \ref{table:problem-4.1-attr}. Take hint from the AND gate's
+       truth table.
+     \item Use the LUT that you designed in Problem
+       \theproblemNumber.1 to implement and test a 4 input AND
+       gate. You should use names from Table
+       \ref{table:problem-4.2-attr}.
+     \item Design appropriate modules and implement and test the
+       following logic equation:
+       \begin{equation}
+         \text{result} = [(\text{a} \land \text{b} \land \text{c}
+           \land \text{d}) \lor (\text{c} \oplus \text{a})] \odot
+         (\text{d})
+       \end{equation}
+       For symbol reference, visit:
+       \amurl{https://en.wikipedia.org/wiki/Logic_gate#Symbols}.  You
+       should use names from Table \ref{table:problem-4.3-attr}.
+   \end{enumerate}
+
+   \begin{table}[!h]
+     \centering
+     \caption{Module attributes for problem \theproblemNumber.1}
+     \label{table:problem-4.1-attr}
+     \renewcommand{\arraystretch}{1.1} 
+     \begin{tabularx}{0.8\textwidth}{|X|X|X|}
+       \hline
+       \rowcolor{greatblue}
+       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
+       \hline
+       Module Name     & and2\_lut     & \_  \\
+       Address input   & address       &  2  \\
+       Lookup Result   & result        &  1  \\
+       Testbench Name  & and2\_lut\_tb &  1  \\
+       \hline
+     \end{tabularx}
+   \end{table}
+
+   \begin{table}[!h]
+     \centering
+     \caption{Module attributes for problem \theproblemNumber.2}
+     \label{table:problem-4.2-attr}
+     \renewcommand{\arraystretch}{1.1} 
+     \begin{tabularx}{0.8\textwidth}{|X|X|X|}
+       \hline
+       \rowcolor{greatblue}
+       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
+       \hline
+       Module Name     & and4\_lut     & \_  \\
+       Address input   & address       &  4  \\
+       Lookup Result   & result        &  1  \\
+       Testbench Name  & and4\_lut\_tb &  1  \\
+       \hline
+     \end{tabularx}
+   \end{table}
+
+   \begin{table}[!h]
+     \centering
+     \caption{Module attributes for problem \theproblemNumber.3}
+     \label{table:problem-4.3-attr}
+     \renewcommand{\arraystretch}{1.1} 
+     \begin{tabularx}{0.8\textwidth}{|X|X|X|}
+       \hline
+       \rowcolor{greatblue}
+       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
+       \hline
+       Module Name     & equation\_lut     & \_  \\
+       Input a         & a                 &  1  \\
+       Input b         & b                 &  1  \\
+       Input c         & c                 &  1  \\
+       Input d         & d                 &  1  \\
+
+       Result          & result            &  1  \\
+       
+       Testbench Name  & equation\_lut\_tb & \_ \\
+       \hline
+     \end{tabularx}
+   \end{table}
+
+ }
+ 
 
  \section*{Submission Instructions}
 The submissions of solutions to the assignment {\ano} should strictly
