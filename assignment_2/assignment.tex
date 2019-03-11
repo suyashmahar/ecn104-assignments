@@ -2,7 +2,6 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{datetime}
 \usepackage{textcomp}
 \usepackage{fontspec}
 \usepackage{graphicx}
@@ -78,7 +77,7 @@ ECN 104 \hfill Digital Logic Design
 % custom footers and headers
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\lhead{{\ttfamily\tiny Last compiled on \currenttime\ \today}} 
+\lhead{}
 \chead{}
 \rhead{}
 \lfoot{Assignment \ano\ - \antitle}
@@ -192,21 +191,22 @@ ECN 104 \hfill Digital Logic Design
       \hfill
       \textit{[Weightage: #1]}
     }
-    
+
     {
       \centering
       \begin{center}
 %        \begin{quote}        
-          \lfseries \footnotesize All the solution for this problem
-          must be contained within a single verilog file named
-          `\texttt{solution\_\theproblemNumber.v}' while all the
-          testbenches must be contained within
+        \lfseries \footnotesize All the solution for this problem
+        must be contained within a single verilog file named
+        `\texttt{solution\_\theproblemNumber.v}' while all the
+        testbenches must be contained within
           `\texttt{tb\_\theproblemNumber.v}'
-%        \end{quote}
-      \end{center}
+          % \end{quote}
+        \end{center}
+      }
+      
     }
-}
-
+    
   \vspace{6pt}\\#2
 
   \addtocounter{problemNumber}{1}
@@ -276,7 +276,7 @@ ECN 104 \hfill Digital Logic Design
   \begin{tcolorbox}[arc=1pt,colback=infocolor!5!white,colframe=infocolor!75!black,title=\textbf{Info \infocounter{#2} - #1}]  
     #3
   \end{tcolorbox}
-  \addtocounter{infocnt}{1}
+  \addtocounter{infoCount}{1}
 }
 
 %  Hint
@@ -337,12 +337,11 @@ ECN 104 \hfill Digital Logic Design
 
 %%%----------%%%----------%%%----------%%%----------%%%
 
-
 \begin{document}
 \renewcommand\familydefault{\sfdefault}
 \renewcommand*\familydefault{\sfdefault} 
 
-\changefont
+
 \title{Assignment \ano \\ Modelling Sequential Logic Using Verilog}
 
 \maketitle
@@ -378,7 +377,6 @@ Verilog support following gates:
   \item NOT
   \end{itemize}
 \end{multicols}
-
 
 Gates in Verilog are available as primitives and can be instantiated
 similar to modules. Listing \ref{gatelevelimpl} is an example gate
@@ -418,7 +416,6 @@ description.
     `timescale 1ns/1ps
   \end{lstlisting}
 \end{center}
-
 
 Here, \inlinev{1ns} is the unit time while
 \inlinev{1ps} is the time resolution which will be
@@ -740,8 +737,8 @@ ROM.
    example of such machine is shown in
    Fig. \ref{Fig:turing-machine-example}.
 
-   The video at \amurl{https://www.youtube.com/watch?v=mPec64RUCsk} (9
-   mins : Lecture 12 - Turing Machines (Part 1/10)) will help you
+   The video at \amurl{https://www.youtube.com/watch?v=mPec64RUCsk}
+   (9 mins : Lecture 12 - Turing Machines (Part 1/10)) will help you
    understand the Turing machine a bit better.
 
   \begin{figure}[!h] \centering  
@@ -886,10 +883,10 @@ ROM.
       \hline
     \end{tabularx}
   \end{table}
-
+  
   \insertverilog{./verilog_files/problem4Boiler.v}{problem-4-boiler}{Code
-    to get you started with problem 4.}     
- }
+    to get you started with problem 4.}
+}
 
  \insertProblem {35\%} {
    \begin{figure}[!h] \centering  
@@ -924,7 +921,7 @@ ROM.
          (\text{d})
        \end{equation}
        For symbol reference, visit:
-       \amurl{https://en.wikipedia.org/wiki/Logic_gate#Symbols}.  You
+       \amurl{https://en.wikipedia.org/wiki/Logic_gate#Symbols}. You 
        should use names from Table \ref{table:problem-4.3-attr}.
    \end{enumerate}
 
