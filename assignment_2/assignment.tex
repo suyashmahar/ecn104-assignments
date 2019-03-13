@@ -11,6 +11,9 @@
 \usepackage{wrapfig} 
 \usepackage{tabu} % For coloring single row of table
 \usepackage{scrextend}
+\usepackage{footnote}
+
+\usepackage{multirow}% http://ctan.org/pkg/multirow
 
 \usepackage{tgheros}
 
@@ -25,6 +28,11 @@
 \usepackage{tabularx}
 \usepackage{accsupp}% http://ctan.org/pkg/accsupp
 \usepackage{enumitem}
+\usepackage{datetime}
+
+
+\usepackage{stackengine}
+\usepackage{scalerel}
 
 %% For using numbers at every level of enumerated list
 \newlist{legal}{enumerate}{10}
@@ -77,7 +85,7 @@ ECN 104 \hfill Digital Logic Design
 % custom footers and headers
 \usepackage{fancyhdr}
 \pagestyle{fancy}
-\lhead{}
+\lhead{{\ttfamily\tiny Last compiled on \currenttime\ \today}}
 \chead{}
 \rhead{}
 \lfoot{Assignment \ano\ - \antitle}
@@ -90,6 +98,7 @@ ECN 104 \hfill Digital Logic Design
 \definecolor{vgreen}{RGB}{104,180,104}
 \definecolor{vblue}{RGB}{49,49,255}
 \definecolor{vorange}{RGB}{255,143,102}
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
 
 \makeatletter
 \newcommand*\@lbracket{[}
@@ -336,6 +345,10 @@ ECN 104 \hfill Digital Logic Design
   \do\Y\do\Z}
 
 %%%----------%%%----------%%%----------%%%----------%%%
+
+\newcommand*{\TakeFourierOrnament}[1]{{%
+\fontencoding{U}\fontfamily{futs}\selectfont\char#1}}
+\newcommand*{\danger}{\TakeFourierOrnament{66}}
 
 \begin{document}
 \renewcommand\familydefault{\sfdefault}
@@ -671,6 +684,73 @@ used for swapping bytes.
   read and a potential source of bugs.}
 
 \section{Differences between \inlinev{wire} and \inlinev{reg} and where to use what}
+\newcommand\markupg[1]{\textbf{\color{vgreen}#1}}
+\newcommand\markupr[1]{\textbf{\color{red}#1}}
+
+\def\checkmark{\tikz\fill[scale=0.4](0,.25) -- (.25,0) -- (0.7,.50) -- (0.7,.65) -- (.25,.15) -- (0,.40) -- cycle;}  
+\def\scalecheck{\resizebox{\widthof{\checkmark}*\ratio{\widthof{x}}{\widthof{\normalsize x}}}{!}{\checkmark}}
+
+\newcommand\dangersign[1][2ex]{%
+  \renewcommand\stacktype{L}%
+  \scaleto{\stackon[1.3pt]{\color{amber}$\triangle$}{\tiny\color{amber} !}}{#1}%
+}
+
+\begin{table}[!ht]
+  \centering
+  \caption{\centering{Common use cases of wires and reg for synthesizable Verilog code. l-value refers to a net or variable to which an assignment is made while an r-value refers to a net or variable that can be used standalone or in combination with other net or variable to assign a value. Wires are declared as: \inlinev{wire w0, w1} and Reg are: \inlinev{reg r0, r1, r2};}}
+  \label{table:reg-wire-use}
+  \renewcommand{\arraystretch}{1.1}
+  \begin{tabularx}{\textwidth}{|X|X|c|c|X|}
+    \hline
+    \rowcolor{greatblue}
+    \multicolumn{2}{|l|}{\color{white}Use case}  & {\noindent\color{white}Reg} & {\noindent\color{white}wire} &  {\noindent\color{white}Example}\\
+    \hline
+
+    \multicolumn{2}{|l|}{\textbf{Multi-bit declaration}}  & \markupg{\checkmark} & \markupg{\checkmark} & \footnotesize\inlinev{reg [32-1:0] name;} \inlinev{wire [32-1:0] name;} \\
+    \multicolumn{2}{|l|}{\footnotesize(Single dimensional)} &  &  &   \\
+    \hline
+
+    \multicolumn{2}{|l|}{\textbf{Multi-bit declaration}}  & \markupg{\checkmark} & \markupg{\checkmark} & \footnotesize\inlinev{reg [DIM_1-1:0] name [DIM_2-1:0][DIM_3-1:0];} \\
+    \multicolumn{2}{|l|}{\footnotesize(Multi-dimensional)} &  &  & \footnotesize\inlinev{// Usage: name[addr_3][addr_2][addr_1]}\\
+    \hline
+
+    \multicolumn{5}{|l|}{\textbf{Continuous Assignment}}\\
+    \hline
+    \multicolumn{2}{|r|}{\footnotesize{l-value}} & \markupr{$\boldsymbol{\times}$} & \markupg{\checkmark} & \footnotesize\inlinev{assign w0 = r0 & r2;}\\
+    \multicolumn{2}{|r|}{\footnotesize{r-value}} & \markupg{\checkmark}            & \markupg{\checkmark} & \footnotesize\inlinev{assign w0 = r0 & w1; // r-value can have either wire or register}\\
+    \hline
+    
+    \multicolumn{5}{|l|}{\textbf{Initial Block}}\\
+    \hline
+    \multicolumn{2}{|r|}{\footnotesize{l-value}} & \markupg{\checkmark}            & \markupr{$\boldsymbol{\times}$} & \footnotesize\inlinev{r0 = 1'b0;}\\
+    \multicolumn{2}{|r|}{\footnotesize{r-value}} & \markupg{\checkmark}            & \dangersign                     & \footnotesize\inlinev{r1 = r0; // NOTE: r0 should be initialized first}\\
+    \multicolumn{2}{|r|}{}                       &                                 &                                 & \footnotesize\inlinev{r2 = w0; // WARNING: Should be avoided} {\scriptsize\color{gray} (Please refer to Pitfall \ref{pitfall:init-with-wire})}\\ 
+    \hline
+    
+    \multicolumn{5}{|l|}{\textbf{Procedural Block}}\\
+    \hline
+    \multicolumn{2}{|r|}{\footnotesize{l-value}} & \markupg{\checkmark}            & \markupr{$\boldsymbol{\times}$} & \footnotesize\inlinev{r0 = 1'b0;}\\
+    \multicolumn{2}{|r|}{\footnotesize{r-value}} & \markupg{\checkmark}            & \markupg{\checkmark}            & \footnotesize\inlinev{r1 = r0;}  \\
+    \multicolumn{2}{|r|}{}                       &                                 &                                 & \footnotesize\inlinev{r2 = w0; // This statement is perfectly valid in proc. blocks}\\
+    \hline
+    
+    \multicolumn{5}{|l|}{\textbf{Module's connections}}\\
+    \multicolumn{5}{|l|}{\footnotesize(from outside of the module)}\\
+    \hline 
+    \multicolumn{2}{|r|}{\footnotesize{l-value}} & \markupg{\checkmark}            & \markupg{\checkmark}            & \multicolumn{1}{l|}{\multirow{2}*{\footnotesize{Refer to the material ``The art of writing testbenches''}}}\\
+    \multicolumn{2}{|r|}{\footnotesize{r-value}} & \markupr{$\boldsymbol{\times}$} & \markupg{\checkmark}            & \multicolumn{1}{l|}{}\\ 
+    \hline
+    
+    \multicolumn{5}{|l|}{\textbf{Module's IO Declaration}}\\
+    \multicolumn{5}{|l|}{\footnotesize(from outside of the module)}\\
+    \hline
+    \multicolumn{2}{|r|}{\footnotesize{l-value}} & \markupg{\checkmark}            & \markupg{\checkmark}            & \multicolumn{1}{l|}{\multirow{2}*{\footnotesize{Refer to the material ``The art of writing testbenches''}}}\\
+    \multicolumn{2}{|r|}{\footnotesize{r-value}} & \markupr{$\boldsymbol{\times}$} & \markupg{\checkmark}            & \multicolumn{1}{l|}{}\\
+    \hline    
+    
+  \end{tabularx}
+\end{table}
+
 \subsection{Legal use of \inlinev{wire}}
 Wires in Verilog are used to connect two elements. They can be
 assigned a value or a value can be read from them. They, however,
@@ -715,6 +795,18 @@ ROM.
    \inlinev{reg}.
  \item Can be used as inputs to a module.
 \end{itemize}
+
+
+\subsection{Where to use what}
+Common use cases of \inlinev{reg} and \inlinev{wire} are listed in
+the Table \ref{table:reg-wire-use}.
+
+\pitfall{pitfall:init-with-wire}{ Using a wire as an r-value in an
+  \inilinev{initial} block is not advised. This is because when the
+  simulator is evaluating the \inlinev{initial} block, none of the
+  wires have any valid values (\inlinev{0} or \inlinev{1}) and thus
+  initializing a \inlinev{reg} with a \inlinev{wire} will result in
+  the \inlinev{reg} having an unknown value (\inlinev{X}).  }
 
  % Link to java implementation of turing machines:
  % https://introcs.cs.princeton.edu/java/52turing/
@@ -984,7 +1076,12 @@ ROM.
      \end{tabularx}
    \end{table}
 
- }
+   \hint{hint:problem-4}{ An example LUT for a not gate will have a
+     two location array of reg (\inlinev{reg [2-1:0] mem}) and will
+     have content \inlinev{\{1,0\}}, thus when the input address to
+     the LUT is 0 the output will be 1 while when the input is 1 the
+     output will be 0. This way the LUT will behave as a NOT gate. You
+     have to implement other gates similarly.} }
  
 
  \section*{Submission Instructions}
@@ -1048,6 +1145,11 @@ be within the zip file for the submission to be considered complete.
 
 \section*{Document History}
 \begin{enumerate}
+  \histitem{Wed Mar 13 13:28:32 iST 2019}{
+    \begin{enumerate}
+    \item Add table on difference in use of wire and reg
+    \end{enumerate}
+  }
   \histitem{Sat Feb  9 14:25:45 IST 2019}{
     \begin{enumerate}
     \item Add expected module names to each problem
