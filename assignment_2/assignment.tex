@@ -711,7 +711,7 @@ used for swapping bytes.
     \hline
 
     \multicolumn{2}{|l|}{\textbf{Multi-bit declaration}}  & \markupg{\checkmark} & \markupg{\checkmark} & \footnotesize\inlinev{reg [DIM_1-1:0] name [DIM_2-1:0][DIM_3-1:0];} \\
-    \multicolumn{2}{|l|}{\footnotesize(Multi-dimensional)} &  &  & \footnotesize\inlinev{// Usage: name[addr_3][addr_2][addr_1]}\\
+    \multicolumn{2}{|l|}{\footnotesize(Multi-dimensional)} &  &  & \footnotesize\inlinev{// Usage: name[addr_2][addr_3][addr_1]}\\
     \hline
 
     \multicolumn{5}{|l|}{\textbf{Continuous Assignment}}\\
@@ -742,7 +742,7 @@ used for swapping bytes.
     \hline
     
     \multicolumn{5}{|l|}{\textbf{Module's IO Declaration}}\\
-    \multicolumn{5}{|l|}{\footnotesize(from outside of the module)}\\
+    \multicolumn{5}{|l|}{\footnotesize(from inside the module)}\\
     \hline
     \multicolumn{2}{|r|}{\footnotesize{l-value}} & \markupg{\checkmark}            & \markupg{\checkmark}            & \multicolumn{1}{l|}{\multirow{2}*{\footnotesize{Refer to the material ``The art of writing testbenches''}}}\\
     \multicolumn{2}{|r|}{\footnotesize{r-value}} & \markupr{$\boldsymbol{\times}$} & \markupg{\checkmark}            & \multicolumn{1}{l|}{}\\
