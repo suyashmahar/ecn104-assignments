@@ -871,7 +871,7 @@ the Table \ref{table:reg-wire-use}.
         \vspace{0.2cm}&&\\
         A  & Right &   \\
         +  & Right & A \\
-        \_ & Left &   \\
+        \_ & Left  &   \\
         \hline
       \end{tabularx}
     \end{table}
@@ -967,11 +967,11 @@ the Table \ref{table:reg-wire-use}.
       \rowcolor{greatblue}
       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
       \hline
-      Module Name  & turing          & \_  \\
+      Module Name  & turing          &  -  \\
       Clock Input  & clk             &  1  \\
       Is Halted?   & done            &  1  \\
       Final count  & result          & 32  \\
-      Testbench    & turing\_tb      & 32  \\
+      Testbench    & turing\_tb      &  -  \\
       \hline
     \end{tabularx}
   \end{table}
@@ -1025,12 +1025,12 @@ the Table \ref{table:reg-wire-use}.
      \begin{tabularx}{0.8\textwidth}{|X|X|X|}
        \hline
        \rowcolor{greatblue}
-       \color{white} Atrribute & \color{white}Name & \color{white}Size \\
+       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
        \hline
-       Module Name     & and2\_lut     & \_  \\
-       Address input   & address       &  1  \\ 
+       Module Name     & and2\_lut     &  -  \\
+       Address input   & address       &  2  \\ 
        Lookup Result   & result        &  1  \\
-       Testbench Name  & and2\_lut\_tb &  1  \\
+       Testbench Name  & and2\_lut\_tb &  -  \\
        \hline
      \end{tabularx}
    \end{table}
@@ -1043,12 +1043,12 @@ the Table \ref{table:reg-wire-use}.
      \begin{tabularx}{0.8\textwidth}{|X|X|X|}
        \hline
        \rowcolor{greatblue}
-       \color{white} Atrribute & \color{white}Name & \color{white}Size \\
+       \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) \\
        \hline
-       Module Name     & and4\_lut     & \_  \\
-       Address input   & address       &  2  \\
+       Module Name     & and4\_lut     &  -  \\
+       Address input   & address       &  4  \\
        Lookup Result   & result        &  1  \\
-       Testbench Name  & and4\_lut\_tb &  1  \\
+       Testbench Name  & and4\_lut\_tb &  -  \\
        \hline
      \end{tabularx}
    \end{table}
@@ -1061,9 +1061,9 @@ the Table \ref{table:reg-wire-use}.
      \begin{tabularx}{0.8\textwidth}{|X|X|X|}
        \hline
        \rowcolor{greatblue}
-       \color{white} Atrribute & \color{white}Name & \color{white}Size \\
+       \color{white} Atrribute & \color{white}Name & \color{white}Size (int bits) \\
        \hline
-       Module Name     & equation\_lut     & \_  \\
+       Module Name     & equation\_lut     &  -  \\
        Input a         & a                 &  1  \\
        Input b         & b                 &  1  \\
        Input c         & c                 &  1  \\
@@ -1071,7 +1071,7 @@ the Table \ref{table:reg-wire-use}.
 
        Result          & result            &  1  \\
        
-       Testbench Name  & equation\_lut\_tb & \_ \\
+       Testbench Name  & equation\_lut\_tb &  -  \\
        \hline
      \end{tabularx}
    \end{table}
@@ -1145,7 +1145,12 @@ be within the zip file for the submission to be considered complete.
 
 \section*{Document History}
 \begin{enumerate}
-  \histitem{Wed Mar 13 13:28:32 iST 2019}{
+  \histitem{Fri Mar 15 16:30:34 IST 2019}{
+    \begin{enumerate}
+    \item Fix typos in the attributes tables of Problem 3 and 4.
+    \end{enumerate}
+  }
+  \histitem{Wed Mar 13 13:28:32 IST 2019}{
     \begin{enumerate}
     \item Add table on difference in use of wire and reg
     \end{enumerate}
