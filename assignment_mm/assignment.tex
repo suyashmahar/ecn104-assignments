@@ -1,0 +1,406 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage{xcolor, colortbl}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{wrapfig} 
+\usepackage{tabu} % For coloring single row of table
+\usepackage{scrextend}
+\usepackage{footnote}
+
+\usepackage{multirow}% http://ctan.org/pkg/multirow
+
+\usepackage{tgheros}
+
+\usepackage{amsmath,amssymb,amsthm,textcomp}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{tikz}
+
+\usepackage{geometry}
+\usepackage{trace}
+\usepackage{tcolorbox}
+\usepackage{tabularx}
+\usepackage{accsupp}% http://ctan.org/pkg/accsupp
+\usepackage{enumitem}
+\usepackage{datetime}
+
+
+\usepackage{stackengine}
+\usepackage{scalerel}
+
+%% For using numbers at every level of enumerated list
+\newlist{legal}{enumerate}{10}
+\setlist[legal]{label*=\arabic*.}
+
+\tcbuselibrary{listings,skins} % For lstlisting
+
+\geometry{total={210mm,297mm},
+left=25mm,right=25mm,%
+bindingoffset=0mm, top=20mm,bottom=20mm}
+
+
+% For coloring single row in table
+\def\zapcolorreset{\let\reset@color\relax\ignorespaces}
+\def\colorrows#1{\noalign{\aftergroup\zapcolorreset#1}\ignorespaces}
+
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+\newcommand{\ano}{\text{3}} 
+
+% custom theorems if needed
+\newtheoremstyle{mytheor}
+    {1ex}{1ex}{\normalfont}{0pt}{\scshape}{.}{1ex}
+    {{\thmname{#1 }}{\thmnumber{#2}}{\thmnote{ (#3)}}}
+
+\theoremstyle{mytheor}
+\newtheorem{defi}{Definition}
+
+%%% Declare title %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\newcommand{\antitle}{\text{}}
+% my own titles
+\makeatletter
+\renewcommand{\maketitle}{
+\begin{center}
+\vspace{2ex}
+{\huge \textsc{{{\large}Assignment - \ano}\vspace{0.1cm} \break \antitle}}
+\vspace{1ex}
+\\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Department of Electronics and Communication Engineering \\
+Indian Institute of Technology, Roorkee
+\linia\\
+ECN 104 \hfill Digital Logic Design
+\vspace{4ex}
+\end{center}
+}
+\makeatother
+%%%
+
+% custom footers and headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead{{\ttfamily\tiny Last compiled on \currenttime\ \today}}
+\chead{}
+\rhead{}
+\lfoot{Assignment \ano\ - \antitle}
+\cfoot{}
+\rfoot{Page \thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+%
+
+\definecolor{vgreen}{RGB}{104,180,104}
+\definecolor{vblue}{RGB}{49,49,255}
+\definecolor{vorange}{RGB}{255,143,102}
+\definecolor{amber}{rgb}{1.0, 0.75, 0.0}
+
+\makeatletter
+\newcommand*\@lbracket{[}
+\newcommand*\@rbracket{]}
+\newcommand*\@colon{:}
+\newcommand*\colorIndex{%
+    \edef\@temp{\the\lst@token}%
+    \ifx\@temp\@lbracket \color{black}%
+    \else\ifx\@temp\@rbracket \color{black}%
+    \else\ifx\@temp\@colon \color{black}%
+    \else \color{vorange}%
+    \fi\fi\fi
+}
+\makeatother
+
+\definecolor{codebg}{RGB}{250,250,240} 
+\definecolor{greatblue}{RGB}{91,155,215}  
+\definecolor{infocolor}{RGB}{102, 51, 153} 
+
+% Set up caption and labels for lstlistings
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{\colorbox{greatblue}{\parbox{\textwidth}{\hspace{1cm}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+\renewcommand{\thelstnumber}{% Line number printing mechanism
+  \protect\BeginAccSupp{ActualText={}}\arabic{lstnumber}\protect\EndAccSupp{}%
+}
+
+\renewcommand\familydefault{\sfdefault} 
+\usepackage[T1]{fontenc}
+
+% -----------------------------------------------------------
+% Comment the following lines if Source Code Pro font is
+% not available
+
+\newfontfamily\listingsfont[Scale=0.8]{Source Code Pro} 
+\newfontfamily\listingsfontinline[Scale=0.8]{Source Code Pro}
+% -----------------------------------------------------------
+
+\def\backtick{\char18} 
+\lstdefinestyle{verilog-style}
+{
+    %columns=fullflexible, 
+    language=Verilog,
+    basicstyle=\listingsfont,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    numbers=left, 
+    numberstyle=\color{gray},  
+    numbersep=10pt,
+    moredelim=*[s][\colorIndex]{[}{]},
+    literate=*{:}{:}1, 
+%    backgroundcolor=\color{codebg},
+%    framexrightmargin=0.09cm, 
+    framexleftmargin=-0.09cm,
+    frame=trbl,
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
+}
+
+\lstdefinestyle{verilog-inline-style}
+{
+    language=Verilog,
+    basicstyle=\listingsfontinline,
+    keywordstyle=\color{vblue},
+    identifierstyle=\color{black},
+    commentstyle=\color{vgreen},
+    moredelim=*[s][\colorIndex]{[}{]},
+    literate=*{:}{:}1, 
+    upquote=true, 
+    framerule=0pt,
+    keepspaces=true
+}
+
+\newcommand{
+  \insertverilog}[3]{
+  \lstinputlisting[label=#2, caption=#3, style={verilog-style}]{#1}
+}
+
+
+% Command for problem
+\newcounter{problemNumber}
+\setcounter{problemNumber}{1}
+\newcommand {
+  \insertProblem}[2]{
+  
+  {
+    %% Disable the paragraph indent
+    \setlength{\parindent}{0}
+
+    {
+      \color{greatblue}
+      \textbf{\Large{Problem \theproblemNumber}}
+      \hfill
+      \textit{[Weightage: #1]}
+    }
+
+    {
+      \centering
+      \begin{center}
+%        \begin{quote}        
+        \lfseries \footnotesize All the solution for this problem
+        must be contained within a single verilog file named
+        `\texttt{solution\_\theproblemNumber.v}' while all the
+        testbenches must be contained within
+          `\texttt{tb\_\theproblemNumber.v}'
+          % \end{quote}
+        \end{center}
+      }
+      
+    }
+    
+  \vspace{6pt}\\#2
+
+  \addtocounter{problemNumber}{1}
+}
+
+\newcommand{\problemheading}[1] {
+  \vspace{0.3cm}
+
+  {
+    \setlength{\parindent}{0}
+    \textbf{#1}
+  }
+
+  \vspace{0.05cm}
+}
+
+
+\newcommand{\noparaindent}[1] {
+  {
+    \setlength{\parindent}{0}
+    #1
+  }
+}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating a resource box
+\newcommand{\resourcebox}[2]{
+  \fbox{%
+    \parbox{0.5\textwidth}{%
+      \text{#1}
+    }%
+  } 
+}
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Boxes for various purpose
+%  Pitfalls
+
+\newcounter{pitfallCount} % Declare a new counter
+\newcommand{\pitfallcounter}[1]{%
+  \refstepcounter{pitfallCount}% Step counter
+  \thepitfallCount% Print counter
+  \label{#1}}% Mark with label
+
+\newcommand{\pitfall}[2] {
+  \begin{tcolorbox}[arc=1pt,colback=yellow!10!white,colframe=orange!75!black,title=\textbf{Common Pitfall - \pitfallcounter{#1}}]
+    #2
+  \end{tcolorbox}
+}
+
+%  Important information
+
+\newcounter{infoCount} % Declare a new counter
+\newcommand{\infocounter}[1]{%
+  \refstepcounter{infoCount}% Step counter
+  \theinfoCount% Print counter
+  \label{#1}}% Mark with label
+
+\newcommand{\info}[3] {
+  \begin{tcolorbox}[arc=1pt,colback=infocolor!5!white,colframe=infocolor!75!black,title=\textbf{Info \infocounter{#2} - #1}]  
+    #3
+  \end{tcolorbox}
+  \addtocounter{infoCount}{1}
+}
+
+%  Hint
+
+\newcounter{hintCount} % Declare a new counter
+\newcommand{\hintcounter}[1]{%
+  \refstepcounter{hintCount}% Step counter
+  \thehintCount% Print counter
+  \label{#1}}% Mark with label
+
+\newcounter{hintcnt}
+\setcounter{hintcnt}{1}
+\newcommand{\hint}[2] {
+  \begin{tcolorbox}[arc=1pt,colback=blue!5!white,colframe=blue!75!black,title=\textbf{Hint - \hintcounter{#1}}]  
+    #2
+  \end{tcolorbox}
+  \addtocounter{hintcnt}{1}
+}
+%%%----------%%%----------%%%----------%%%----------%%%
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Inline verilog syntax
+\newcommand{\inlinev}[1]{\lstinline[style=verilog-inline-style]{#1}}
+%%%----------%%%----------%%%----------%%%----------%%%
+
+  
+%%%----------%%%----------%%%----------%%%----------%%%
+\makeatletter
+\def\lst@outputspace{{\ifx\lst@bkgcolor\empty\color{white}\else\lst@bkgcolor\fi\lst@visiblespace}}
+\makeatother
+%%%----------%%%----------%%%----------%%%----------%%%
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Command for creating document history items
+\newcommand{\histitem}[2]{
+  \footnotesize
+  \item \textbf{#1}: #2
+  \normalsize
+}
+%%%----------%%%----------%%%----------%%%----------%%%
+
+
+%%%----------%%%----------%%%----------%%%----------%%%
+% Using an alternative to hypperef, since it breaks lstlistings
+\usepackage[hyphens]{url}
+\newcommand{\amurl}[1]{%
+  {\color{blue}\url{#1}}
+}
+% Break url at every character
+\expandafter\def\expandafter\UrlBreaks\expandafter{\UrlBreaks%  save the current one
+  \do\a\do\b\do\c\do\d\do\e\do\f\do\g\do\h\do\i\do\j%
+  \do\k\do\l\do\m\do\n\do\o\do\p\do\q\do\r\do\s\do\t%
+  \do\u\do\v\do\w\do\x\do\y\do\z\do\A\do\B\do\C\do\D%
+  \do\E\do\F\do\G\do\H\do\I\do\J\do\K\do\L\do\M\do\N%
+  \do\O\do\P\do\Q\do\R\do\S\do\T\do\U\do\V\do\W\do\X%
+  \do\Y\do\Z}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+\newcommand*{\TakeFourierOrnament}[1]{{%
+\fontencoding{U}\fontfamily{futs}\selectfont\char#1}}
+\newcommand*{\danger}{\TakeFourierOrnament{66}}
+
+\begin{document}
+\renewcommand\familydefault{\sfdefault}
+\renewcommand*\familydefault{\sfdefault} 
+
+
+\title{Assignment \ano \\ Modelling Sequential Logic Using Verilog}
+
+\maketitle
+
+\insertProblem {100\%} { \problemheading{Circular Queue
+    Implementation} One way to implement a FIFO buffer is to add a
+  control circuit to a register file. The registers in the register
+  file are arranged as a circular queue with two pointers. The
+  \emph{write pointer} points to the head of the queue, and the
+  \emph{read pointer} points to the tail of the queue. The
+  corresponding pointers advance one position for each write or read
+  operation. You have to implement and test operation of a 8 word
+  circular queue (consider eight bits in a word).  A FIFO buffer
+  usually contains two status signals, \inlinev{full} and
+  \inlinev{empty}, to indicate that the FIFO is full (i.e., cannot be
+  written) and empty (i.e., cannot be read), respectively. One of the
+  two conditions occurs when the read pointer is equal to the write
+  pointer.
+
+  \hint{}{The most difficult design task of the controller is to
+    derive a mechanism to distinguish the two conditions. One scheme
+    is to use two FFs to keep track of the empty and full
+    statuses. The FFs are set to 1 and 0 during system initialization
+    and then modified in each clock cycle according to the values of
+    the \inlinev{wr} and \inlinev{rd} signals.
+
+    You can also read more about circular buffers at:
+    \amurl{https://en.wikipedia.org/wiki/Circular_buffer} or watch
+    \amurl{https://www.youtube.com/watch?v=ia__kyuwGag}.
+    
+  }
+  
+    \begin{table}[!ht]
+      \centering
+      \caption{Module attributes for problem \theproblemNumber}
+      \renewcommand{\arraystretch}{1.1}
+      \begin{tabularx}{0.8\textwidth}{|X|X|X|X|}
+        \hline \rowcolor{greatblue}
+        \color{white} Atrribute & \color{white}Name & \color{white}Size (in bits) & \color{white}Direction\\
+        \hline
+        Module Name   & fifo            & \_  & \_        \\
+        Testbench Name& fifo\_tb        & \_  & \_        \\ 
+        Clock signal  & clk             &  1  & Input     \\
+        Reset signal  & reset           &  1  & Input     \\
+        Read signal   & rd              &  1  & Input     \\
+        Write signal  & wr              &  1  & Input     \\
+        Data to write & w\_data         &  8  & Input     \\
+        Data to read  & r\_data         &  8  & Output    \\
+        Empty signal  & empty           &  1  & Output    \\
+        Full signal   & full            &  1  & Output    \\
+        \hline
+      \end{tabularx}
+    \end{table}
+}
+ 
+\end{document}
